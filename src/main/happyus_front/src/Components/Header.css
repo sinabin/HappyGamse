@@ -1,0 +1,29 @@
+.Nav-bar{
+    width: auto;
+    height: 10%;
+    min-height: 70px;
+    display: flex;
+    gap: 8px; /*자식요소간의 간격 */
+    align-items: center;
+    background-color: #FA5C81;
+}
+.header_right{
+    height: auto;
+    width: auto;
+    margin-left: 72%;
+}
+
+.neon{
+    margin-left: 0.5%;
+    color: #f8f2f2;
+    font-weight: bold;
+}
+
+#dropDown {
+    background-color: #3F0071;
+    border-color : #3F0071;
+    color: white;
+}
+#HeaderBar {
+    background-color: #FB2576;
+}
