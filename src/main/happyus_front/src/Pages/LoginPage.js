@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const styles = {
     container: {
@@ -39,13 +39,29 @@ const styles = {
 };
 
 function LoginPage() {
-    const [id, setId] = useState('');
+    const [user_id, setUser_id] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        // API 호출을 통한 로그인 인증 과정을 수행
-        console.log('ID:', id, 'Password:', password);  // 임시 로그 출력
-    }
+    const handleLogin = async () => {
+        fetch('/loginAction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "username" : user_id,
+                "password" : password
+            }),
+            credentials: 'include', // 쿠키를 자동으로 포함시킴
+            redirect: 'follow' // 리다이렉트를 자동으로 따르도록 설정
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+    };
 
     return (
         <div style={styles.container}>
@@ -55,8 +71,8 @@ function LoginPage() {
                     아이디:
                     <input
                         type="text"
-                        value={id}
-                        onChange={(e) => setId(e.target.value)}
+                        value={user_id}
+                        onChange={(e) => setUser_id(e.target.value)}
                         placeholder="아이디 입력"
                         style={styles.input}
                     />

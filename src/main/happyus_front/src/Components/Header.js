@@ -5,24 +5,60 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import {useEffect, useState} from "react";
 
 function Header() {
-    return (
-        <Navbar bg="custom" variant="dark" id="HeaderBar">
-            <Container>
-                <Link to="/home" style={{marginRight:'1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png" /> </Link>
-                <Link to="/home" style={{textDecoration:'none'}}><Navbar.Brand >HappyUS</Navbar.Brand> </Link>
-                <Nav className="me-auto">
-                    <Nav.Link ><Link to="/login" style={{textDecoration:'none', color :'white'}} >Home </Link> </Nav.Link>
-                    <Nav.Link ><Link to="/login" style={{textDecoration:'none', color :'white'}} >Feature </Link></Nav.Link>
-                    <Nav.Link ><Link to="/login" style={{textDecoration:'none', color :'white'} } >로그인 </Link></Nav.Link>
-                </Nav>
-            </Container>
-            <DropdownButton variant="light" title="로그인" id="dropDown" style={{marginRight : '2%'}}>
-                <Dropdown.Item> <Link to="/login" style={{textDecoration:'none', color :'black'}} >로그인 </Link> </Dropdown.Item>
-                <Dropdown.Item> <Link to="/signup" style={{textDecoration:'none', color :'black'}} >회원가입 </Link> </Dropdown.Item>
-            </DropdownButton>
-        </Navbar>
-    );
+
+    const [isLogined, setIsLogined] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/is-authenticated')
+            .then(response => response.json())
+            .then(isAuthenticated => {
+                setIsLogined(isAuthenticated);
+            });
+    }, []);
+
+    if (isLogined === true) {
+        return (
+            <Navbar bg="custom" variant="dark" id="HeaderBar">
+                <Container>
+                    <Link to="/home" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
+                    <Link to="/home" style={{textDecoration: 'none'}}><Navbar.Brand>HappyUS</Navbar.Brand> </Link>
+                    <Nav className="me-auto">
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
+                    </Nav>
+                </Container>
+                <DropdownButton variant="light" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
+                    <Dropdown.Item> <Link to="/myPage" style={{textDecoration: 'none', color: 'black'}}>내정보</Link></Dropdown.Item>
+                    <Dropdown.Item> <Link to="/memberShip" style={{textDecoration: 'none', color: 'black'}}>멤버십 관리</Link></Dropdown.Item>
+                    <Dropdown.Item> <Link to="/MyPost" style={{textDecoration: 'none', color: 'black'}}>내 게시물 관리</Link></Dropdown.Item>
+                    <Dropdown.Item href={"/logout"}>로그아웃 </Dropdown.Item>
+                </DropdownButton>
+            </Navbar>
+        );
+    } else {
+        return (
+            <Navbar bg="custom" variant="dark" id="HeaderBar">
+                <Container>
+                    <Link to="/home" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
+                    <Link to="/home" style={{textDecoration: 'none'}}><Navbar.Brand>HappyUS</Navbar.Brand> </Link>
+                    <Nav className="me-auto">
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
+                    </Nav>
+                </Container>
+                <DropdownButton variant="light" title="로그인" id="dropDown" style={{marginRight: '2%'}}>
+                    <Dropdown.Item href={"/loginPage"}>로그인 </Dropdown.Item>
+                    <Dropdown.Item> <Link to="/signup" style={{textDecoration: 'none', color: 'black'}}>회원가입 </Link>
+                    </Dropdown.Item>
+                </DropdownButton>
+            </Navbar>
+        );
+    }
 }
+
 export default Header;

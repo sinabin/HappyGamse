@@ -24,6 +24,8 @@ dependencies {
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
     implementation 'org.mariadb.jdbc:mariadb-java-client:3.0.6'
     implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -69,6 +71,8 @@ task buildReact(type: Exec) {
     }
 }
 
+//  React 앱의 빌드 결과물을 Spring Boot 프로젝트의 resources/static 디렉토리로 복사
+//  React 앱의 빌드 결과물이 Spring Boot 프로젝트 내부에 적절히 배치하기 위함
 task copyReactBuildFiles(type: Copy) {
     dependsOn "buildReact"
     from "$frontendDir/build"

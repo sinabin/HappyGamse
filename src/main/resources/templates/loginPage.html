@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <title>LoginPage</title>
+    <style>
+        .container {
+            color: white;
+            padding: 20px;
+            width: 335px;
+            margin: 100px auto;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            background-color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .inputGroup {
+            margin-bottom: 15px;
+        }
+
+        .label {
+            display:flex; /* flex container로 설정 */
+            justify-content: space-between; /* 요소들을 양쪽 끝으로 배치 */
+            align-items:center; /* 요소들을 중앙에 배치 */
+            margin-bottom :5px
+        }
+
+        input{
+            width :72%;
+            padding :10px ;
+            border-radius :5px ;
+            border:none
+        }
+
+        button{
+            margin-top: 15px;
+            width :100%;
+            padding :10px ;
+            background-color:#FF5733 ;
+            color:white ;
+            border:none ;
+            border-radius :5px ;
+            cursor:pointer
+        }
+
+        .buttonGroup {
+            display: flex;
+        }
+
+    </style>
+</head>
+<body style="background-color:#1c1c1f">
+
+<!-- Container-->
+<div class="container">
+    <h2 class="header"><img alt="header_logo" style="display:inline" src="/imgs/header_logo.png"> HappyUS</h2>
+    <div class="inputGroup">
+        <label class="label">
+            아이디
+            <input id="user_id" type="text" placeholder="아이디 입력">
+        </label>
+    </div>
+    <div class="inputGroup">
+        <label class="label">
+            비밀번호
+            <input id="password" type="password" placeholder="비밀번호 입력">
+        </label>
+    </div>
+    <button onclick="handleLogin()">로그인</button>
+    <div class= "buttonGroup">
+        <button style="width: 50%; background-color: #2ecc71; margin-right: 10px;" onclick="LinkSignUp()">회원가입</button>
+        <button style="width: 50%; background-color: #3498db" onclick="LinkFindPW()">비밀번호찾기</button>
+    </div>
+</div>
+
+</body>
+<script src="/js/login.js"></script>
+</html>  

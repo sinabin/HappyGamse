@@ -3,7 +3,7 @@ package com.example.happyusf.Domain;
 import lombok.Data;
 
 @Data
-public class Agreement_history {
+public class AgreementHistoryVO {
     int agreement_id;
     String user_id;
     boolean service_agreement;
