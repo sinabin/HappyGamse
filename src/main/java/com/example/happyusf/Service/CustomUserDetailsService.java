@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         UserVO user = userRepository.findByUserID(user_id);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with userId: " + user_id);
+            throw new UsernameNotFoundException("존재하지 않는 ID 입니다.");
         }
 
         User.UserBuilder userBuilder = User.withUsername(user.getUser_id());

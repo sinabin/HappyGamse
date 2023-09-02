@@ -24,6 +24,14 @@
     border-color : #3F0071;
     color: white;
 }
+#dropDown:hover,
+#dropDown:active
+{
+    background-color:#7D3FD9;
+    border-color : #7D3FD9;
+    color: white;
+}
+
 #HeaderBar {
     background-color: #FB2576;
 }

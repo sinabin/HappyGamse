@@ -2,7 +2,12 @@
 <html lang="ko">
 <head>
     <title>LoginPage</title>
+
     <style>
+        body{
+            background-color:#1c1c1f;
+        }
+
         .container {
             color: white;
             padding: 20px;
@@ -30,7 +35,7 @@
         }
 
         input{
-            width :72%;
+            width :65%;
             padding :10px ;
             border-radius :5px ;
             border:none
@@ -51,9 +56,13 @@
             display: flex;
         }
 
+        #signupModal .inputGroup .label input {
+            width: 50%;
+        }
+
     </style>
 </head>
-<body style="background-color:#1c1c1f">
+<body>
 
 <!-- Container-->
 <div class="container">
@@ -67,16 +76,18 @@
     <div class="inputGroup">
         <label class="label">
             비밀번호
-            <input id="password" type="password" placeholder="비밀번호 입력">
+            <input id="password" type="password" placeholder="비밀번호 입력" onkeydown = "if (event.keyCode == 13) handleLogin()">
         </label>
     </div>
-    <button onclick="handleLogin()">로그인</button>
+    <button id="btn_login" onclick="handleLogin()">로그인</button>
     <div class= "buttonGroup">
-        <button style="width: 50%; background-color: #2ecc71; margin-right: 10px;" onclick="LinkSignUp()">회원가입</button>
-        <button style="width: 50%; background-color: #3498db" onclick="LinkFindPW()">비밀번호찾기</button>
+        <button style="width: 50%; background-color: #2ecc71; margin-right: 10px;" onclick="moveRegister()">회원가입</button>
+        <button style="width: 50%; background-color: #3498db" onclick="moveFindingPage()">ID 및 PW 찾기</button>
     </div>
 </div>
 
+
+
 </body>
-<script src="/js/login.js"></script>
+<script src="/js/loginPage.js"></script>
 </html>  

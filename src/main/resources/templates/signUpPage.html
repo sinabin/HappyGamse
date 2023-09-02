@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HappyGames Registration</title>
+    <style>
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            margin-top: -5%;
+            width: 100%;
+            max-width: 510px;
+            max-height: calc(100vh - 20px);
+            padding :10px ;
+            overflow:auto ;
+        }
+
+        h1 {
+            text-align:center ;
+            padding-top :20px ;
+        }
+
+        .input-container{
+            margin-bottom: 10px;
+        }
+
+        .input-container input,
+        .input-container select{
+            border:none;
+            border-bottom:2px solid black;
+            outline:none;
+            width :100%;
+            padding :10px ;
+            margin-bottom :10px ;
+            box-sizing:border-box ;
+        }
+        .input-container button{
+            border:none;
+            outline:none;
+            width :100%;
+            padding :10px ;
+            margin-bottom :10px ;
+            box-sizing:border-box ;
+        }
+
+        button[disabled]{
+            background-color:#D3D3D3;
+            color:#808080;
+            cursor:not-allowed ;
+        }
+
+        input[type='submit']{
+            width :45%;
+            padding :10px ;
+            font-size: 16px;
+            background-color:#6d5dfc;
+            color:white;
+            border:none ;
+            cursor:pointer ;
+        }
+
+        input[type='submit'][disabled]{
+            background-color:#D3D3D3;
+            color:#808080;
+            cursor:not-allowed ;
+        }
+
+        label{
+            display:block;
+            margin-bottom:5px;
+            font-weight:bold;
+
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top :20px ;
+        }
+
+        input[type='submit']{
+            width :45%;
+            padding :10px ;
+            background-color:#6d5dfc;
+            color:white;
+            border:none ;
+            cursor:pointer ;
+        }
+
+        #cancelButton {
+            width :45%;
+            padding :10px ;
+            font-size: 16px;
+            border:none ;
+            cursor:pointer ;
+            background-color:red;
+            color:white;
+        }
+
+        .input-container span {
+            display: block; /* span을 블록 수준 요소로 지정 */
+            width: 100%;
+            height: 10px;
+            color: red;
+            font-size: 8px;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <h1 style="color:#fb2576"> <img src="/imgs/header_logo.png" alt="로고이미지"> HappyGames</h1>
+    <form id="registrationForm" method="POST" action="">
+
+        <div class='input-container'>
+            <label for='user_id'>아이디</label>
+            <input type='text' id='user_id' name='user_id'>
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+
+        <div class='input-container'>
+            <label for='password'>비밀번호</label>
+            <input type='password' id='password' name='password'>
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+
+        <div class=input-container >
+            <label for=confirm_password >비밀번호 확인 </label >
+            <input type=password id=confirm_password name=confirm_password >
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+
+        <div class=input-container >
+            <label for=birth_date >생년월일 </label >
+            <input type=date id=birth_date name=birth_date >
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+
+        <div class=input-container >
+            <label for=phone_number >핸드폰 번호 </label >
+            <input type=tel id=phone_number name=phone_number >
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+
+        <div class=input-container >
+            <button type=button onclick=requestVerificationCode() disabled >인증번호 요청 </button ><br/>
+            <input type=text placeholder = "인증번호 입력" >
+            <button type=button onclick=verifyCode() disabled >인증하기 </button >
+        </div>
+
+        <div class=input-container >
+            <label for=email >이메일 주소(선택사항) </label >
+            <input type=email id=email name=email >
+            <span style="width: 100%; color: red; font-size: 8px;"></span>
+        </div>
+    </form>
+
+    <div class="button-container">
+        <input type='submit' value="제출" disabled>
+        <button id="cancelButton" onclick="cancelRegistration()">취소</button>
+    </div>
+
+</div>
+<script src="/js/signUpPage.js"></script>
+</body>
+</html>

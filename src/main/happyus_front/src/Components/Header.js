@@ -23,12 +23,13 @@ function Header() {
         return (
             <Navbar bg="custom" variant="dark" id="HeaderBar">
                 <Container>
-                    <Link to="/home" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
-                    <Link to="/home" style={{textDecoration: 'none'}}><Navbar.Brand>HappyUS</Navbar.Brand> </Link>
+                    <Link to="/" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
+                    <Link to="/" style={{textDecoration: 'none'}}><Navbar.Brand>HappyGames</Navbar.Brand> </Link>
                     <Nav className="me-auto">
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 친구찾기</Link></Nav.Link>
                     </Nav>
                 </Container>
                 <DropdownButton variant="light" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
@@ -43,18 +44,18 @@ function Header() {
         return (
             <Navbar bg="custom" variant="dark" id="HeaderBar">
                 <Container>
-                    <Link to="/home" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
-                    <Link to="/home" style={{textDecoration: 'none'}}><Navbar.Brand>HappyUS</Navbar.Brand> </Link>
+                    <Link to="/" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
+                    <Link to="/" style={{textDecoration: 'none'}}><Navbar.Brand>HappyGames</Navbar.Brand> </Link>
                     <Nav className="me-auto">
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 친구찾기</Link></Nav.Link>
                     </Nav>
                 </Container>
                 <DropdownButton variant="light" title="로그인" id="dropDown" style={{marginRight: '2%'}}>
                     <Dropdown.Item href={"/loginPage"}>로그인 </Dropdown.Item>
-                    <Dropdown.Item> <Link to="/signup" style={{textDecoration: 'none', color: 'black'}}>회원가입 </Link>
-                    </Dropdown.Item>
+                    <Dropdown.Item href={"/register/agreement"}>회원가입 </Dropdown.Item>
                 </DropdownButton>
             </Navbar>
         );

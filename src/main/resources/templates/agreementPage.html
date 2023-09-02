@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms of HappyGames</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      width: 90%;
+      margin: auto;
+    }
+
+    h1, h2 {
+      text-align: center;
+      padding-top: 20px;
+      font-size:1.2em; /* Adjust the size of the heading */
+    }
+
+    .terms-container {
+      border: solid thin #ccc;
+      height: calc(50vh - 300px);
+      margin-top: 30px; /* Reduce the top margin */
+      padding:10px; /* Reduce the padding */
+      overflow:auto;
+    }
+
+    .checkbox-container{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:auto; /* Change from fixed height to auto for better responsiveness */
+    }
+
+    label {
+      font-size:.9em; /* Adjust the size of the label text */
+    }
+
+    .next-button {
+      background-color:#D3D3D3;
+      color:white;
+      padding :5px ; /* Reduce padding */
+      border:none ;
+      cursor:pointer ;
+      margin-top :10px ; /* Reduce top margin */
+      width :100% ;
+    }
+
+    @media (min-width:768px) {
+      /* Styles for screens larger than or equal to tablets (768 pixels) */
+      .container {
+        width :35%;
+      }
+
+      h1,h2{
+        font-size :1.5em ;
+      }
+
+      .terms-container{
+        margin-top :50px ;
+        padding :20px ;
+      }
+
+      .checkbox-container{
+        height :50px ;
+      }
+
+      label{
+        font-size :1em ;
+      }
+
+      .next-button{
+        padding :10px ;
+        margin-top :20px ;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1 style="color:#fb2576"> <img src="/imgs/header_logo.png" alt="로고이미지"> HappyGames</h1>
+  <h2>서비스 이용약관 동의</h2>
+  <div class="terms-container">
+    <p th:utext="${terms}">기본값</p>
+  </div>
+  <div class='checkbox-container'>
+    <input type='checkbox' id='agree1' name='agree1'>
+    <label for='agree1'>위 내용에 동의합니다.</label>
+  </div>
+
+  <h2>개인정보 수집 및 이용에 관한 동의</h2>
+  <div class="terms-container">
+    <p th:utext="${privacy_policy}">기본값</p>
+  </div>
+
+  <div class='checkbox-container'>
+    <input type='checkbox' id='agree2' name='agree2'>
+    <label for='agree2'>위 내용에 동의합니다.</label>
+  </div>
+
+  <button id="btn_next" class='next-button' disabled onclick="moveSingUpPage()">다음</button>
+
+</div>
+<script src="/js/agreementPage.js"></script>
+</body>
+</html>

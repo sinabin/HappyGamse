@@ -22,8 +22,11 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         // Exception의 메시지를 JSON 형태로 반환
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.setContentType("application/json");
-        response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
+        response.setContentType("application/text");
+        response.setCharacterEncoding("UTF-8");
+        String Message =  exception.getMessage();
+
+        response.getWriter().write(Message);
     }
 }
 
