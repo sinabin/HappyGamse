@@ -5,11 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class UserGradeVO {
-    String code_user_grade;
-    String grade_name;
+public class SmsVerificationDTO {
+    String verificationCode;
+    boolean is_expired;
 }

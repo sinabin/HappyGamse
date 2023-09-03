@@ -1,8 +1,5 @@
 package com.example.happyusf.Domain;
 
-import lombok.Data;
-
-@Data
 public class AgreementHistoryVO {
     int agreement_id;
     String user_id;

@@ -1,5 +1,7 @@
 package com.example.happyusf.Domain;
 
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserGradeVO {
-    String code_user_grade;
-    String grade_name;
+@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
+public class MessageDTO {
+    String to;
+    String content;
 }

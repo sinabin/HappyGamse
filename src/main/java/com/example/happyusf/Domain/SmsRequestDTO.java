@@ -5,11 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class UserGradeVO {
-    String code_user_grade;
-    String grade_name;
+public class SmsRequestDTO {
+    String type;
+    String contentType;
+    String countryCode;
+    String from;
+    String content;
+    List<MessageDTO> messages;
 }

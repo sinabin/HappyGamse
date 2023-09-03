@@ -145,14 +145,15 @@
 
         <div class=input-container >
             <label for=phone_number >핸드폰 번호 </label >
-            <input type=tel id=phone_number name=phone_number >
+            <input type=tel id=phone_number name=phone_number value="___-____-____">
             <span style="width: 100%; color: red; font-size: 8px;"></span>
+            <button style="margin-top: 10px;" id="btn_requestCode" type="button" onclick=requestVerificationCode() disabled >인증번호 요청 </button ><br/>
         </div>
 
         <div class=input-container >
-            <button type=button onclick=requestVerificationCode() disabled >인증번호 요청 </button ><br/>
-            <input type=text placeholder = "인증번호 입력" >
-            <button type=button onclick=verifyCode() disabled >인증하기 </button >
+            <label for="verified_code">인증번호</label>
+            <input id="verified_code" type=text placeholder = "인증번호 입력" maxlength="6">
+            <button id="btn_verify" type=button onclick=verifyCode() disabled >인증하기 </button >
         </div>
 
         <div class=input-container >
@@ -160,12 +161,12 @@
             <input type=email id=email name=email >
             <span style="width: 100%; color: red; font-size: 8px;"></span>
         </div>
-    </form>
 
-    <div class="button-container">
-        <input type='submit' value="제출" disabled>
-        <button id="cancelButton" onclick="cancelRegistration()">취소</button>
-    </div>
+        <div class="button-container">
+            <input id="btn_submit" type='submit' value="제출">
+            <button id="cancelButton" type="button" onclick="cancelRegistration()">취소</button>
+        </div>
+    </form>
 
 </div>
 <script src="/js/signUpPage.js"></script>

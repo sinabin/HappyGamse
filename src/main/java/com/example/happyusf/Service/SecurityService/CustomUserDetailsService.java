@@ -1,4 +1,4 @@
-package com.example.happyusf.Service;
+package com.example.happyusf.Service.SecurityService;
 
 import com.example.happyusf.Domain.UserVO;
 import com.example.happyusf.Mappers.UserRepository;
