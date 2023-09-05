@@ -34,6 +34,21 @@ document.getElementById('password').addEventListener('keyup', function () {
     }
 });
 
+document.getElementById('confirm_password').addEventListener('keyup', function () {
+
+    let password = document.getElementById("password").value;
+    let confirm_password = document.getElementById("confirm_password").value;
+
+    if (password !== confirm_password) {
+        updateErrorMessage(
+            'confirm_password',
+            '비밀번호가 일치하지 않습니다.'
+        );
+    } else {
+        updateErrorMessage('password', '');
+    }
+});
+
 document.getElementById('birth_date').addEventListener('keyup', function () {
     if (!validateInput("birth_date", birthDateRegex)) {
         updateErrorMessage("birth_date", "생년월일은 YYYY-MM-DD 형태여야 합니다.");
@@ -136,14 +151,15 @@ function formatPhoneNumber(phoneNumber) {
 }
 
 
-
+/**
+ * @Explain : 인증번호 요청 클릭 이벤트 처리
+ */
 function requestVerificationCode() {
     let phoneNumber = document.getElementById("phone_number").value;
     phoneNumber = phoneNumber.replaceAll("-", "");
-    console.log("phonenum : ", phoneNumber);
 
     if (validateInput('phone_number', phoneNumberRegex)) {
-        fetch('/sms/send', {
+        fetch('/request/verificationCode', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -151,7 +167,12 @@ function requestVerificationCode() {
             body: JSON.stringify({ "to": phoneNumber }),
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log("data : ", data);
+                alert("인증번호가 발송되었습니다.");
+                document.getElementById("btn_requestCode").innerText = "인증번호 재요청"
+                }
+            )
             .catch((error) => {
                 console.error('Error:', error);
             });
@@ -161,21 +182,64 @@ function requestVerificationCode() {
     }
 }
 
+/**
+ * @Explain : 인증하기 버튼 클릭 이벤트처리
+ */
 function verifyCode() {
+
+    const sent_code = document.getElementById("verified_code").value;
+    const phoneNumber = document.getElementById("phone_number").value.replaceAll("-", "");
+
     if (verified_code.value.length === 6) {
+        fetch('/request/verification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    "phone_number": phoneNumber,
+                    "sent_code" : sent_code,
+                }),
+        })
+            .then(response => response.json())
+            .then(data => {console.log(data)
+                if(data.verification_result === true){
+                    alert("인증이 완료되었습니다.");
+                    isPhoneNumberVerified = true;
+                }else{
+                    alert("인증에 실패하였습니다. 다시 시도해주세요.")
+                    isPhoneNumberVerified = false;
+                }}
+            )
+            .catch((error) => {
+                console.error('Error:', error);
+            });
     } else {
         alert("올바른 인증번호를 입력해주세요.");
     }
 }
 
-document.getElementById('registrationForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+function requestJoin() {
+    // Form 데이터 가져오기
+    let user_id = document.getElementById('user_id').value;
+    let password = document.getElementById('password').value;
+    let confirm_password = document.getElementById('confirm_password').value;
+    let birth_date = document.getElementById('birth_date').value;
+    let phone_number = document.getElementById('phone_number').value;
+    let verified_code = document.getElementById('verified_code').value;
+    let email = document.getElementById('email').value;
+
     if (!validateInput('user_id', userIdRegex)) {
         alert("아이디가 유효하지 않습니다.");
         return;
     }
     if (!validateInput('password', passwordRegex)) {
         alert("비밀번호가 유효하지 않습니다.");
+        return;
+    }
+    if (password !== confirm_password) {
+        alert("비밀번호가 일치하지 않습니다.");
         return;
     }
     if (!validateInput('birth_date', birthDateRegex)) {
@@ -187,16 +251,46 @@ document.getElementById('registrationForm').addEventListener('submit', function 
         return;
     }
 
-    let emailValue = document.getElementById('email').value;
-    if (emailValue && !emailRegex.test(emailValue)) {
+    if (email.length > 0 && !emailRegex.test(email)) {
         alert("이메일 주소가 유효하지 않습니다.");
         return;
     }
-    if(isPhoneNumberVerified !== true){
+
+    if (isPhoneNumberVerified !== true) {
+        alert("핸드폰 번호 인증을 완료해주세요.")
         return;
     }
-    this.submit();
-});
+    // 요청 생성
+    fetch("/request/join", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            "user_id": user_id,
+            "password": password,
+            "confirm_password": confirm_password,
+            "birth_date": birth_date,
+            "phone_number": phone_number,
+            "verified_code": verified_code,
+            "email": email
+        })
+    })
+        .then(function (response) {
+            if (response.ok) {
+                alert("회원 가입이 완료되었습니다.");
+                window.location.href = "/";
+            } else if (response.status === 400) {
+                return response.text();
+            } else {
+                throw new Error("회원 가입에 실패했습니다.");
+            }
+        })
+        .catch(function (error) {
+            alert(error.message);
+        });
+
+}
 
 function cancelRegistration() {
     location.href = "/";

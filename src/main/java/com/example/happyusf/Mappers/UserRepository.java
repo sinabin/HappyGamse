@@ -1,6 +1,7 @@
 package com.example.happyusf.Mappers;
 
-import com.example.happyusf.Domain.UserVO;
+import com.example.happyusf.Domain.UserDTO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -10,5 +11,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository {
 
       @Select("SELECT * FROM user_info WHERE user_id = #{user_id}")
-      UserVO findByUserID(String user_id);
+      UserDTO findByUserID(String user_id);
+
+      @Insert("INSERT INTO user_info (user_id, password, phone_number, birth_date, email, code_user_grade) VALUES (#{user_id}, #{password}, #{phone_number}, #{birth_date}, #{email}, 'N0')")
+      int joinNewUser(UserDTO userDTO);
 }

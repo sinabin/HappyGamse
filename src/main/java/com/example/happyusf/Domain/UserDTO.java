@@ -14,7 +14,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @Builder
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
-public class UserVO {
+public class UserDTO {
     
     @Pattern(regexp = "^[a-zA-Z0-9]{6,25}$", message = "유저 아이디는 6~25자의 영문 대소문자와 숫자로 이루어져야 합니다.")
     private String user_id;
@@ -28,7 +28,7 @@ public class UserVO {
     private String nick_name;
 
     @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "전화번호는 XXX-XXXX-XXXX 형식으로 입력해주세요.")
-    private String mobile_number;
+    private String phone_number;
 
     @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "생일은 YYYY-MM-DD 형식으로 입력해주세요.")
     private String birth_date;

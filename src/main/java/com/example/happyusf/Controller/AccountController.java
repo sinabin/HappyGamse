@@ -12,15 +12,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Controller
-public class LoginController {
+public class AccountController {
 
     private final PageResourceService pageResourceService;
 
     @Autowired
-    public LoginController(PageResourceService pageResourceService){
+    public AccountController(PageResourceService pageResourceService){
         this.pageResourceService = pageResourceService;
     }
 
+    /**
+     * @Explain 로그인 페이지
+     */
     @GetMapping("/loginPage")
     public String showLoginPage(Authentication authentication, HttpServletResponse response) throws IOException {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -33,6 +36,9 @@ public class LoginController {
         return "loginPage";
     }
 
+    /**
+     * @Explain 이용약관 페이지
+     */
     @GetMapping("/register/agreement")
     public String showAgreementPage(Authentication authentication, HttpServletResponse response, Model model) throws IOException {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -49,6 +55,9 @@ public class LoginController {
         return "agreementPage";
     }
 
+    /**
+     * @Explain 회원가입 페이지
+     */
     @GetMapping("/register/agreement/signup")
     public String showSignUpPage(Authentication authentication, HttpServletResponse response) throws IOException {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -61,6 +70,9 @@ public class LoginController {
         return "signUpPage";
     }
 
+    /**
+     * @Explain 계정정보 찾기 페이지
+     */
     @GetMapping("/findAccountInfo")
     public String findAccountInfo(Authentication authentication, HttpServletResponse response) throws IOException {
         if (authentication != null && authentication.isAuthenticated()) {
@@ -72,7 +84,6 @@ public class LoginController {
         }
         return "findAccountInfoPage";
     }
-
 
 
 }

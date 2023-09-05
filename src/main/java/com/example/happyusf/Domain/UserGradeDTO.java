@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserGradeVO {
+public class UserGradeDTO {
     String code_user_grade;
     String grade_name;
 }

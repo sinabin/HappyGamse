@@ -51,25 +51,27 @@
         }
 
         button[disabled]{
+            font-weight: bold;
             background-color:#D3D3D3;
             color:#808080;
             cursor:not-allowed ;
         }
 
-        input[type='submit']{
+        input[type='button']{
             width :45%;
-            padding :10px ;
+            padding :10px;
             font-size: 16px;
+            font-weight:bold;
             background-color:#6d5dfc;
             color:white;
-            border:none ;
-            cursor:pointer ;
+            border:none;
+            cursor:pointer;
         }
 
-        input[type='submit'][disabled]{
+        input[type='button'][disabled]{
             background-color:#D3D3D3;
             color:#808080;
-            cursor:not-allowed ;
+            cursor:not-allowed;
         }
 
         label{
@@ -98,6 +100,7 @@
             width :45%;
             padding :10px ;
             font-size: 16px;
+            font-weight: bold;
             border:none ;
             cursor:pointer ;
             background-color:red;
@@ -117,7 +120,7 @@
 <body>
 <div class="container">
     <h1 style="color:#fb2576"> <img src="/imgs/header_logo.png" alt="로고이미지"> HappyGames</h1>
-    <form id="registrationForm" method="POST" action="">
+    <form id="registrationForm">
 
         <div class='input-container'>
             <label for='user_id'>아이디</label>
@@ -163,7 +166,7 @@
         </div>
 
         <div class="button-container">
-            <input id="btn_submit" type='submit' value="제출">
+            <input id="btn_submit" type='button'  onclick="requestJoin()" value="제출">
             <button id="cancelButton" type="button" onclick="cancelRegistration()">취소</button>
         </div>
     </form>

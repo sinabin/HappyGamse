@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserProfileVO {
+public class UserProfileDTO {
     int profile_id;
     String user_id;
     String nick_name;

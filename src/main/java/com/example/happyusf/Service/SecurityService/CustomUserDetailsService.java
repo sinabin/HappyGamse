@@ -1,6 +1,6 @@
 package com.example.happyusf.Service.SecurityService;
 
-import com.example.happyusf.Domain.UserVO;
+import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Mappers.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -26,7 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String user_id ) throws UsernameNotFoundException {
-        UserVO user = userRepository.findByUserID(user_id);
+        UserDTO user = userRepository.findByUserID(user_id);
 
         if (user == null) {
             throw new UsernameNotFoundException("존재하지 않는 ID 입니다.");
