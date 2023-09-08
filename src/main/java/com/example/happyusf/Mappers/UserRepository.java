@@ -17,7 +17,5 @@ public interface UserRepository {
       @Insert("INSERT INTO user_info (user_id, password, phone_number, birth_date, email, code_user_grade) VALUES (#{user_id}, #{password}, #{phone_number}, #{birth_date}, #{email}, 'N0')")
       int joinNewUser(UserDTO userDTO);
 
-      @Update("UPDATE user_info SET login_fail_count = login_fail_count + 1, login_lock = CASE WHEN login_fail_count + 1 >= 5 THEN 1 ELSE login_lock END WHERE user_id = #{user_id}")
-      int updateLoginFailCount(UserDTO userDTO);
 
 }

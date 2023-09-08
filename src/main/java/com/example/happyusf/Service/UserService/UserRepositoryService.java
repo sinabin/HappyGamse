@@ -34,8 +34,4 @@ public class UserRepositoryService {
         return userRepository.joinNewUser(userDTO);
 
     }
-
-    public int updateLoginFailCount(UserDTO userDTO){
-        return userRepository.updateLoginFailCount(userDTO);
-    }
 }
