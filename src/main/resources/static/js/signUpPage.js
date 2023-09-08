@@ -45,17 +45,21 @@ document.getElementById('confirm_password').addEventListener('keyup', function (
             '비밀번호가 일치하지 않습니다.'
         );
     } else {
-        updateErrorMessage('password', '');
+        updateErrorMessage('confirm_password', '');
     }
 });
 
-document.getElementById('birth_date').addEventListener('keyup', function () {
+function checkBirthDate () {
     if (!validateInput("birth_date", birthDateRegex)) {
         updateErrorMessage("birth_date", "생년월일은 YYYY-MM-DD 형태여야 합니다.");
     } else {
         updateErrorMessage("birth_date", "");
     }
-});
+};
+
+document.getElementById('birth_date').addEventListener('keyup', checkBirthDate);
+document.getElementById('birth_date').addEventListener('change', checkBirthDate);
+
 
 document.getElementById("phone_number").addEventListener("keyup", function () {
     if (!validateInput("phone_number", phoneNumberRegex)) {
@@ -283,7 +287,7 @@ function requestJoin() {
             } else if (response.status === 400) {
                 return response.text();
             } else {
-                throw new Error("회원 가입에 실패했습니다.");
+                throw new Error("오류가 발생하여 회원 가입에 실패했습니다. 관리자에게 문의해주세요");
             }
         })
         .catch(function (error) {

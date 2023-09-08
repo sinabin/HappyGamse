@@ -31,7 +31,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if (loadedUser == null) {
             throw new BadCredentialsException("존재하지 않는 ID입니다.");
-        }else if(!password.equals(loadedUser.getPassword())){
+        }else if(!passwordEncoder.matches(password, loadedUser.getPassword())){
             throw new BadCredentialsException("패스워드가 일치하지 않습니다.");
         }
 

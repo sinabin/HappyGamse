@@ -67,6 +67,29 @@
             margin-right: auto;
         }
 
+        /* 모달창 관련 스타일 */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, .5);
+            display: none;
+            justify-content:center ;
+            align-items:center ;
+        }
+
+        #modal-content {
+            width: 300px;
+            padding:20px ;
+            background-color:#fff ;
+        }
+
+        #btn_close{
+            float:right ;
+            cursor:pointer
+        }
 
     </style>
 </head>
@@ -90,11 +113,19 @@
     <button id="btn_login" onclick="handleLogin()">로그인</button>
     <div class= "buttonGroup">
         <button style="width: 50%; background-color: #2ecc71; margin-right: 10px;" onclick="moveRegister()">회원가입</button>
-        <button style="width: 50%; background-color: #3498db" onclick="moveFindingPage()">ID 및 PW 찾기</button>
+        <button style="width: 50%; background-color: #3498db" onclick="showFindModal()">ID 및 PW 찾기</button>
     </div>
 </div>
 
-
+<!-- Modal -->
+<div id="findModal" class="modal">
+    <div id="modal-content">
+        <span id="btn_close">&times;</span>
+        <p>로그인하는데 문제가 있으신가요?</p>
+        <button onclick="renderFindID()">아이디 찾기</button><br/>
+        <button onclick="renderFindPW()">비밀번호 재설정</button><br/>
+    </div>
+</div>
 
 </body>
 <script src="/js/loginPage.js"></script>
