@@ -172,12 +172,12 @@ function requestVerificationCode() {
         })
             .then(response => response.json())
             .then(data => {
-                console.log("data : ", data);
                 alert("인증번호가 발송되었습니다.");
                 document.getElementById("btn_requestCode").innerText = "인증번호 재요청"
                 }
             )
             .catch((error) => {
+                alert("인증번호를 요청하는 도중 에러가 발생하였습니다. 담당자에게 문의하세요.")
                 console.error('Error:', error);
             });
 

@@ -26,7 +26,7 @@ function Header() {
                     <Link to="/" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
                     <Link to="/" style={{textDecoration: 'none'}}><Navbar.Brand>HappyGames</Navbar.Brand> </Link>
                     <Nav className="me-auto">
-                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
+                        <Nav.Link><Link to="/news" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 친구찾기</Link></Nav.Link>
@@ -47,7 +47,7 @@ function Header() {
                     <Link to="/" style={{marginRight: '1%'}}> <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/> </Link>
                     <Link to="/" style={{textDecoration: 'none'}}><Navbar.Brand>HappyGames</Navbar.Brand> </Link>
                     <Nav className="me-auto">
-                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
+                        <Nav.Link><Link to="/news" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 친구찾기</Link></Nav.Link>

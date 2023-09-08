@@ -4,6 +4,7 @@ import Header from "./Components/Header";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
 import {faFontAwesome, faTwitter} from '@fortawesome/free-brands-svg-icons'
+import NewsPage from "./Pages/NewsPage";
 
 library.add(fas, faTwitter, faFontAwesome)
 
@@ -13,6 +14,7 @@ function App(){
             <Header>
             </Header>
             <Routes>
+                <Route path ="/news" exact={true} element={<NewsPage />} ></Route>
             </Routes>
         </BrowserRouter>
 

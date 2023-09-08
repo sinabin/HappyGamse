@@ -6,8 +6,10 @@ import com.example.happyusf.Mappers.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 public class UserRepositoryService {
 
     private final UserRepository userRepository;
@@ -31,5 +33,9 @@ public class UserRepositoryService {
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.joinNewUser(userDTO);
 
+    }
+
+    public int updateLoginFailCount(UserDTO userDTO){
+        return userRepository.updateLoginFailCount(userDTO);
     }
 }

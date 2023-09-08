@@ -38,7 +38,10 @@ public class PageDataController {
         try {
             int result = userRepositoryService.joinNewUser(userDTO);
             return new ResponseEntity<>("회원 가입이 완료되었습니다.", HttpStatus.OK);
-        } catch (MyBatisSystemException e) {
+        }catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT); // status code : 409 -> 비즈니스 로직 충돌 예외 처리(중복 아이디)
+        }
+        catch (MyBatisSystemException e) {
             return new ResponseEntity<>("회원정보를 저장하는 도중 서버에서 에러가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

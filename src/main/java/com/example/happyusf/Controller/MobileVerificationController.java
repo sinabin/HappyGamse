@@ -100,7 +100,7 @@ public class MobileVerificationController {
      * @Explain : 핸드폰 인증번호 요청 처리 API
      */
     @PostMapping("/request/verification")
-    public ResponseEntity<?> sendMobileVerificationResult(@RequestBody MobileVerificationCodeDTO mobileVerificationCodeDTO, BindingResult bindingResult) {
+    public ResponseEntity<?> sendMobileVerificationResult(@Valid @RequestBody MobileVerificationCodeDTO mobileVerificationCodeDTO, BindingResult bindingResult) {
         if(bindingResult.hasErrors()){
             StringBuilder errorMessage = new StringBuilder();
             for(FieldError fieldError : bindingResult.getFieldErrors()){

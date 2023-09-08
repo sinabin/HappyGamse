@@ -2,7 +2,9 @@ package com.example.happyusf.Service.SecurityService;
 
 import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Mappers.UserRepository;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +19,8 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    public static final int MAX_LOGIN_FAIL_COUNT = 10;
+
     /**
      * @param user_id
      * @return UserDetilas
@@ -30,6 +34,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         if (user == null) {
             throw new UsernameNotFoundException("존재하지 않는 ID 입니다.");
+        } else if (user.getLogin_fail_count() > MAX_LOGIN_FAIL_COUNT) {
+            throw new DisabledException("로그인 실패 횟수가 " + MAX_LOGIN_FAIL_COUNT + "회 이상 감지되어 로그인 시도를 할 수 없습니다. 사이트 관리자에게 문의하세요.");
         }
 
         User.UserBuilder userBuilder = User.withUsername(user.getUser_id());

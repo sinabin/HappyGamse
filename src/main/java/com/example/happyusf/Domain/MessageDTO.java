@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
@@ -16,8 +17,10 @@ import javax.validation.constraints.Pattern;
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class MessageDTO {
 
+    @NotNull
     @Pattern(regexp = "\\d{6}", message = "인증코드는 6자리입니다.")
     String to;
 
+    @NotNull
     String content;
 }
