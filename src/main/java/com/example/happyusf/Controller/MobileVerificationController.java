@@ -56,11 +56,20 @@ public class MobileVerificationController {
         SmsResponseDTO response;
 
         try {
+
+            try {
+                // 기등록 회원과 중복된 휴대폰 번호 검사
+                mobileVerificationService.findDuplicatePhoneNumber(messageDTO.getTo());
+            } catch (IllegalArgumentException e) {
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            }
+
             // 1. 6자리 인증번호 생성
             SecureRandom random = new SecureRandom();
             String code = String.format("%06d", random.nextInt(1000000));
             String content = "[HappyGames] 인증번호 : " + code +"인증번호를 입력해주세요";
             messageDTO.setContent(content);
+            messageDTO.setTo(messageDTO.getTo().replaceAll("-",""));
 
             // 2. 인증번호 발송
             try {

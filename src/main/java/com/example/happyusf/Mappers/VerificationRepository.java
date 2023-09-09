@@ -20,4 +20,7 @@ public interface VerificationRepository {
 
     @Delete("DELETE FROM verification_codes WHERE phone_number = #{phone_number}")
     int deleteCompletedNumber(MobileVerificationCodeDTO mobileVerificationCodeDTO);
+
+    @Select("SELECT COUNT(phone_number) FROM user_info where phone_number = #{phone_number}")
+    int findDuplicatePhoneNumber(String phone_number);
 }

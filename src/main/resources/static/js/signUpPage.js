@@ -160,7 +160,6 @@ function formatPhoneNumber(phoneNumber) {
  */
 function requestVerificationCode() {
     let phoneNumber = document.getElementById("phone_number").value;
-    phoneNumber = phoneNumber.replaceAll("-", "");
 
     if (validateInput('phone_number', phoneNumberRegex)) {
         fetch('/request/verificationCode', {
@@ -168,23 +167,34 @@ function requestVerificationCode() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "to": phoneNumber }),
+            body: JSON.stringify({"to": phoneNumber}),
         })
-            .then(response => response.json())
-            .then(data => {
-                alert("인증번호가 발송되었습니다.");
-                document.getElementById("btn_requestCode").innerText = "인증번호 재요청"
+            .then(response => {
+                if (!response.ok) { // HTTP status가 200~299가 아닌 경우
+                    return response.text().then(text => {
+                        throw new Error(text);
+                    });
                 }
-            )
-            .catch((error) => {
-                alert("인증번호를 요청하는 도중 에러가 발생하였습니다. 담당자에게 문의하세요.")
-                console.error('Error:', error);
+                return response.text();
+            })
+            .then(text => {
+                try {
+                    return JSON.parse(text);
+                } catch (error) {
+                    return text;
+                }
+            })
+            .then(data => alert("인증번호가 발송되었습니다.")) // 성공적으로 요청이 처리된 경우, 결과 데이터를 출력
+            .catch(error => {
+                // 예외 발생 시 사용자에게 오류 메시지를 표시
+                console.error('An error occurred:', error);
+                alert(error.message);
             });
-
     } else {
         alert("올바른 핸드폰 번호를 입력해주세요.");
     }
 }
+
 
 /**
  * @Explain : 인증하기 버튼 클릭 이벤트처리
@@ -233,7 +243,7 @@ function requestJoin() {
     let phone_number = document.getElementById('phone_number').value;
     let verified_code = document.getElementById('verified_code').value;
     let email = document.getElementById('email').value;
-
+    console.log("핸드폰 : ", phone_number);
     if (!validateInput('user_id', userIdRegex)) {
         alert("아이디가 유효하지 않습니다.");
         return;
@@ -280,17 +290,26 @@ function requestJoin() {
             "email": email
         })
     })
-        .then(function (response) {
-            if (response.ok) {
-                alert("회원 가입이 완료되었습니다.");
-                window.location.href = "/";
-            } else if (response.status === 400) {
-                return response.text();
-            } else {
-                throw new Error("오류가 발생하여 회원 가입에 실패했습니다. 관리자에게 문의해주세요");
+        .then(response => {
+            if (!response.ok) { // HTTP status가 200~299가 아닌 경우
+                return response.text().then(text => { throw new Error(text); });
+            }
+            return response.text();
+        })
+        .then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (error) {
+                return text;
             }
         })
-        .catch(function (error) {
+        .then(data => {
+            alert("회원가입이 완료되었습니다.");
+            location.href = "/"
+        })
+        .catch(error => {
+            // 예외 발생 시 사용자에게 오류 메시지를 표시
+            console.error('An error occurred:', error);
             alert(error.message);
         });
 

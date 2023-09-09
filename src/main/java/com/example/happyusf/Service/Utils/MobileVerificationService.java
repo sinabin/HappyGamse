@@ -3,6 +3,7 @@ package com.example.happyusf.Service.Utils;
 
 import com.example.happyusf.Domain.MobileVerificationCodeDTO;
 import com.example.happyusf.Mappers.VerificationRepository;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +42,19 @@ public class MobileVerificationService {
         }
 
         return mobileVerificationCodeDTO;
+    }
+
+    public Integer findDuplicatePhoneNumber(String phone_number){
+
+        // ID 중복검사
+        int result = verificationRepository.findDuplicatePhoneNumber(phone_number);
+        if(result != 0){
+            throw new IllegalArgumentException("이미 등록된 휴대폰 번호입니다.");
+        }
+
+
+        return result;
+
     }
 
 }

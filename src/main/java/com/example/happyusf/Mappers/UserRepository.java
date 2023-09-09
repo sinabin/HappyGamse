@@ -17,5 +17,4 @@ public interface UserRepository {
       @Insert("INSERT INTO user_info (user_id, password, phone_number, birth_date, email, code_user_grade) VALUES (#{user_id}, #{password}, #{phone_number}, #{birth_date}, #{email}, 'N0')")
       int joinNewUser(UserDTO userDTO);
 
-
 }
