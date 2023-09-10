@@ -1,12 +1,17 @@
 let isPhoneNumberVerified = false;
 
 const userIdRegex = /^[A-Za-z0-9]{6,25}$/;
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{10,}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#()\-=+])[A-Za-z\d@$!%*?&#()\-=+]{10,}$/;
 const birthDateRegex = /^\d{4}-\d{2}-\d{2}$/; // YYYY-MM-DD format
-const phoneNumberRegex = /^\d{3}-\d{3,4}-\d{4}$/; // XXX-XXXX-XXXX format
+const phoneNumberRegex =  /^[0-9]{10,11}$/;
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function validateInput(inputId, regex) {
+
+    if(inputId==="phone_number"){
+        return regex.test(document.getElementById(inputId).value.replaceAll("-", ""));
+
+    }
     return regex.test(document.getElementById(inputId).value);
 }
 
@@ -55,7 +60,7 @@ function checkBirthDate () {
     } else {
         updateErrorMessage("birth_date", "");
     }
-};
+}
 
 document.getElementById('birth_date').addEventListener('keyup', checkBirthDate);
 document.getElementById('birth_date').addEventListener('change', checkBirthDate);
@@ -65,7 +70,7 @@ document.getElementById("phone_number").addEventListener("keyup", function () {
     if (!validateInput("phone_number", phoneNumberRegex)) {
         updateErrorMessage(
             "phone_number",
-            "핸드폰 번호는 XXX-XXXX-XXXX 형태여야 합니다."
+            "유효한 핸드폰 번호가 아닙니다."
         );
     } else {
         updateErrorMessage("phone_number", "");
@@ -204,7 +209,7 @@ function verifyCode() {
     const sent_code = document.getElementById("verified_code").value;
     const phoneNumber = document.getElementById("phone_number").value.replaceAll("-", "");
 
-    if (verified_code.value.length === 6) {
+    if (sent_code.length === 6) {
         fetch('/request/verification', {
             method: 'POST',
             headers: {
@@ -240,10 +245,9 @@ function requestJoin() {
     let password = document.getElementById('password').value;
     let confirm_password = document.getElementById('confirm_password').value;
     let birth_date = document.getElementById('birth_date').value;
-    let phone_number = document.getElementById('phone_number').value;
+    let phone_number = document.getElementById('phone_number').value.replaceAll("-", "");
     let verified_code = document.getElementById('verified_code').value;
     let email = document.getElementById('email').value;
-    console.log("핸드폰 : ", phone_number);
     if (!validateInput('user_id', userIdRegex)) {
         alert("아이디가 유효하지 않습니다.");
         return;
@@ -304,7 +308,7 @@ function requestJoin() {
             }
         })
         .then(data => {
-            alert("회원가입이 완료되었습니다.");
+            alert(data);
             location.href = "/"
         })
         .catch(error => {

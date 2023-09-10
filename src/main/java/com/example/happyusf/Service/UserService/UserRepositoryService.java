@@ -1,6 +1,7 @@
 package com.example.happyusf.Service.UserService;
 
 
+import com.example.happyusf.Domain.MessageDTO;
 import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Mappers.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,18 @@ public class UserRepositoryService {
 
         // 패스워드 암호화 저장
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userDTO.setPhone_number(userDTO.getPhone_number().replaceAll("-", ""));
         return userRepository.joinNewUser(userDTO);
 
+    }
+
+    public UserDTO findIdByMobile(MessageDTO messageDTO){
+        return userRepository.findUserIdByMobile(messageDTO);
+    }
+
+    public int resetPassword(UserDTO userDTO){
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        return userRepository.resetPassword(userDTO);
     }
 
 }
