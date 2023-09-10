@@ -21,12 +21,10 @@ public class SecurityConfig {
 
     @Autowired private LoginFailureService loginFailureService;
 
-    @Autowired private RateLimitingFilter rateLimitingFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(customAuthProvider)
-                .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .antMatchers("/public/**").permitAll()

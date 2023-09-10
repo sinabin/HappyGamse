@@ -165,6 +165,7 @@ function formatPhoneNumber(phoneNumber) {
  */
 function requestVerificationCode() {
     let phoneNumber = document.getElementById("phone_number").value;
+    let btnRequestCode = document.getElementById("btn_requestCode");
 
     if (validateInput('phone_number', phoneNumberRegex)) {
         fetch('/request/verificationCode', {
@@ -180,6 +181,29 @@ function requestVerificationCode() {
                         throw new Error(text);
                     });
                 }
+
+                // 성공적으로 요청이 처리된 경우, 타이머 시작
+                btnRequestCode.disabled = true; // 버튼 비활성화
+                btnRequestCode.style.color = "";
+                let countdown = 180; // 3분 = 180초
+
+                const timerId = setInterval(() => {
+                    countdown--;
+
+                    if (countdown <= 0) { // 카운트다운 종료
+                        clearInterval(timerId); // 타이머 중지
+                        btnRequestCode.innerText = "인증번호 요청";
+                        btnRequestCode.style.color = "#FFA500";
+                        btnRequestCode.disabled = false; // 버튼 활성화
+                    } else {
+                        const minutes = Math.floor(countdown / 60);
+                        const seconds = countdown % 60;
+                        btnRequestCode.innerText =
+                            `인증번호 재요청 (${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
+                    }
+
+                }, 1000); // 초당 업데이트
+
                 return response.text();
             })
             .then(text => {
@@ -189,9 +213,8 @@ function requestVerificationCode() {
                     return text;
                 }
             })
-            .then(data => alert("인증번호가 발송되었습니다.")) // 성공적으로 요청이 처리된 경우, 결과 데이터를 출력
+            .then(data => alert("인증번호가 발송되었습니다."))
             .catch(error => {
-                // 예외 발생 시 사용자에게 오류 메시지를 표시
                 console.error('An error occurred:', error);
                 alert(error.message);
             });
@@ -199,6 +222,7 @@ function requestVerificationCode() {
         alert("올바른 핸드폰 번호를 입력해주세요.");
     }
 }
+
 
 
 /**

@@ -80,7 +80,8 @@ public class MobileVerificationService {
 
     public Integer findDuplicatePhoneNumber(String phone_number) {
 
-        // ID 중복검사
+        // phone_number 중복검사
+        phone_number = phone_number.replaceAll("-", "");
         int result = verificationRepository.findDuplicatePhoneNumber(phone_number);
         if (result != 0) {
             throw new IllegalArgumentException("이미 등록된 휴대폰 번호입니다.");
@@ -94,7 +95,7 @@ public class MobileVerificationService {
     /**
      * @param messageDTO
      * @param bindingResult
-     * @Explain 인증코드 번호 발송 메소드
+     * @Explain 인증번호 발송 메소드
      */
     public ResponseEntity<?> processMobileVerification(MessageDTO messageDTO, BindingResult bindingResult) {
 
