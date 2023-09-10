@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 @Configuration
@@ -18,12 +19,14 @@ public class SecurityConfig {
 
     @Autowired private CustomAuthenticationProvider customAuthProvider;
 
-    @Autowired
-    private LoginFailureService loginFailureService;
+    @Autowired private LoginFailureService loginFailureService;
+
+    @Autowired private RateLimitingFilter rateLimitingFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(customAuthProvider)
+                .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .antMatchers("/public/**").permitAll()
@@ -63,5 +66,6 @@ public class SecurityConfig {
     public HttpSessionEventPublisher httpSessionEventPublisher() {
         return new HttpSessionEventPublisher();
     }
+
 
 }
