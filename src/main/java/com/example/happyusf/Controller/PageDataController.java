@@ -5,7 +5,6 @@ import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Service.NaverCloudService.SmsService;
 import com.example.happyusf.Service.UserService.UserRepositoryService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,23 +43,16 @@ public class PageDataController {
     @PostMapping("/request/join")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             StringBuilder errorMessage = new StringBuilder();
             for (FieldError error : bindingResult.getFieldErrors()) {
                 errorMessage.append(error.getDefaultMessage()).append("\n");
             }
-            return new ResponseEntity<>(errorMessage.toString(), HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException(errorMessage.toString());
         }
 
-        try {
-            userRepositoryService.joinNewUser(userDTO);
-            return new ResponseEntity<>("회원 가입이 완료되었습니다.", HttpStatus.OK);
-        }catch (IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT); // status code : 409 -> 비즈니스 로직 충돌 예외 처리(중복 아이디)
-        }
-        catch (MyBatisSystemException e) {
-            return new ResponseEntity<>("회원정보를 저장하는 도중 서버에서 에러가 발생하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        userRepositoryService.joinNewUser(userDTO);
+        return new ResponseEntity<>("회원 가입이 완료되었습니다.", HttpStatus.OK);
     }
 
     /**
@@ -73,7 +65,7 @@ public class PageDataController {
         // 1. DB 조회
         UserDTO userDTO = userRepositoryService.findIdByMobile(messageDTO);
         if (userDTO == null) {
-            return new ResponseEntity<>("해당 핸드폰 번호로 등록된 ID가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+            throw new IllegalArgumentException("해당 핸드폰 번호로 등록된 ID가 존재하지 않습니다.");
         } else {
             try {
                 // 2. ID 발송
@@ -81,7 +73,7 @@ public class PageDataController {
                 smsService.sendSms(messageDTO);
             } catch (JsonProcessingException | UnsupportedEncodingException | NoSuchAlgorithmException |
                      InvalidKeyException | URISyntaxException e) {
-                throw new RuntimeException(e);
+                throw new RuntimeException(e.getMessage());
             }
         }
 
@@ -102,11 +94,7 @@ public class PageDataController {
             return new ResponseEntity<>("비밀번호는 최소 하나의 소문자, 대문자, 숫자 및 특수 문자를 포함해야하며 길이가 10 이상이어야 합니다.", HttpStatus.BAD_REQUEST);
         }
         // 2. 요청된 비밀번호 재설정 처리
-        try {
-            userRepositoryService.resetPassword(userDTO);
-        } catch (MyBatisSystemException e) {
-            return new ResponseEntity<>("해당 요청을 처리하는 도중 문제가 발생하였습니다. 관리자에게 문의해주세요.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        userRepositoryService.resetPassword(userDTO);
         return new ResponseEntity<>("해당 핸드폰번호로 가입된 회원 ID의 비밀번호가 성공적으로 재설정되었습니다.", HttpStatus.OK);
     }
 

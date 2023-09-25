@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.happyusf.Exception.UserAlreadyExistsException;
+
 
 @Service
 @Transactional
@@ -27,7 +29,7 @@ public class UserRepositoryService {
         // ID 중복검사
         UserDTO alreadyExistingUser = userRepository.findByUserID(userDTO.getUser_id());
         if(alreadyExistingUser != null){
-            throw new IllegalArgumentException("이미 사용중인 아이디입니다.");
+            throw new UserAlreadyExistsException("이미 사용중인 아이디입니다.");
         }
 
         // 패스워드 암호화 저장
