@@ -4,8 +4,10 @@ package com.example.happyusf.Service.Utils;
 import com.example.happyusf.Domain.MessageDTO;
 import com.example.happyusf.Domain.MobileVerificationCodeDTO;
 import com.example.happyusf.Domain.SmsResponseDTO;
+import com.example.happyusf.Exception.PhoneNumberAlreadyExistsException;
 import com.example.happyusf.Mappers.VerificationRepository;
 import com.example.happyusf.Service.NaverCloudService.SmsService;
+import com.example.happyusf.Utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.client.RestClientException;
 
+import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -57,13 +60,13 @@ public class MobileVerificationService {
      * @param mobileVerificationCodeDTO
      * @Explain 인증번호의 인증 처리 메소드
      */
-    public MobileVerificationCodeDTO getVerificationResult(MobileVerificationCodeDTO mobileVerificationCodeDTO) {
+    public ResponseEntity<?> getVerificationResult(MobileVerificationCodeDTO mobileVerificationCodeDTO) {
 
         // 1. DB에 저장된 발송되고 유효한 인증코드 load
         MobileVerificationCodeDTO dbCodeInfo = verificationRepository.getVerificationCodeINDB(mobileVerificationCodeDTO);
         if (dbCodeInfo == null) {
             mobileVerificationCodeDTO.setVerification_result(false);
-            return mobileVerificationCodeDTO;
+            return ResponseEntity.ok(mobileVerificationCodeDTO);
         }
 
         // 2. 인증확인
@@ -75,7 +78,7 @@ public class MobileVerificationService {
             deleteCompletedNumber(mobileVerificationCodeDTO);
         }
 
-        return mobileVerificationCodeDTO;
+        return ResponseEntity.ok(mobileVerificationCodeDTO);
     }
 
     public Integer findDuplicatePhoneNumber(String phone_number) {
@@ -84,7 +87,7 @@ public class MobileVerificationService {
         phone_number = phone_number.replaceAll("-", "");
         int result = verificationRepository.findDuplicatePhoneNumber(phone_number);
         if (result != 0) {
-            throw new IllegalArgumentException("이미 등록된 휴대폰 번호입니다.");
+            throw new PhoneNumberAlreadyExistsException("이미 등록된 휴대폰 번호입니다.");
         }
 
 
@@ -97,53 +100,31 @@ public class MobileVerificationService {
      * @param bindingResult
      * @Explain 인증번호 발송 메소드
      */
-    public ResponseEntity<?> processMobileVerification(MessageDTO messageDTO, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            // messageDTO의 유효성 검사
-            String errorMessage = bindingResult.getFieldError().getDefaultMessage();
-            return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
-        }
-
+    public ResponseEntity<?> processMobileVerification(MessageDTO messageDTO, BindingResult bindingResult) throws UnsupportedEncodingException, URISyntaxException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException {
         SmsResponseDTO response;
 
-        try {
-            // 1. 6자리 인증번호 생성
-            String code = String.format("%06d", random.nextInt(1000000));
-            String content = "[HappyGames] 인증번호 : " + code + "인증번호를 입력해주세요";
-            messageDTO.setContent(content);
-            messageDTO.setTo(messageDTO.getTo().replaceAll("-", ""));
+        // 1. 6자리 인증번호 생성
+        String code = String.format("%06d", random.nextInt(1000000));
+        String content = "[HappyGames] 인증번호 : " + code + "인증번호를 입력해주세요";
+        messageDTO.setContent(content);
+        messageDTO.setTo(messageDTO.getTo().replaceAll("-", ""));
 
-            // 2. 인증번호 발송
-            try {
-                response = smsService.sendSms(messageDTO);
-            } catch (RestClientException e) {
-                return new ResponseEntity<>("SMS service is currently unavailable.", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        // 2. 인증번호 발송
+        response = smsService.sendSms(messageDTO);
 
-            Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp currentTime = Timestamp.valueOf(LocalDateTime.now());
 
-            MobileVerificationCodeDTO mobileVerificationCodeDTO =
-                    MobileVerificationCodeDTO.builder().phone_number(messageDTO.getTo())
-                            .sent_code(code)
-                            .sent_time(currentTime)
-                            .build();
+        MobileVerificationCodeDTO mobileVerificationCodeDTO =
+                MobileVerificationCodeDTO.builder().phone_number(messageDTO.getTo())
+                        .sent_code(code)
+                        .sent_time(currentTime)
+                        .build();
 
-            try {
-                // 3. 이전 발송 내역 clean
-                deleteCompletedNumber(mobileVerificationCodeDTO);
+        // 3. 이전 발송 내역 clean
+        deleteCompletedNumber(mobileVerificationCodeDTO);
 
-                // 4. 신규 발송내역 DB저장
-                saveVerificationCode(mobileVerificationCodeDTO);
-            } catch (MyBatisSystemException e) {
-                return new ResponseEntity<>("인증번호를 발급하는 도중 서버에 문제가 발생하였습니다. 관리자에게 문의해주세요.", HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-
-        } catch (JsonProcessingException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        } catch (URISyntaxException | InvalidKeyException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        // 4. 신규 발송내역 DB저장
+        saveVerificationCode(mobileVerificationCodeDTO);
 
         return new ResponseEntity<>("인증번호가 발송되었습니다.", HttpStatus.OK);
     }

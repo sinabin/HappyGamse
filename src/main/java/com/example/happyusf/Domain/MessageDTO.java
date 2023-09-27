@@ -21,6 +21,5 @@ public class MessageDTO {
     @Pattern(regexp = "\\d{6}", message = "인증코드는 6자리입니다.")
     String to;
 
-    @NotNull
     String content;
 }
