@@ -35,3 +35,16 @@
 #HeaderBar {
     background-color: #FB2576;
 }
+
+
+@media (max-width: 992px) {
+    #HeaderBar {
+        flex-flow: column nowrap;
+        padding-bottom: 15px;
+    }
+
+    #HeaderBar .navbar-collapse {
+        flex-basis: auto;
+    }
+
+}
