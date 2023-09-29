@@ -1,4 +1,4 @@
-package com.example.happyusf.Controller;
+package com.example.happyusf.Controller.Rest;
 
 
 import com.example.happyusf.Domain.MessageDTO;
@@ -18,7 +18,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 @RestController
 public class MobileVerificationController {

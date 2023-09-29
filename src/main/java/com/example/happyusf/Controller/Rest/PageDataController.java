@@ -1,15 +1,15 @@
-package com.example.happyusf.Controller;
+package com.example.happyusf.Controller.Rest;
 
 import com.example.happyusf.Domain.MessageDTO;
 import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Service.NaverCloudService.SmsService;
 import com.example.happyusf.Service.UserService.UserRepositoryService;
+import com.example.happyusf.Utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,15 +42,7 @@ public class PageDataController {
      */
     @PostMapping("/request/join")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            StringBuilder errorMessage = new StringBuilder();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                errorMessage.append(error.getDefaultMessage()).append("\n");
-            }
-            throw new IllegalArgumentException(errorMessage.toString());
-        }
-
+        Validator.validateRequest(bindingResult);
         userRepositoryService.joinNewUser(userDTO);
         return new ResponseEntity<>("회원 가입이 완료되었습니다.", HttpStatus.OK);
     }
@@ -60,7 +52,8 @@ public class PageDataController {
      * @Explain 회원 ID 찾기 요청 처리 API
      */
     @PostMapping("/request/findIdByMobile")
-    public ResponseEntity<String> findIdByMobile(@Valid @RequestBody MessageDTO messageDTO) {
+    public ResponseEntity<String> findIdByMobile(@Valid @RequestBody MessageDTO messageDTO, BindingResult bindingResult) {
+        Validator.validateRequest(bindingResult);
 
         // 1. DB 조회
         UserDTO userDTO = userRepositoryService.findIdByMobile(messageDTO);

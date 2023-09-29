@@ -1,4 +1,4 @@
-package com.example.happyusf.Controller;
+package com.example.happyusf.Controller.Rest;
 
 
 import org.springframework.security.core.Authentication;

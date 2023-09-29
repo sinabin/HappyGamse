@@ -1,4 +1,4 @@
-package com.example.happyusf.Controller;
+package com.example.happyusf.Controller.View;
 
 import com.example.happyusf.Service.Utils.PageResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Controller
-public class AccountController {
+public class AccountViewController {
 
     private final PageResourceService pageResourceService;
 
     @Autowired
-    public AccountController(PageResourceService pageResourceService){
+    public AccountViewController(PageResourceService pageResourceService){
         this.pageResourceService = pageResourceService;
     }
 
@@ -26,11 +26,7 @@ public class AccountController {
      */
     @GetMapping("/loginPage")
     public String showLoginPage(Authentication authentication, HttpServletResponse response) throws IOException {
-        if (authentication != null && authentication.isAuthenticated()) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('이미 로그인되어있습니다..'); location.href='/';</script>");
-            out.flush();
+        if (LoginChekcer(authentication,response )){
             return null;
         }
         return "loginPage";
@@ -41,11 +37,7 @@ public class AccountController {
      */
     @GetMapping("/register/agreement")
     public String showAgreementPage(Authentication authentication, HttpServletResponse response, Model model) throws IOException {
-        if (authentication != null && authentication.isAuthenticated()) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('이미 로그인되어있습니다..'); location.href='/';</script>");
-            out.flush();
+        if (LoginChekcer(authentication,response )){
             return null;
         }
         String terms = pageResourceService.findPageResource("terms_of_service");
@@ -60,11 +52,7 @@ public class AccountController {
      */
     @GetMapping("/register/agreement/signup")
     public String showSignUpPage(Authentication authentication, HttpServletResponse response) throws IOException {
-        if (authentication != null && authentication.isAuthenticated()) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('이미 로그인되어있습니다..'); location.href='/';</script>");
-            out.flush();
+        if (LoginChekcer(authentication,response )){
             return null;
         }
         return "signUpPage";
@@ -75,14 +63,21 @@ public class AccountController {
      */
     @GetMapping("/findAccountInfo")
     public String findAccountInfo(Authentication authentication, HttpServletResponse response) throws IOException {
+        if (LoginChekcer(authentication,response )){
+           return null;
+        }
+        return "findAccountInfoPage";
+    }
+
+    public boolean LoginChekcer(Authentication authentication,  HttpServletResponse response) throws IOException {
         if (authentication != null && authentication.isAuthenticated()) {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();
             out.println("<script>alert('이미 로그인되어있습니다..'); location.href='/';</script>");
             out.flush();
-            return null;
+            return true;
         }
-        return "findAccountInfoPage";
+        return false;
     }
 
 

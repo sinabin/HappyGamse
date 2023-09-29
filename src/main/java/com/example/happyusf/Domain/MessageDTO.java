@@ -18,7 +18,6 @@ import javax.validation.constraints.Pattern;
 public class MessageDTO {
 
     @NotNull
-    @Pattern(regexp = "\\d{6}", message = "인증코드는 6자리입니다.")
     String to;
 
     String content;
