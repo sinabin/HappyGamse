@@ -23,14 +23,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-public class PageDataController {
+public class SignUpController {
 
     private final UserRepositoryService userRepositoryService;
 
     private final SmsService smsService;
 
     @Autowired
-    public PageDataController(UserRepositoryService userRepositoryService, SmsService smsService) {
+    public SignUpController(UserRepositoryService userRepositoryService, SmsService smsService) {
         this.userRepositoryService = userRepositoryService;
         this.smsService = smsService;
     }

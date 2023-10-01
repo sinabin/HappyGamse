@@ -33,10 +33,10 @@ function Header() {
 
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link><Link to="/news" style={{textDecoration: 'none', color: 'white'}}>게임 뉴스</Link> </Nav.Link>
-                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>실시간 핫토픽</Link></Nav.Link>
-                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>이벤트 & 할인 정보</Link></Nav.Link>
                         <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 친구찾기</Link></Nav.Link>
+                        <Nav.Link><Link to="/news" style={{textDecoration: 'none', color: 'white'}}>게임 소식</Link> </Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>유저 게시판</Link></Nav.Link>
+                        <Nav.Link><Link to="/" style={{textDecoration: 'none', color: 'white'}}>게임 이벤트 및 할인 정보</Link></Nav.Link>
                     </Nav>
 
                     {isLogined ? (
