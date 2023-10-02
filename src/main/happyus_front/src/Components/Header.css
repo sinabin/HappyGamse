@@ -48,3 +48,15 @@
     }
 
 }
+
+/* HeaderLink.css */
+
+.link-style {
+    text-decoration: none;
+    color: white;
+}
+
+.dropdown-link-style {
+    text-decoration: none;
+    color: black;
+}
