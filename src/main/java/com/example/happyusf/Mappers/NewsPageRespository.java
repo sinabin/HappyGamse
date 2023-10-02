@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @Repository
 public interface NewsPageRespository {
 
-    @Select("SELECT news_id, news_title, news_desc, url, created_date FROM news_pages LIMIT #{page}, #{size}")
+    @Select("SELECT news_id, news_title, news_desc, url, created_date FROM news_pages ORDER BY created_date DESC LIMIT #{page}, #{size}")
     ArrayList<NewsPagesDTO> getNewsList(PagingDTO pagingDTO);
 
     @Select("SELECT count(news_id) as total_count FROM news_pages")

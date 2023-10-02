@@ -18,6 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+        // For serving image files
+        registry.addResourceHandler("/imgs/news/**")
+                .addResourceLocations("file:/HappyGames/news_imgs/");
+
+        // For React routing support
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
                 .resourceChain(true)

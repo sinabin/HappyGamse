@@ -18,7 +18,7 @@ public class Scheduler {
     @Value("${crawler.location}")
     private String CrawlerPath;
 
-    @Scheduled(cron = "0 5 11 * * *")
+    @Scheduled(cron = "0 5 * * * *")
     public void Crawling() {
 
         File file = new File(CrawlerPath);
