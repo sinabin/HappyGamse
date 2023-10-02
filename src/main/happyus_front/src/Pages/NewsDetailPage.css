@@ -1,0 +1,39 @@
+/* NewsDetailPage.css */
+#news-detail-container {
+    background-color: #333;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 가운데 정렬 */
+}
+
+.news-title {
+    color: white;
+    border-bottom: solid 3px #008080;
+    text-align: center;
+    padding: 20px;
+    font-size: 2em;
+    font-weight:bold
+}
+
+.news-content {
+    color:white;
+}
+
+.read-more-link {
+    color: white;
+    background-color: #008080; /* 배경색 */
+    margin-top: 20px;
+    padding: 10px 20px; /* 상하, 좌우 패딩 */
+    border-radius: 5px; /* 둥근 모서리 */
+    text-decoration: none; /* 밑줄 제거 */
+    transition: background-color 0.6s ease; /* 배경색이 부드럽게 변경되도록 transition 추가 */
+}
+
+.read-more-link:hover {
+    text-decoration: none;
+    background-color: #008080; /* 마우스 오버 시의 배경색 */
+}

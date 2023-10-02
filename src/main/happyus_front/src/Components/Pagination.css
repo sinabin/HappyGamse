@@ -1,0 +1,30 @@
+.pagination-button {
+    color: #fff; /* 글꼴 색상 */
+    background-color: #008080; /* 배경색 변경 */
+    border-color: #008080; /* 테두리 색상 변경 */
+    padding: .375rem .75rem; /* 상하, 좌우 패딩 */
+    border-radius: .25rem; /* 둥근 모서리 */
+    font-size: .8rem;
+    line-height: .5;
+}
+
+.pagination-button:hover {
+    color: #fff;
+    background-color: #008090;
+}
+
+.pagination-container {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.pagination-button.selected {
+    background-color: #20B2AA; /* 배경색 변경 */
+    border-color: #20B2AA; /* 테두리 색상 변경 */
+}
+
+.pagination-button.selected:hover {
+    background-color: #20B2AA;
+    border-color: #20B2AA; /* 테두리 색상 변경 */
+}

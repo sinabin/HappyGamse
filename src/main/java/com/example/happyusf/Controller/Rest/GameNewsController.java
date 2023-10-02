@@ -14,8 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 
-@RequestMapping("/api")
 @RestController
+@RequestMapping("/api")
 public class GameNewsController {
 
     private final NewsPageRepositoryService newsPageRepositoryService;
