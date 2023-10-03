@@ -48,4 +48,8 @@ public class UserRepositoryService {
         return userRepository.resetPassword(userDTO);
     }
 
+    public UserDTO findByIdByEmail(String email){
+        return userRepository.findUserByEmail(email);
+    }
+
 }

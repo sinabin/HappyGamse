@@ -1,4 +1,4 @@
-package com.example.happyusf.Controller.Rest;
+package com.example.happyusf.Controller;
 
 import com.example.happyusf.Domain.MessageDTO;
 import com.example.happyusf.Domain.UserDTO;
@@ -24,8 +24,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class PageDataControllerTest {
     @Autowired private MockMvc mockMvc;
-    @MockBean private UserRepositoryService userRepositoryService;
-
+    @MockBean private UserRepositoryService userRepositoryService; // UserRepositoryService를 모의객체(Mock)로 만들어서 사용
+                                                                   // 만약 실제 DB까지 상호작용하는 범위의 통합테스트를 하려면
+                                                                   // @MockBean대신 @Autowired를 통해서 주입받고 when 구문을 삭제하면됨.
+                                                                   // 또한 테스트 동안 실제 DB에 변경이 일어나므로 롤백이 필요하니 클래스에 @Transactional 어노테이션을 붙여야함.
     private UserDTO validUserDto;
     private UserDTO invalidUserDto;
 
@@ -46,7 +48,6 @@ class PageDataControllerTest {
 
         when(userRepositoryService.joinNewUser(validUserDto)).thenReturn(1);
         when(userRepositoryService.joinNewUser(invalidUserDto)).thenThrow(new IllegalArgumentException("Invalid input"));
-
 
         // 2. findIdByMobile
         MessageDTO validNumber = new MessageDTO();

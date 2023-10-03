@@ -24,4 +24,6 @@ public interface UserRepository {
       @Update("UPDATE user_info SET password =#{password} WHERE phone_number = #{phone_number}")
       int resetPassword(UserDTO userDTO);
 
+      UserDTO findUserByEmail(String email);
+
 }
