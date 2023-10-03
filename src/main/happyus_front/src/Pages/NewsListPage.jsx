@@ -5,14 +5,14 @@ import Pagination from "../Components/Pagination";
 import './NewsListPage.css';
 
 
-const PAGE_SIZE = 10;
-const DEFAULT_BUTTON_RANGE = [1, 10];
+const PAGE_SIZE = 10; // 페이지당 보여줄 item 개수
+const DEFAULT_BUTTON_RANGE = [1, 5]; // 페이징 번호 버튼 범위
 
 function NewsListPage() {
-    const [newsList, setNewsList] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalCount, setTotalCount] = useState(0);
-    const [buttonRange, setButtonRange] = useState(DEFAULT_BUTTON_RANGE);
+    const [newsList, setNewsList] = useState([]); // 뉴스 Data
+    const [page, setPage] = useState(1); // 현재 페이지
+    const [totalCount, setTotalCount] = useState(0);// 총 뉴스 Data 건수
+    const [buttonRange, setButtonRange] = useState(DEFAULT_BUTTON_RANGE); // 생성할 버튼 범위
 
     useEffect(() => {
         fetchNewsList();
@@ -33,11 +33,11 @@ function NewsListPage() {
 
     function updateButtonRange() {
         if (page < buttonRange[0] || page > buttonRange[1]) {
-            let newStartPage = Math.floor((page - 1) / PAGE_SIZE) * PAGE_SIZE + 1;
-            let newEndPage = newStartPage + PAGE_SIZE - 1;
+            let newStartPage = Math.floor((page - 1) / DEFAULT_BUTTON_RANGE[1]) * DEFAULT_BUTTON_RANGE[1] + 1;
+            let newEndPage = newStartPage + DEFAULT_BUTTON_RANGE[1] - 1;
 
-            if (newEndPage > Math.ceil(totalCount / PAGE_SIZE))
-                newEndPage = Math.ceil(totalCount / PAGE_SIZE);
+            if (newEndPage > Math.ceil(totalCount / DEFAULT_BUTTON_RANGE[1]))
+                newEndPage = Math.ceil(totalCount / DEFAULT_BUTTON_RANGE[1]);
 
             setButtonRange([newStartPage,newEndPage]);
         }
@@ -61,8 +61,8 @@ function NewsListPage() {
                 </div>
             ))}
 
-            {/* 페이지네이션 버튼 */}
-            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage}/>
+            {/* 페이지네이션 */}
+            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} />
         </div>
     );
 }
