@@ -3,6 +3,7 @@ package com.example.happyusf.Controller.Rest;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,6 +12,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @RestController
+@RequestMapping("/api")
 public class SessionController {
 
     /**
@@ -18,7 +20,7 @@ public class SessionController {
      * @param authentication
      * @return boolean
      */
-    @GetMapping("/api/is-authenticated")
+    @GetMapping("/is-authenticated")
     public boolean isAuthenticated(Authentication authentication) {
         return authentication != null && authentication.isAuthenticated();
     }
@@ -29,7 +31,7 @@ public class SessionController {
      * @param request
      * @return 세션 유지시간(초) : long
      */
-    @GetMapping("/api/session-time-remaining")
+    @GetMapping("/session-time-remaining")
     public long getSessionTimeRemaining(HttpServletRequest request) {
         HttpSession session = request.getSession(false); // false: create a new session if none exists
         if (session != null) {

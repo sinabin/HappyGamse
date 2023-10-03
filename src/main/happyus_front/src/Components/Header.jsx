@@ -7,18 +7,20 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {useEffect, useState} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import axios from "axios";
 
 function Header() {
 
     const [isLogined, setIsLogined] = useState(false);
 
     useEffect(() => {
-        fetch('/api/is-authenticated')
-            .then(response => response.json())
-            .then(isAuthenticated => {
-                setIsLogined(isAuthenticated);
-            });
-    }, []);
+        const api_result = async () => {
+            const response = await fetch("/api/is-authenticated");
+            const isAuthenticated = await response.json();
+            setIsLogined(isAuthenticated);
+        };
+        api_result();
+        },[]);
 
     return (
         <Navbar bg="custom" variant="dark" id="HeaderBar" expand="lg">
