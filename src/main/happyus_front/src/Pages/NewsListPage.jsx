@@ -6,6 +6,7 @@ import './NewsListPage.css';
 
 
 const PAGE_SIZE = 10; // 페이지당 보여줄 item 개수
+const BUTTON_COUNT = 5 // 페이지당 생성할 버튼 개수
 const DEFAULT_BUTTON_RANGE = [1, 5]; // 페이징 번호 버튼 범위
 
 function NewsListPage() {
@@ -62,7 +63,7 @@ function NewsListPage() {
             ))}
 
             {/* 페이지네이션 */}
-            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} />
+            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} buttonCount={BUTTON_COUNT} />
         </div>
     );
 }
