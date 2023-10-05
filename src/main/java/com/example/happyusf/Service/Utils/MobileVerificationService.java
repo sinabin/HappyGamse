@@ -7,6 +7,7 @@ import com.example.happyusf.Domain.SmsResponseDTO;
 import com.example.happyusf.Exception.PhoneNumberAlreadyExistsException;
 import com.example.happyusf.Mappers.VerificationRepository;
 import com.example.happyusf.Service.NaverCloudService.SmsService;
+import com.example.happyusf.Utils.Const;
 import com.example.happyusf.Utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -104,7 +105,7 @@ public class MobileVerificationService {
         SmsResponseDTO response;
 
         // 1. 6자리 인증번호 생성
-        String code = String.format("%06d", random.nextInt(1000000));
+        String code = String.format("%06d", random.nextInt(Const.인증번호자리수.getConst()));
         String content = "[HappyGames] 인증번호 : " + code + "인증번호를 입력해주세요";
         messageDTO.setContent(content);
         messageDTO.setTo(messageDTO.getTo().replaceAll("-", ""));

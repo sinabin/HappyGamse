@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import "./Pagination.css"
 
-function Pagination({buttonRange, totalCount, setPage, buttonCount}) {
+function Pagination({buttonRange, totalCount, setPage, pageSize}) {
 
     const [selectedPage, setSelectedPage] = useState(1);
 
@@ -16,9 +16,7 @@ function Pagination({buttonRange, totalCount, setPage, buttonCount}) {
 
             {/* 숫자버튼 생성 조건*/}
             { [...Array(buttonRange[1] - buttonRange[0] + 1)].map( (_, i) => (
-                //만약 buttonRange[0] + i <= Math.ceil(totalCount / 10)이 참(true)이면,
-                // 그 다음에 오는 <button>...</button> 코드(즉, 버튼 요소)를 반환
-                buttonRange[0] + i <= Math.ceil(totalCount / buttonCount) &&
+                buttonRange[0] + i <= Math.ceil(totalCount / pageSize) &&
                 (<button
                     key={i}
                     className={`pagination-button ${buttonRange[0] + i === selectedPage ? 'selected' : ''}`}
@@ -29,7 +27,7 @@ function Pagination({buttonRange, totalCount, setPage, buttonCount}) {
             ) ) }
 
             {/* 다음페이지 버튼 생성조건 */}
-            {Math.ceil(totalCount / buttonRange[1]) > buttonCount &&
+            {Math.ceil(totalCount / buttonRange[1]) > pageSize &&
                 (<button className="pagination-button" onClick={() => setPage(buttonRange[1] + 1)}>Next</button>)}
         </div>
     );

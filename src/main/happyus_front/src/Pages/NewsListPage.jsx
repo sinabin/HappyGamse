@@ -63,7 +63,7 @@ function NewsListPage() {
             ))}
 
             {/* 페이지네이션 */}
-            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} buttonCount={BUTTON_COUNT} />
+            <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} pageSize={PAGE_SIZE} />
         </div>
     );
 }
