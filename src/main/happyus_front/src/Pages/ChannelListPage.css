@@ -1,0 +1,67 @@
+html, body {
+	font-family: Helvetica, Arial, sans-serif;
+	margin: 0;
+}
+#friend-container {
+	padding: 5% 10%; /* 위아래로 0px, 좌우로 20px의 패딩 적용 */
+}
+
+.channel-container {
+	display: block;
+	align-items: center; /* 요소들을 세로 중앙에 배치합니다 */
+	border: 0px solid red;
+	margin-bottom: -16px;
+}
+
+#btn-all-close {
+	margin-bottom: 10px;
+	background-color: #726996;
+	border: none;
+	color: #fff;
+	cursor: pointer;
+	padding: 10px 25px;
+	float: right;
+}
+
+#btn-all-close:hover {
+	background-color: #724196;
+	color: #000;
+	transition: all 0.5s;
+}
+.table-channel-desc{
+	margin-top: 3%;
+}
+.channel-desc{
+	margin-bottom : -1px;
+}
+
+.btn-desc {
+	margin-left: 5%;
+	background-color: #726996; /* 버튼 배경색 */
+	border: none;
+	color: white; /* 버튼 글자색 */
+	padding: 2px 3px;
+	border-radius: 10px; /* 버튼 모서리 둥글게 */
+}
+
+.table-channel-type {
+	width: 10%;
+}
+
+.channel-title {
+	text-align: center;
+	width: 40%;
+	color: #00EAEA;
+	cursor: pointer;
+}
+.table-channel-subject {
+	width: 20%;
+}
+
+.table-channel-playerCount {
+	width: 15%;
+}
+
+.table-channel-heartCount {
+	width: 15%;
+}

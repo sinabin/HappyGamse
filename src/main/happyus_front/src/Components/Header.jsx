@@ -7,22 +7,14 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import {useEffect, useState} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import axios from "axios";
-
+import { useAuthentication } from '../contexts/AuthenticationContext'
 function Header() {
 
-    const [isLogined, setIsLogined] = useState(false);
+    const isLogined = useAuthentication();
 
-    useEffect(() => {
-        const api_result = async () => {
-            const response = await fetch("/api/is-authenticated");
-            const isAuthenticated = await response.json();
-            setIsLogined(isAuthenticated);
-        };
-        api_result();
-        },[]);
 
     return (
+        <div>
         <Navbar bg="custom" variant="dark" id="HeaderBar" expand="lg">
             <Container>
                 <Link to="/" style={{marginRight: '1%'}}>
@@ -37,13 +29,13 @@ function Header() {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link>
-                            <Link to="/" className="link-style">
-                                <FontAwesomeIcon icon="fa-solid fa-headset" beat /> 게임 친구찾기
+                            <Link to="/news" className="link-style">
+                                <FontAwesomeIcon icon="fa-solid fa-window-maximize" beat /> 요약 뉴스
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to="/news" className="link-style">
-                                <FontAwesomeIcon icon="fa-solid fa-window-maximize" beat /> 요약 뉴스
+                            <Link to="/friend" className="link-style">
+                                <FontAwesomeIcon icon="fa-solid fa-headset" beat /> 게임 친구찾기
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
@@ -75,6 +67,7 @@ function Header() {
                 </Navbar.Collapse>
             </Container>
         </Navbar>
+        </div>
     );
 }
 

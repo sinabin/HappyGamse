@@ -6,7 +6,8 @@ import {fas} from '@fortawesome/free-solid-svg-icons'
 import {faFontAwesome, faTwitter} from '@fortawesome/free-brands-svg-icons'
 import NewsListPage from "./Pages/NewsListPage";
 import NewsDetailPage from "./Pages/NewsDetailPage";
-
+import ChannelListPage from "./Pages/ChannelListPage";
+import ChannelDetailPage from "./Pages/ChannelDetailPage";
 library.add(fas, faTwitter, faFontAwesome)
 
 function App(){
@@ -15,7 +16,10 @@ function App(){
             <Header>
             </Header>
             <Routes>
-                <Route path ="/news" exact={true} element={<NewsListPage />} ></Route>
+                <Route path="/" element={<ChannelListPage />} />
+                <Route path="/friend" element={<ChannelListPage />} />
+                <Route path="/friend/channel/:channel_id" element={<ChannelDetailPage />} />
+                <Route path ="/news" exact={true} element={<NewsListPage />} />
                 <Route path="/news/detail/:news_id" element={<NewsDetailPage />} />
             </Routes>
         </BrowserRouter>
