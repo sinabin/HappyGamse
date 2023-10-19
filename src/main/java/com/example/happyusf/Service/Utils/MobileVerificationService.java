@@ -105,7 +105,7 @@ public class MobileVerificationService {
         SmsResponseDTO response;
 
         // 1. 6자리 인증번호 생성
-        String code = String.format("%06d", random.nextInt(Const.인증번호자리수.getConst()));
+        String code = String.format("%06d", random.nextInt(1000000));
         String content = "[HappyGames] 인증번호 : " + code + "인증번호를 입력해주세요";
         messageDTO.setContent(content);
         messageDTO.setTo(messageDTO.getTo().replaceAll("-", ""));

@@ -1,9 +1,9 @@
 package com.example.happyusf.Controller.Rest;
 
 import com.example.happyusf.Domain.ChannelInfoDTO;
-import com.example.happyusf.Domain.NewsPagesDTO;
 import com.example.happyusf.Domain.PagingDTO;
 import com.example.happyusf.Service.ChannelService;
+import com.example.happyusf.WebSocket.CustomWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,12 @@ public class ChannelController {
 
 
     private final ChannelService channelService;
+    private final CustomWebSocketHandler webSocketHandler;
 
     @Autowired
-    public ChannelController(ChannelService channelService) {
+    public ChannelController(ChannelService channelService, CustomWebSocketHandler webSocketHandler) {
         this.channelService = channelService;
+        this.webSocketHandler = webSocketHandler;
     }
 
     @GetMapping("/list")
@@ -55,6 +57,16 @@ public class ChannelController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating channel.");
         }
+    }
+
+    @PostMapping("/userCount")
+    public Map<String, Integer> getChannelUserCount(@RequestBody  Map<String, List<String>> payload){
+        Map<String, Integer> result = new HashMap<>();
+        List<String> channelIds = payload.get("channelIds");
+        for (String channelId : channelIds) {
+            result.put(channelId, webSocketHandler.getChannelUserCount(channelId));
+        }
+        return result;
     }
 
 }

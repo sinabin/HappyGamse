@@ -1,16 +1,21 @@
 package com.example.happyusf.Utils;
 
 public enum Const {
-    인증번호자리수(1000000), // 상수를 정의함과 동시 생성자를 호출함.
-    테스트자리(20000);
+    최고관리자("A0"),
+    일반관리자("AN"),
+    일반회원("N0"),
+    레벨1회원("N1"),
+    레벨2회원("N2"),
+    레벨3회원("N3");
 
-    private int Myconst;
-    Const(int getConst) {
-        this.Myconst = getConst;
+    private String code;
+
+    Const(String Code) {
+        this.code = code;
     }
 
-    public int getConst(){
-        return this.Myconst;
+    public String getConst(){
+        return this.code;
     }
 
 }

@@ -1,26 +1,17 @@
-import React, {useContext, useEffect, useState, useRef} from 'react';
+import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {ChannelContext} from "../contexts/ChannelContext"; // useParams를 불러옵니다.
 import "./ChannelDetailPage.css"
-import { useAuthentication } from '../contexts/AuthenticationContext'
+
 function ChannelDetailPage() {
 
     const [socket, setSocket] = useState(null);
     const [message, setMessage] = useState('');
     const [chat, setChat] = useState([]);
-    const { channel_id } = useParams(); // URL 파라미터에서 channel_id를 가져옵니다.
+    const { channel_id } = useParams(); // URL 파라미터에서 channel_id를 추출
 
     const { selectedChannel } = useContext(ChannelContext); // 채널 제목
     const chatWindowRef = useRef(null); // chat-window에 대한 참조를 생성
-
-/*
-    const isLogined = useAuthentication(); // 로그인 정보
-
-    if(!isLogined){
-        alert("로그인이  필요합니다.");
-        window.history.back();
-    }
-*/
 
     useEffect(() => {
         if (chatWindowRef.current) {

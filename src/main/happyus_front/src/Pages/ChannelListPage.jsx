@@ -18,6 +18,19 @@ function ChannelListPage() {
     const { page, setPage, buttonRange, PAGE_SIZE } = usePagination(totalCount); // 페이징 관련 custom hook
 
     const isLogined = useAuthentication(); // 로그인 정보
+    const [userCount, setUserCount] = useState({}); // 채널 유저수
+
+    useEffect( () => {
+        const channelIds = channelList.map(channel => channel.c_id);
+
+        axios.post('/api/channel/userCount', { "channelIds" : channelIds })
+            .then(response => {
+                setUserCount(response.data);
+            })
+            .catch(error => {
+                console.error('There was an error!', error);
+            });
+        }, [channelList])
 
 
     useEffect(() => {
@@ -96,7 +109,7 @@ function ChannelListPage() {
                                 )}
                             </td>
                             <td className="table-channel-subject">{channel.c_subject}</td>
-                            <td className="table-channel-playerCount">{channel.c_playerCount}</td>
+                            <td className="table-channel-playerCount"> {userCount[channel.c_id] || 0} /{channel.c_maxUser}</td>
                             <td className="table-channel-heartCount">{channel.c_heartCount}</td>
                         </tr>
                     ))

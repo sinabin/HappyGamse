@@ -33,7 +33,6 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         // Check if the payload is a valid JSON object before attempting to parse it.
         String payload = message.getPayload();
         if (!isValidJson(payload)) {
-            System.out.println("Invalid JSON received: " + payload);
             return;
         }
 
@@ -160,5 +159,15 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             e.printStackTrace();
         }
     }
+
+    /**
+     * @param channelId
+     * @return 해당 채널에 접속중인 유저수
+     */
+    public int getChannelUserCount(String channelId) {
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, new HashSet<>());
+        return sessions.size();
+    }
+
 }
 
