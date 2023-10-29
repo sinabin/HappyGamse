@@ -22,9 +22,6 @@ public class SessionController {
      */
     @GetMapping("/is-authenticated")
     public boolean isAuthenticated(Authentication authentication) {
-        if(authentication != null && authentication.isAuthenticated() ){
-            System.out.println(authentication.getName());
-        }
         return authentication != null && authentication.isAuthenticated();
     }
 

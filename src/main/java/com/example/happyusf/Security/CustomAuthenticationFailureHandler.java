@@ -2,7 +2,6 @@ package com.example.happyusf.Security;
 
 import com.example.happyusf.Domain.UserDTO;
 import com.example.happyusf.Service.UserService.LoginFailureService;
-import com.example.happyusf.Service.UserService.UserRepositoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;

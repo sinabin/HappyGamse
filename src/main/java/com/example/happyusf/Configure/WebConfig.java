@@ -1,5 +1,6 @@
 package com.example.happyusf.Configure;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -17,14 +18,17 @@ import java.io.IOException;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${cors.allowed.origin}")
+    private String allowedOrigin;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-        // For serving image files
+        // news 이미지 파일 경로 설정
         registry.addResourceHandler("/imgs/news/**")
                 .addResourceLocations("file:/HappyGames/news_imgs/");
 
-        // For React routing support
+        // React routing 설정
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/")
                 .resourceChain(true)
@@ -40,10 +44,13 @@ public class WebConfig implements WebMvcConfigurer {
                 });
     }
 
+    /**
+     * @Explain CORS(Cross-Origin-Resource-Sharing) 설정
+     */
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:8081")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+        registry.addMapping("/**") // 모든 URL 패턴에 대한 CORS 설정
+                .allowedOrigins(allowedOrigin) // 127.0.0.1:8081 의 출처에서의 요청만 허용하도록 처리
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");// 허용 메소드
     }
 }

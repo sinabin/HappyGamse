@@ -30,7 +30,6 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     @Override
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 
-        // Check if the payload is a valid JSON object before attempting to parse it.
         String payload = message.getPayload();
         if (!isValidJson(payload)) {
             return;
@@ -109,7 +108,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         channelSessions.put(channelId, sessions);
         JsonObject responseMessage = new JsonObject();
         responseMessage.addProperty("action", "joined_channel");
-        responseMessage.addProperty("message", "채널입장에 성공하였습니다.");
+        responseMessage.addProperty("message", session.getPrincipal().getName() +"님이 채널에 입장했습니다.");
         session.sendMessage(new TextMessage(responseMessage.toString()));
     }
 
