@@ -1,6 +1,7 @@
 package com.example.happyusf.Security;
 
 import com.example.happyusf.Service.UserService.LoginFailureService;
+import com.example.happyusf.WebSocket.CustomWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,8 @@ public class SecurityConfig {
     @Autowired private CustomAuthenticationProvider customAuthProvider;
 
     @Autowired private LoginFailureService loginFailureService;
+
+    @Autowired private CustomWebSocketHandler customWebSocketHandler;
 
 
     @Bean
@@ -39,7 +42,11 @@ public class SecurityConfig {
                         })
                         .defaultSuccessUrl("/", true)
                 )
-                .logout(logout -> logout.logoutSuccessUrl("/"))
+                .logout(logout -> {
+                    logout
+                            .logoutSuccessUrl("/")
+                            .addLogoutHandler(new CustomLogoutHandler(customWebSocketHandler));
+                })
                 .csrf().disable() // CSRF 방어 비활성화
                 .cors().and() // CORS 설정
                 .sessionManagement(sessionManagement ->

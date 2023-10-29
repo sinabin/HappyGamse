@@ -22,8 +22,16 @@ public class ChannelService {
         return channelRepository.getChannelList(pagingDTO);
     }
 
+    public ArrayList<ChannelInfoDTO> getMyChannleList(String master){
+        return channelRepository.getMyChannelList(master);
+    }
+
     public int getTotalChannelCount(){
         return channelRepository.getTotalChannelCount();
+    }
+
+    public int updateChannelStatus(ChannelInfoDTO channelInfo){
+        return channelRepository.updateChannelStatus(channelInfo);
     }
 }
 

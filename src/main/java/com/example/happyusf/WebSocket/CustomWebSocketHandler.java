@@ -2,11 +2,15 @@ package com.example.happyusf.WebSocket;
 
 import com.example.happyusf.Domain.ChannelInfoDTO;
 import com.example.happyusf.Service.ChannelService;
+import com.example.happyusf.Service.Utils.CrawlingService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -14,12 +18,27 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.security.Principal;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class CustomWebSocketHandler extends TextWebSocketHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(CustomWebSocketHandler.class);
     private final ChannelService channelService;
 
-    static final Map<String, Set<WebSocketSession>> channelSessions = new HashMap<>();
+    static final Map<String, Set<WebSocketSession>> channelSessions = new ConcurrentHashMap<>();
+    static private Map<String, WebSocketSession> userSessionMap = new HashMap<>();
+    static private Map<String, String> userChannelMap = new HashMap<>();
+
+    // 사용자 ID를 통해 WebSocket 세션을 찾는 메소드
+    public WebSocketSession findSessionByUserId(String userId) {
+        return userSessionMap.get(userId);
+    }
+
+    // 사용자 ID를 통해 채널 ID를 찾는 메소드
+    public String findChannelIdByUserId(String userId) {
+        return userChannelMap.get(userId);
+    }
 
     @Autowired
     public CustomWebSocketHandler(ChannelService channelService) {
@@ -42,7 +61,6 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         switch (action) {
             case "leave_channel" -> leaveChannel(jsonMessage, session);
             case "join_channel" -> joinChannel(jsonMessage, session);
-            case "create_channel" -> createChannel(jsonMessage, session);
             case "message" -> sendMessage(jsonMessage, session);
             default -> {}
         }
@@ -63,14 +81,26 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
      * @param session
      * @throws Exception
      */
-    private void leaveChannel(JsonObject jsonMessage, WebSocketSession session) throws Exception {
+    public void leaveChannel(JsonObject jsonMessage, WebSocketSession session) throws Exception {
         String channelId = jsonMessage.get("channelId").getAsString();
-        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, new HashSet<>());
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
         sessions.remove(session);
+        if(sessions.isEmpty()){
+            ChannelInfoDTO channelInfo = ChannelInfoDTO.builder().c_id(channelId)
+                    .c_isAlive(false).build();
+            channelService.updateChannelStatus(channelInfo);
+        } else {
+            channelSessions.put(channelId, sessions);
+        }
         JsonObject responseMessage = new JsonObject();
         responseMessage.addProperty("action", "left_channel");
-        responseMessage.addProperty("message", "채널퇴장에 성공하였습니다.");
+        responseMessage.addProperty("message", "채널연결을 종료했습니다.");
         session.sendMessage(new TextMessage(responseMessage.toString()));
+
+        // 사용자 ID와 WebSocket 세션, 채널 ID를 연결 해제
+        String userId = ((UsernamePasswordAuthenticationToken) session.getPrincipal()).getName();
+        userSessionMap.remove(userId);
+        userChannelMap.remove(userId);
     }
 
     /**
@@ -96,54 +126,49 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
 
         String channelId = jsonMessage.get("channelId").getAsString();
-        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, new HashSet<>());
-        if (sessions.contains(session)) {
-            JsonObject responseMessage = new JsonObject();
-            responseMessage.addProperty("action", "already_joined");
-            responseMessage.addProperty("message", "이미 입장한 채널입니다.");
-            session.sendMessage(new TextMessage(responseMessage.toString()));
-            return;
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
+
+        // Check if the user is already in the channel sessions
+        for (WebSocketSession existingSession : sessions) {
+            if (existingSession.getPrincipal() != null && existingSession.getPrincipal().getName().equals(userId)) {
+                JsonObject responseMessage = new JsonObject();
+                responseMessage.addProperty("action", "already_joined");
+                responseMessage.addProperty("message", "이미 입장한 채널입니다.");
+                session.sendMessage(new TextMessage(responseMessage.toString()));
+                return;
+            }
         }
+
         sessions.add(session);
         channelSessions.put(channelId, sessions);
         JsonObject responseMessage = new JsonObject();
         responseMessage.addProperty("action", "joined_channel");
         responseMessage.addProperty("message", session.getPrincipal().getName() +"님이 채널에 입장했습니다.");
         session.sendMessage(new TextMessage(responseMessage.toString()));
+
+        int userCount = getChannelUserCount(channelId);
+        if(userCount <= 1){
+            ChannelInfoDTO channelInfo = ChannelInfoDTO.builder().c_id(channelId)
+                    .c_isAlive(true).build();
+            channelService.updateChannelStatus(channelInfo);
+        }
+
+        // 사용자 ID와 WebSocket 세션, 채널 ID를 연결
+        userSessionMap.put(userId, session);
+        userChannelMap.put(userId, channelId);
+
     }
 
     /**
-     * @Explain : 채널 생성 처리 function
-     * @param jsonMessage action : create_channel
+     * @param jsonMessage
      * @param session
-     * @throws Exception
+     * @Explain message 처리
      */
-    private void createChannel(JsonObject jsonMessage, WebSocketSession session) throws Exception {
-        String channelName = jsonMessage.get("channelName").getAsString();
-        String channelId = UUID.randomUUID().toString();
-        ChannelInfoDTO channelInfo = ChannelInfoDTO.builder()
-                .c_id(channelId)
-                .c_title(channelName)
-                .c_type("open")
-                .c_subject("플레이게임")
-                .c_maxUser(10)
-                .c_heartCount(0)
-                .c_isAlive(true)
-                .c_master("admin")
-                .build();
-        channelService.createChannel(channelInfo);
-        JsonObject responseMessage = new JsonObject();
-        responseMessage.addProperty("action", "new_channel_created");
-        responseMessage.addProperty("channelId", channelId);
-        responseMessage.addProperty("channelName", channelName);
-        session.sendMessage(new TextMessage(responseMessage.toString()));
-    }
-
     private void sendMessage(JsonObject jsonMessage, WebSocketSession session) throws Exception {
         String channelId = jsonMessage.get("channelId").getAsString();
         String message = jsonMessage.get("message").getAsString();
 
-        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, new HashSet<>());
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
         try {
             for (WebSocketSession s : sessions) {
                 if (s.isOpen()) {
@@ -152,19 +177,21 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                     responseMessage.addProperty("sender", session.getPrincipal().getName()); // 추가된 부분: 메시지를 보낸 사람의 session ID
                     responseMessage.addProperty("message", message);
                     s.sendMessage(new TextMessage(responseMessage.toString()));
+                }else{
+                    sessions.remove(s);
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
         }
     }
 
     /**
      * @param channelId
-     * @return 해당 채널에 접속중인 유저수
+     * @return (int) 해당 채널에 접속중인 유저수
      */
     public int getChannelUserCount(String channelId) {
-        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, new HashSet<>());
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
         return sessions.size();
     }
 

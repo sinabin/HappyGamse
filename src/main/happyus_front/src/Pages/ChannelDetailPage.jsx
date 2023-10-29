@@ -19,6 +19,18 @@ function ChannelDetailPage() {
         }
     }, [chat]); // 채팅이 일어날 때마다 변경
 
+    // 음성통화 관련
+    const [localStream, setLocalStream] = useState(null);
+    const [remoteStream, setRemoteStream] = useState(null);
+    const remoteAudioRef = useRef(null);
+
+    useEffect(() => {
+        if (remoteAudioRef.current && remoteStream) {
+            remoteAudioRef.current.srcObject = remoteStream;
+        }
+    }, remoteStream);
+
+
     // 채널에서 퇴장하는 함수
     const leaveChannel = (channelId) => {
         if (socket && socket.readyState === WebSocket.OPEN) {
@@ -27,6 +39,12 @@ function ChannelDetailPage() {
                 channelId: channelId,
             };
             socket.send(JSON.stringify(message));
+
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+                setLocalStream(null);
+            }
+
         } else {
             console.error('WebSocket connection is not open.');
         }
@@ -36,19 +54,46 @@ function ChannelDetailPage() {
         connectWebSocket();
     }, []);
 
+    const startCall = (pc) => {
+        navigator.mediaDevices.getUserMedia({audio: true})
+            .then(stream => {
+                setLocalStream(stream);
+                stream.getTracks().forEach(track => pc.addTrack(track, stream));
+            });
+    };
+
+    const handleAnswer = (answer, pc) => {
+        pc.setRemoteDescription(new RTCSessionDescription(answer));
+    };
 
 
     const connectWebSocket = () => {
-        const newSocket = new WebSocket('ws://127.0.0.1:8081/ws');
+        const newSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
+        const pc = new RTCPeerConnection(); // webRTC Connection 생성
 
-        // 채널에 입장하는 함수
+        pc.onicecandidate = e => {
+            if (e.candidate) {
+                newSocket.send(JSON.stringify({
+                    action: 'candidate',
+                    candidate: e.candidate,
+                    channelId: channel_id
+                }));
+            }
+        };
+
+        pc.ontrack = e => {
+            setRemoteStream(e.streams[0]);
+        };
+
+        // 채널 입장
         const joinChannel = (channel_id) => {
             if (newSocket && newSocket.readyState === WebSocket.OPEN) {
                 const message = {
                     action: 'join_channel',
                     channelId: channel_id,
                 };
-                newSocket.send(JSON.stringify(message));
+                newSocket.send(JSON.stringify(message)); // socket
+                startCall(pc); // WebRTC
             } else {
                 console.error('WebSocket connection is not open.');
             }
@@ -56,11 +101,13 @@ function ChannelDetailPage() {
 
         newSocket.addEventListener('open', (event) => {
             setSocket(newSocket);
-            joinChannel(channel_id); // 'open' 이벤트 핸들러 내에서 채널 입장 로직을 호출합니다.
+            joinChannel(channel_id); // 'open' 이벤트 핸들러 내에서 채널 입장 로직을 호출
         });
 
         newSocket.addEventListener('close', (event) => {
+
             setSocket(null);
+            leaveChannel(channel_id);
         });
 
         newSocket.addEventListener('error', (event) => {
@@ -69,12 +116,15 @@ function ChannelDetailPage() {
 
         newSocket.addEventListener('message', (event) => {
             const response = JSON.parse(event.data);
-
-            if (response.action === 'joined_channel') {
-                alert(response.message);
-            }else if (response.action === 'message') {
+            if (response.action === 'joined_channel' || response.action === 'left_channel') {
+                setChat((prevChat) => [...prevChat, response.message]);
+            } else if (response.action === 'message') {
                 const newMessage = `${response.sender}: ${response.message}`;
                 setChat((prevChat) => [...prevChat, newMessage]);
+            } else if (response.action === 'answer') {
+                handleAnswer(response.answer, pc);
+            } else if (response.action === 'candidate') {
+                pc.addIceCandidate(new RTCIceCandidate(response.candidate));
             }
         });
     };
@@ -84,10 +134,10 @@ function ChannelDetailPage() {
             if (message.trim() !== '') {
                 socket.send(JSON.stringify({
                     action: 'message',
-                    channelId: channel_id, // 채널 ID를 여기에 추가해야 합니다.
-                    message: message
+                    channelId: channel_id, // 채널 ID
+                    message: message // 보낼 메시지
                 }));
-                setMessage('');
+                setMessage(''); // 메시지 발송 이후 초기화
             }
         } else {
             console.error('WebSocket connection is not open.');
@@ -100,10 +150,11 @@ function ChannelDetailPage() {
             <div className="chat-window" ref={chatWindowRef}>  {/* ref 속성을 추가하여 참조 연결 */}
                 {chat.map((msg, index) => (
                     <div key={index} className="chat-message">
-                        <span className="chat-user">{msg.split(':')[0]}</span>: <span>{msg.split(':')[1]}</span>
+                        <span className="chat-user">{msg}</span>
                     </div>
                 ))}
             </div>
+            <audio ref={remoteAudioRef} controls autoPlay></audio>
             <div className="chat-input-container">
                 <input
                     type="text"
@@ -120,6 +171,7 @@ function ChannelDetailPage() {
                 />
                 <button onClick={sendMessage} className="send-button">Send</button>
             </div>
+            <button onClick={() => leaveChannel(channel_id)} className="leave-channel-button">채널 나가기</button>
         </div>
     );
 }

@@ -13,7 +13,7 @@ html, body {
 	margin-bottom: -16px;
 }
 
-#btn-all-close {
+#btn-create-ch {
 	margin-bottom: 10px;
 	background-color: #726996;
 	border: none;
@@ -23,7 +23,7 @@ html, body {
 	float: right;
 }
 
-#btn-all-close:hover {
+#btn-create-ch:hover {
 	background-color: #724196;
 	color: #000;
 	transition: all 0.5s;

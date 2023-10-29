@@ -7,13 +7,14 @@ import com.example.happyusf.WebSocket.CustomWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.UUID;
 @RestController
 @RequestMapping("/api/channel")
 public class ChannelController {
@@ -48,14 +49,35 @@ public class ChannelController {
 
     }
 
+    @GetMapping("/MyChannel")
+    public ResponseEntity<Map<String, Object>> getNewsList(Authentication authentication) {
+
+        ArrayList<ChannelInfoDTO> myChannelList = channelService.getMyChannleList(authentication.getName());
+        Map<String, Object> response = new HashMap<>();
+
+        response.put("channelList", myChannelList);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
+    }
+
+
     @PostMapping("/create")
-    public ResponseEntity<String> createChannel(@RequestBody ChannelInfoDTO channelInfo) {
+    public ResponseEntity<Map<String, Object>> createChannel(@RequestBody ChannelInfoDTO channelInfo, Authentication authentication) {
+        Map<String, Object> responseBody = new HashMap<>();
         try {
             // 채널 생성 서비스 호출
+            channelInfo.setC_id(UUID.randomUUID().toString());
+            channelInfo.setC_master(authentication.getName());
+            channelInfo.setC_isAlive(false);
+            channelInfo.setC_heartCount(0);
             channelService.createChannel(channelInfo);
-            return ResponseEntity.ok("Channel created successfully.");
+
+            responseBody.put("message", "채널이 성공적으로 만들어졌습니다.");
+            responseBody.put("c_id", channelInfo.getC_id());
+            return ResponseEntity.ok(responseBody);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating channel.");
+            responseBody.put("error", "Error creating channel.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
         }
     }
 

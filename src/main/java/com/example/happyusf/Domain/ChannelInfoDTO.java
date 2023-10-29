@@ -18,7 +18,6 @@ public class ChannelInfoDTO {
     private String c_id; // 채널 id
     @NotNull
     private String c_title; // 채널명
-
     @NotNull
     private String c_desc; // 채널 소개
     @NotNull

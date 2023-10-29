@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import {ChannelContext} from "../contexts/ChannelContext";
 import {usePagination} from "../hooks/usePagination";
 import {useAuthentication} from "../contexts/AuthenticationContext";
+import ChannelModal from "../Components/ChannelModal";
 
 function ChannelListPage() {
 
@@ -20,10 +21,17 @@ function ChannelListPage() {
     const isLogined = useAuthentication(); // 로그인 정보
     const [userCount, setUserCount] = useState({}); // 채널 유저수
 
+    // 모달 페이지 관련
+    const [showModal, setShowModal] = useState(false);
+    function toggleModal() {
+        setShowModal(!showModal);
+    }
+
+    // 채널 인원수 data 요청
     useEffect( () => {
         const channelIds = channelList.map(channel => channel.c_id);
 
-        axios.post('/api/channel/userCount', { "channelIds" : channelIds })
+         axios.post('/api/channel/userCount', { "channelIds" : channelIds })
             .then(response => {
                 setUserCount(response.data);
             })
@@ -33,22 +41,22 @@ function ChannelListPage() {
         }, [channelList])
 
 
+    // 채널 list Data 요청
     useEffect(() => {
-        fetchChannelList();
+        axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE } })
+            .then(response => {
+                if (response.status === 200) {
+                    setChannelList(response.data.channelList);
+                    setShowDesc(new Array(response.data.channelList.length).fill(false));
+                    setTotalCount(response.data.paging.total_count);
+                }
+            })
+            .catch(error => {
+                alert("채널 정보를 받아오는 도중 에러가 발생하였습니다. 다시 시도해주세요.")
+                console.error('Error : ', error);
+            });
     }, [page]);
 
-    async function fetchChannelList() {
-        try {
-            const response = await axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE } });
-            if (response.status === 200) {
-                setChannelList(response.data.channelList);
-                setShowDesc(new Array(response.data.channelList.length).fill(false));
-                setTotalCount(response.data.paging.total_count);
-            }
-        } catch (error) {
-            console.error('There was an error!', error);
-        }
-    }
 
     // 클릭한 채널명 상태값 갱신
     function clickSpan(index, event) {
@@ -61,8 +69,8 @@ function ChannelListPage() {
     // 클릭한 채널 상태값 갱신
     function handleLinkClick(channel, event) {
         if (!isLogined) {
+            event.preventDefault();
             alert("로그인이 필요합니다");
-            event.preventDefault();  // 기본 동작을 방지하여 페이지 이동을 막습니다.
             return;
         }
         setSelectedChannel(channel);
@@ -74,8 +82,8 @@ function ChannelListPage() {
                 🎮 🎮 🎮 🎮 🎮
             </h1>
             <br />
-            <button id="btn-all-close" >채널 생성하기</button>
-
+            <button id="btn-create-ch" onClick={toggleModal}>채널 생성하기</button>
+            <ChannelModal showModal={showModal} toggleModal={toggleModal} />
             <table className="table table-bordered table-striped table-dark table-hover">
                 <caption>게임별 Voice Room</caption>
                 <thead className="thead-light text-center">
@@ -114,7 +122,7 @@ function ChannelListPage() {
                         </tr>
                     ))
                 ) : (
-                    <tr><td colSpan={5}>현재 생성된 채널이 없습니다.</td></tr>
+                    <tr><td colSpan={5}>현재 활성화된 채널이 없습니다.</td></tr>
                 )}
 
             </tbody>
