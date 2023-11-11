@@ -123,29 +123,28 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
         }
 
         String userId = ((UsernamePasswordAuthenticationToken) principal).getName();
-
-
         String channelId = jsonMessage.get("channelId").getAsString();
-        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
 
-        // Check if the user is already in the channel sessions
+        Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
+        boolean isRejoin = false;
+
+        // 사용자가 이미 채널에 입장한 세션기록이 있을 경우, 기존 세션을 제거
         for (WebSocketSession existingSession : sessions) {
             if (existingSession.getPrincipal() != null && existingSession.getPrincipal().getName().equals(userId)) {
-                JsonObject responseMessage = new JsonObject();
-                responseMessage.addProperty("action", "already_joined");
-                responseMessage.addProperty("message", "이미 입장한 채널입니다.");
-                session.sendMessage(new TextMessage(responseMessage.toString()));
-                return;
+
+                sessions.remove(existingSession);
+                isRejoin = true;
+                break;
             }
         }
 
+        // 기존 세션을 제거하고, 새로운 세션을 추가
         sessions.add(session);
         channelSessions.put(channelId, sessions);
-        JsonObject responseMessage = new JsonObject();
-        responseMessage.addProperty("action", "joined_channel");
-        responseMessage.addProperty("message", session.getPrincipal().getName() +"님이 채널에 입장했습니다.");
-        session.sendMessage(new TextMessage(responseMessage.toString()));
+        userSessionMap.put(userId, session);
+        userChannelMap.put(userId, channelId);
 
+        // 채널 상태 업데이트
         int userCount = getChannelUserCount(channelId);
         if(userCount <= 1){
             ChannelInfoDTO channelInfo = ChannelInfoDTO.builder().c_id(channelId)
@@ -153,10 +152,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
             channelService.updateChannelStatus(channelInfo);
         }
 
-        // 사용자 ID와 WebSocket 세션, 채널 ID를 연결
-        userSessionMap.put(userId, session);
-        userChannelMap.put(userId, channelId);
-
+        // 메시지 전송
+        JsonObject responseMessage = new JsonObject();
+        responseMessage.addProperty("action", "joined_channel");
+        responseMessage.addProperty("message", isRejoin ? userId + "님이 채널에 재입장 했습니다." : session.getPrincipal().getName() +"님이 채널에 입장했습니다.");
+        session.sendMessage(new TextMessage(responseMessage.toString()));
     }
 
     /**
