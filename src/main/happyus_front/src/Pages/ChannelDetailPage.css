@@ -73,3 +73,12 @@
     cursor: pointer;
     transition: background-color 0.3s;
 }
+
+.sender-style {
+    color: #ff6347;
+    font-weight: bold;
+}
+
+.message-style {
+    color: white;
+}

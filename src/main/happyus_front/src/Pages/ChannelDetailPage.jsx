@@ -117,9 +117,9 @@ function ChannelDetailPage() {
         newSocket.addEventListener('message', (event) => {
             const response = JSON.parse(event.data);
             if (response.action === 'joined_channel' || response.action === 'left_channel') {
-                setChat((prevChat) => [...prevChat, response.message]);
+                setChat((prevChat) => [...prevChat, {sender: '', message: response.message}]);
             } else if (response.action === 'message') {
-                const newMessage = `${response.sender}: ${response.message}`;
+                const newMessage = {sender: response.sender, message: response.message};
                 setChat((prevChat) => [...prevChat, newMessage]);
             } else if (response.action === 'answer') {
                 handleAnswer(response.answer, pc);
@@ -127,6 +127,7 @@ function ChannelDetailPage() {
                 pc.addIceCandidate(new RTCIceCandidate(response.candidate));
             }
         });
+
     };
 
     const sendMessage = () => {
@@ -150,7 +151,8 @@ function ChannelDetailPage() {
             <div className="chat-window" ref={chatWindowRef}>  {/* ref 속성을 추가하여 참조 연결 */}
                 {chat.map((msg, index) => (
                     <div key={index} className="chat-message">
-                        <span className="chat-user">{msg}</span>
+                        <span className="sender-style">{msg.sender}</span>
+                        <span className="message-style">: {msg.message}</span>
                     </div>
                 ))}
             </div>
