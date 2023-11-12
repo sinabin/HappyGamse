@@ -1,4 +1,4 @@
-package com.example.happyusf.Controller.View;
+package com.example.happyusf.Controller.View.Thymeleaf;
 
 import com.example.happyusf.Service.Utils.PageResourceService;
 import org.springframework.beans.factory.annotation.Autowired;

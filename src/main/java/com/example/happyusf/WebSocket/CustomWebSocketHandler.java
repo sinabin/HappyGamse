@@ -146,7 +146,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
 
         // 채널 상태 업데이트
         int userCount = getChannelUserCount(channelId);
-        if(userCount <= 1){
+        if(userCount >= 1){ // 유저가 1명 이상인 경우 채널 상태 = Alive
             ChannelInfoDTO channelInfo = ChannelInfoDTO.builder().c_id(channelId)
                     .c_isAlive(true).build();
             channelService.updateChannelStatus(channelInfo);

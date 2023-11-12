@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 
 @Data
@@ -22,9 +23,12 @@ public class ChannelInfoDTO {
     private String c_desc; // 채널 소개
     @NotNull
     private String c_type; // 채널 타입 (open, private)
+
+    private String c_password; // private 채널의 password
     @NotNull
     private String c_subject; // 채널 주제 (플레이게임)
     @NotNull
+    @Max(value = 20, message = "채널 최대 인원은 20명을 초과할 수 없습니다.")
     private Integer c_maxUser; // 채널 최대 인원
     @NotNull
     private Integer c_heartCount; // 채널 인기지표

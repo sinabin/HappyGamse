@@ -29,7 +29,9 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .antMatchers("/public/**").permitAll()
-                                .antMatchers("/user/**").hasRole("USER") //ADMIN 역할만 접근 가능
+                                .antMatchers("/user/**").hasRole("USER")
+                                .antMatchers("/admin/**").hasRole("ADMIN")
+                                .antMatchers("/friend/channel/**").hasRole("USER")
                                 .anyRequest().permitAll()
                 )
                 .formLogin(formLogin -> formLogin.loginPage("/loginPage")

@@ -1,10 +1,12 @@
 package com.example.happyusf.Configure;
 
+import com.example.happyusf.Interceptor.ChannelAccessInterceptor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
@@ -53,4 +55,14 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins(allowedOrigin) // 127.0.0.1:8081 의 출처에서의 요청만 허용하도록 처리
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");// 허용 메소드
     }
+
+    /**
+     * @Explain Interceptor 설정
+     */
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new ChannelAccessInterceptor()).addPathPatterns("/friend/channel/**");
+    }
+
+
 }

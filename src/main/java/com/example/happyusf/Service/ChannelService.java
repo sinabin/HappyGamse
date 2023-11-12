@@ -1,6 +1,7 @@
 package com.example.happyusf.Service;
 
 import com.example.happyusf.Domain.ChannelInfoDTO;
+import com.example.happyusf.Domain.CodeInfoDTO;
 import com.example.happyusf.Domain.PagingDTO;
 import com.example.happyusf.Mappers.ChannelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +27,28 @@ public class ChannelService {
         return channelRepository.getMyChannelList(master);
     }
 
+    public ArrayList<CodeInfoDTO> getGameList( ){
+        return channelRepository.getGameList();
+    }
+
     public int getTotalChannelCount(){
         return channelRepository.getTotalChannelCount();
     }
 
     public int updateChannelStatus(ChannelInfoDTO channelInfo){
         return channelRepository.updateChannelStatus(channelInfo);
+    }
+
+    public ChannelInfoDTO getChannelInfo(String channel_id) {
+        return channelRepository.getChannelInfo(channel_id);
+    }
+
+    public boolean checkingChannelAccess(ChannelInfoDTO channelInfo){
+        boolean result = false;
+        if(channelRepository.checkingChannelPW(channelInfo) > 0){
+            result = true;
+        }
+        return result;
     }
 }
 

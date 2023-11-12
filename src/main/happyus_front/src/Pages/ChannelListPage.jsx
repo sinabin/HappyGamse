@@ -7,12 +7,16 @@ import {ChannelContext} from "../contexts/ChannelContext";
 import {usePagination} from "../hooks/usePagination";
 import {useAuthentication} from "../contexts/AuthenticationContext";
 import ChannelModal from "../Components/ChannelModal";
+import PasswordModal from "../Components/PasswordModal";
+import { useNavigate, useLocation } from 'react-router-dom';
 
 function ChannelListPage() {
 
+    const navigate = useNavigate();
+
     let [channelList, setChannelList] = useState([]); // 채널 리스트 data
     const [showDesc, setShowDesc] = useState(new Array(channelList.length).fill(false)); // 채널 소개
-    const { setSelectedChannel } = useContext(ChannelContext); // 선택한 채널 상태값을 전역으로 관리
+    const { selectedChannel, setSelectedChannel } = useContext(ChannelContext);
 
     // 페이징 관련
     const [totalCount, setTotalCount] = useState(0);// 총 채널 건수
@@ -22,9 +26,11 @@ function ChannelListPage() {
     const [userCount, setUserCount] = useState({}); // 채널 유저수
 
     // 모달 페이지 관련
-    const [showModal, setShowModal] = useState(false);
+    const [showChannelModal, setShowChannelModal] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+
     function toggleModal() {
-        setShowModal(!showModal);
+        setShowChannelModal(!showChannelModal);
     }
 
     // 채널 인원수 data 요청
@@ -43,7 +49,7 @@ function ChannelListPage() {
 
     // 채널 list Data 요청
     useEffect(() => {
-        axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE } })
+        axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE, list_type: "All" } })
             .then(response => {
                 if (response.status === 200) {
                     setChannelList(response.data.channelList);
@@ -66,15 +72,48 @@ function ChannelListPage() {
         setShowDesc(newShowDesc);
     }
 
-    // 클릭한 채널 상태값 갱신
+
     function handleLinkClick(channel, event) {
         if (!isLogined) {
             event.preventDefault();
             alert("로그인이 필요합니다");
             return;
         }
-        setSelectedChannel(channel);
+
+        if (channel.c_type === 'private') { // 채널이 private인 경우
+            event.preventDefault();
+            setSelectedChannel(channel);
+            setShowPasswordModal(true); // 비밀번호 입력 모달을 표시
+        } else {
+            setSelectedChannel(channel);
+        }
+
     }
+
+    const handlePasswordSubmit = async (password) => {
+        if (await checkPassword(selectedChannel, password)) {
+            navigate(`/friend/channel/${selectedChannel.c_id}`);
+            setShowPasswordModal(false);
+        } else {
+            alert('비밀번호가 틀렸습니다.');
+        }
+    };
+
+    const checkPassword = async (selectedChannel, password) => {
+        try {
+            const req_body =  {
+                c_id :selectedChannel.c_id,
+                c_password: password,
+            }
+            const response = await axios.post('/api/channel/CheckingChannelPW', req_body);
+            return response.data;
+        } catch (error) {
+            console.error('There was an error!', error);
+        }
+
+        return false;
+    };
+
 
     return (
         <div id={"friend-container"}>
@@ -83,7 +122,7 @@ function ChannelListPage() {
             </h1>
             <br />
             <button id="btn-create-ch" onClick={toggleModal}>채널 생성하기</button>
-            <ChannelModal showModal={showModal} toggleModal={toggleModal} />
+            <ChannelModal showModal={showChannelModal} toggleModal={toggleModal} />
             <table className="table table-bordered table-striped table-dark table-hover">
                 <caption>게임별 Voice Room</caption>
                 <thead className="thead-light text-center">
@@ -129,6 +168,7 @@ function ChannelListPage() {
             </table>
 
             <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} pageSize={PAGE_SIZE} />
+            <PasswordModal show={showPasswordModal} onSubmit={handlePasswordSubmit} onClose={() => setShowPasswordModal(false)} /> {/* 비밀번호 입력 모달을 추가합니다. */}
         </div>
 
 );
