@@ -4,10 +4,10 @@ import Header from "./Components/Header";
 import {library} from '@fortawesome/fontawesome-svg-core'
 import {fas} from '@fortawesome/free-solid-svg-icons'
 import {faFontAwesome, faTwitter} from '@fortawesome/free-brands-svg-icons'
-import NewsListPage from "./Pages/NewsListPage";
-import NewsDetailPage from "./Pages/NewsDetailPage";
-import ChannelListPage from "./Pages/ChannelListPage";
-import ChannelDetailPage from "./Pages/ChannelDetailPage";
+import NewsListPage from "./Pages/NewsPage/NewsListPage";
+import NewsDetailPage from "./Pages/NewsPage/NewsDetailPage";
+import ChannelListPage from "./Pages/ChannelPage/ChannelListPage";
+import ChannelDetailPage from "./Pages/ChannelPage/ChannelDetailPage";
 library.add(fas, faTwitter, faFontAwesome)
 
 function App(){

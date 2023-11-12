@@ -1,13 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "./ChannelListPage.css"
 import axios from "axios";
-import Pagination from "../Components/Pagination";
+import Pagination from "../../Components/Pagination";
 import { Link } from 'react-router-dom';
-import {ChannelContext} from "../contexts/ChannelContext";
-import {usePagination} from "../hooks/usePagination";
-import {useAuthentication} from "../contexts/AuthenticationContext";
-import ChannelModal from "../Components/ChannelModal";
-import PasswordModal from "../Components/PasswordModal";
+import {ChannelContext} from "../../contexts/ChannelContext";
+import {usePagination} from "../../hooks/usePagination";
+import {useAuthentication} from "../../contexts/AuthenticationContext";
+import ChannelModal from "./ChannelModal";
+import PasswordModal from "./PasswordModal";
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function ChannelListPage() {

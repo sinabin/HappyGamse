@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import { Link } from 'react-router-dom';
-import Pagination from "../Components/Pagination";
+import Pagination from "../../Components/Pagination";
 import './NewsListPage.css';
-import {usePagination} from "../hooks/usePagination";
+import {usePagination} from "../../hooks/usePagination";
 
 
 function NewsListPage() {

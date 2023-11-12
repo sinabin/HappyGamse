@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from 'react-router-dom';
-import {ChannelContext} from "../contexts/ChannelContext"; // useParams를 불러옵니다.
+import {ChannelContext} from "../../contexts/ChannelContext"; // useParams를 불러옵니다.
 import "./ChannelDetailPage.css"
 
 function ChannelDetailPage() {
