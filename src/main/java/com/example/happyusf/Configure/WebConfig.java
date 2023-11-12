@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
 import java.io.IOException;
@@ -64,5 +61,15 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new ChannelAccessInterceptor()).addPathPatterns("/friend/channel/**");
     }
 
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/400").setViewName("error_page/400");
+        registry.addViewController("/401").setViewName("error_page/401");
+        registry.addViewController("/403").setViewName("error_page/403");
+        registry.addViewController("/404").setViewName("error_page/404");
+        registry.addViewController("/408").setViewName("error_page/408");
+        registry.addViewController("/500").setViewName("error_page/500");
+        registry.addViewController("/503").setViewName("error_page/503");
+    }
 
 }
