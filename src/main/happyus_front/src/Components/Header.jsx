@@ -5,9 +5,9 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import {useEffect, useState} from "react";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import { useAuthentication } from '../contexts/AuthenticationContext'
+import {useAuthentication} from '../contexts/AuthenticationContext'
+
 function Header() {
 
     const isLogined = useAuthentication();

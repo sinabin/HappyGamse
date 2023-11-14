@@ -3,11 +3,9 @@ package com.example.happyusf.Mappers;
 import com.example.happyusf.Domain.ChannelInfoDTO;
 import com.example.happyusf.Domain.CodeInfoDTO;
 import com.example.happyusf.Domain.PagingDTO;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.checkerframework.checker.interning.qual.UsesObjectEquals;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,15 +14,6 @@ import java.util.ArrayList;
 @Repository
 public interface ChannelRepository {
 
-    @Insert({
-            "<script>",
-            "INSERT INTO voice_channel (c_id, c_title, c_desc, c_type, c_subject, c_maxUser, c_heartCount, c_isAlive, c_master",
-            "<if test='c_password != null and c_password != \"\"'>, c_password</if>",
-            ") VALUES (#{c_id}, #{c_title}, #{c_desc}, #{c_type}, #{c_subject}, #{c_maxUser}, #{c_heartCount}, #{c_isAlive}, #{c_master}",
-            "<if test='c_password != null and c_password != \"\"'>, #{c_password}</if>",
-            ")",
-            "</script>"
-    })
     int createChannel(ChannelInfoDTO channelInfoDTO);
 
     @Select("SELECT * FROM voice_channel WHERE c_isAlive = TRUE ORDER BY c_heartCount DESC LIMIT #{page}, #{size}")

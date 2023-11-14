@@ -39,3 +39,5 @@ out/
 ### react build copy ###
 /src/main/resources/static/static/
 
+/src/main/resources/static/asset-manifest.json
+/src/main/resources/static/index.html

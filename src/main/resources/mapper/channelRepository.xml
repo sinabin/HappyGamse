@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.happyusf.Mappers.ChannelRepository">
+    <insert id="createChannel" parameterType="com.example.happyusf.Domain.ChannelInfoDTO">
+        INSERT INTO voice_channel (c_id, c_title, c_desc, c_type, c_subject, c_maxUser, c_heartCount, c_isAlive, c_master
+            <if test='c_password != null and c_password != ""'>, c_password</if>)
+        VALUES (#{c_id}, #{c_title}, #{c_desc}, #{c_type}, #{c_subject}, #{c_maxUser}, #{c_heartCount}, #{c_isAlive}, #{c_master}
+            <if test='c_password != null and c_password != ""'>,
+                #{c_password}</if> )
+    </insert>
+</mapper>
