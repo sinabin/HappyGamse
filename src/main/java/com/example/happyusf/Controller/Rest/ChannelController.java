@@ -3,7 +3,7 @@ package com.example.happyusf.Controller.Rest;
 import com.example.happyusf.Domain.ChannelInfoDTO;
 import com.example.happyusf.Domain.CodeInfoDTO;
 import com.example.happyusf.Domain.PagingDTO;
-import com.example.happyusf.Service.ChannelService;
+import com.example.happyusf.Service.ChannelService.ChannelService;
 import com.example.happyusf.WebSocket.CustomWebSocketHandler;
 import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
@@ -33,7 +33,7 @@ public class ChannelController {
 
     @GetMapping("/list")
     public ResponseEntity<Map<String, Object>> getNewsList
-            (@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
+            (@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) throws Exception{
 
         PagingDTO pagingDTO = new PagingDTO();
         pagingDTO.setPage( (page-1)*10 );
@@ -52,7 +52,7 @@ public class ChannelController {
     }
 
     @GetMapping("/MyChannel")
-    public ResponseEntity<Map<String, Object>> getNewsList(Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> getNewsList(Authentication authentication) throws Exception {
 
         ArrayList<ChannelInfoDTO> myChannelList = channelService.getMyChannleList(authentication.getName());
         Map<String, Object> response = new HashMap<>();
@@ -63,7 +63,7 @@ public class ChannelController {
     }
 
     @GetMapping("/GameList")
-    public ResponseEntity<Map<String, Object>> getGameList(Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> getGameList() throws Exception {
 
         ArrayList<CodeInfoDTO> myGameList = channelService.getGameList();
         Map<String, Object> response = new HashMap<>();
@@ -75,32 +75,29 @@ public class ChannelController {
 
 
     @PostMapping("/create")
-    public ResponseEntity<Map<String, Object>> createChannel(@RequestBody ChannelInfoDTO channelInfo, Authentication authentication) {
+    public ResponseEntity<Map<String, Object>> createChannel(@RequestBody ChannelInfoDTO channelInfo, Authentication authentication) throws Exception {
         Map<String, Object> responseBody = new HashMap<>();
-        try {
-            if(authentication == null){
-                responseBody.put("message", "채널을 생성하려면 로그인이 필요합니다.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
-            }
-            // 채널 생성 서비스 호출
-            channelInfo.setC_id(UUID.randomUUID().toString());
-            channelInfo.setC_master(authentication.getName());
-            channelInfo.setC_isAlive(false);
-            channelInfo.setC_heartCount(0);
-            channelService.createChannel(channelInfo);
 
-            responseBody.put("message", "채널이 성공적으로 만들어졌습니다.");
-            responseBody.put("c_id", channelInfo.getC_id());
-            return ResponseEntity.ok(responseBody);
-        } catch (NullPointerException | MyBatisSystemException e) {
-            logger.error(e.getMessage());
-            responseBody.put("error", "Error creating channel.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(responseBody);
+        if (authentication == null) {
+            responseBody.put("message", "채널을 생성하려면 로그인이 필요합니다.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseBody);
         }
+
+        // 채널 생성 서비스 호출
+        channelInfo.setC_id(UUID.randomUUID().toString());
+        channelInfo.setC_master(authentication.getName());
+        channelInfo.setC_isAlive(false);
+        channelInfo.setC_heartCount(0);
+        channelService.createChannel(channelInfo);
+
+        responseBody.put("message", "채널이 성공적으로 만들어졌습니다.");
+        responseBody.put("c_id", channelInfo.getC_id());
+        return ResponseEntity.ok(responseBody);
+
     }
 
     @PostMapping("/userCount")
-    public Map<String, Integer> getChannelUserCount(@RequestBody  Map<String, List<String>> payload){
+    public Map<String, Integer> getChannelUserCount(@RequestBody  Map<String, List<String>> payload) throws Exception{
         Map<String, Integer> result = new HashMap<>();
         List<String> channelIds = payload.get("channelIds");
         for (String channelId : channelIds) {
@@ -110,7 +107,7 @@ public class ChannelController {
     }
 
     @PostMapping("/CheckingChannelPW")
-    public boolean checkingChannelPW(@RequestBody ChannelInfoDTO channelInfoDTO, Authentication authentication, HttpSession session){
+    public boolean checkingChannelPW(@RequestBody ChannelInfoDTO channelInfoDTO, Authentication authentication, HttpSession session) throws Exception{
         boolean result = false;
 
         // 사용자 인증 확인

@@ -3,7 +3,7 @@ package com.example.happyusf.Controller.Rest;
 
 import com.example.happyusf.Domain.MessageDTO;
 import com.example.happyusf.Domain.MobileVerificationCodeDTO;
-import com.example.happyusf.Service.Utils.MobileVerificationService;
+import com.example.happyusf.Service.MobileService.MobileVerificationService;
 import com.example.happyusf.Utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;

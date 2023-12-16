@@ -1,4 +1,4 @@
-package com.example.happyusf.Service.Utils;
+package com.example.happyusf.Service.Etc;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +58,7 @@ public class CrawlingService {
 
             }
 
-            int exitCode = process.waitFor();  // 파이썬 프로세스가 완전히 종료될 때까지 대기합니다.
+            int exitCode = process.waitFor();  // 파이썬 프로세스가 완전히 종료될 때까지 대기
             if (exitCode != 0) {
                 throw new RuntimeException("Process exited with code: " + exitCode);
             }

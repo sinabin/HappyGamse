@@ -21,7 +21,7 @@ public interface UserRepository {
       @Select("SELECT user_id FROM user_info WHERE phone_number = #{to}")
       UserDTO findUserIdByMobile(MessageDTO messageDTO);
 
-      @Update("UPDATE user_info SET password =#{password} WHERE phone_number = #{phone_number}")
+      @Update("UPDATE user_info SET password =#{password} WHERE phone_number = #{phone_number} AND user_id = #{user_id}")
       int resetPassword(UserDTO userDTO);
 
       UserDTO findUserByEmail(String email);

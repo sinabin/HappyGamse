@@ -14,12 +14,18 @@ function NewsListPage() {
     const { page, setPage, buttonRange, PAGE_SIZE } = usePagination(totalCount); // 페이징 관련 custom hook 사용
 
     useEffect(() => {
-        fetchNewsList();
+        getNewsList();
     }, [page]);
 
-    async function fetchNewsList() {
+    async function getNewsList() {
         try {
-            const response = await axios.get('/api/news/list', { params: { page: page, size: PAGE_SIZE } });
+            const response = await axios.get('/api/news/list',
+                {
+                    params: {
+                            page: page,
+                            size: PAGE_SIZE
+                    }
+                });
             if (response.status === 200) {
                 setNewsList(response.data.newsList);
                 setTotalCount(response.data.paging.total_count);
@@ -33,7 +39,6 @@ function NewsListPage() {
     return (
         <div id="news_page_container">
             <h1 id="news_page_header"> 게임 뉴스 요약</h1>
-
             { newsList.map((news) => (
                 <div key={news.news_id} className="news-card">
                     <Link to={`/news/detail/${news.news_id}`} className="news-link">

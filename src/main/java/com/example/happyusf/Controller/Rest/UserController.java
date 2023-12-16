@@ -23,14 +23,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
-public class SignUpController {
+public class UserController {
 
     private final UserRepositoryService userRepositoryService;
 
     private final SmsService smsService;
 
     @Autowired
-    public SignUpController(UserRepositoryService userRepositoryService, SmsService smsService) {
+    public UserController(UserRepositoryService userRepositoryService, SmsService smsService) {
         this.userRepositoryService = userRepositoryService;
         this.smsService = smsService;
     }
@@ -74,7 +74,7 @@ public class SignUpController {
     }
 
     /**
-     * @param userDTO
+     * @param userDTO(user_id, new_password, phone_number)
      * @Explain 비밀번호 재설정 요청처리 API
      */
     @PostMapping("/request/resetPasswordByMobile")
@@ -86,9 +86,18 @@ public class SignUpController {
         if (!matcher.matches()) {
             return new ResponseEntity<>("비밀번호는 최소 하나의 소문자, 대문자, 숫자 및 특수 문자를 포함해야하며 길이가 10 이상이어야 합니다.", HttpStatus.BAD_REQUEST);
         }
+
         // 2. 요청된 비밀번호 재설정 처리
-        userRepositoryService.resetPassword(userDTO);
-        return new ResponseEntity<>("해당 핸드폰번호로 가입된 회원 ID의 비밀번호가 성공적으로 재설정되었습니다.", HttpStatus.OK);
+        int result = userRepositoryService.resetPassword(userDTO);
+        String response = "";
+
+        if(result >0){
+            response = "해당 핸드폰번호로 가입된 회원 ID의 비밀번호가 성공적으로 재설정되었습니다.";
+        }else{
+            response = "인증받은 핸드폰번호에 등록된 ID와 입력한 ID가 일치하지 않습니다.";
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

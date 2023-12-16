@@ -1,8 +1,7 @@
 package com.example.happyusf.WebSocket;
 
 import com.example.happyusf.Domain.ChannelInfoDTO;
-import com.example.happyusf.Service.ChannelService;
-import com.example.happyusf.Service.Utils.CrawlingService;
+import com.example.happyusf.Service.ChannelService.ChannelService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
@@ -10,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;

@@ -53,7 +53,6 @@ function Header() {
                     {isLogined ? (
                         <DropdownButton variant="light" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
                             <Dropdown.Item> <Link to="/myPage" className="dropdown-link-style">내정보</Link></Dropdown.Item>
-                            <Dropdown.Item> <Link to="/memberShip" className="dropdown-link-style">멤버십 관리</Link></Dropdown.Item>
                             <Dropdown.Item> <Link to="/MyPost" className="dropdown-link-style">내 게시물 관리</Link></Dropdown.Item>
                             <Dropdown.Item href={"/logout"}>로그아웃 </Dropdown.Item>
                         </DropdownButton>

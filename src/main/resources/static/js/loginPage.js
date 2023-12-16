@@ -81,9 +81,12 @@ function renderFindID() {
     contentDiv.innerHTML =
         `<span id="btn_close" onclick="closeModal()">&times;</span>
         <h2>아이디 찾기</h2>
-        <span>회원가입시 등록했던 핸드폰 번호로 아이디를 발송합니다. (-)하이폰 없이 입력해주세요.</span><br><br>
+        <span>회원가입시 등록했던 핸드폰 번호로 아이디를 발송합니다.</span><br>
+        <span>핸드폰 번호를 (-)하이폰 없이 입력해주세요.</span>
+        <br><br>
        <input type='text' id='phone_number' placeholder="핸드폰 번호를 입력해주세요." style="border: 1px solid gray; width: 60%"><br>
        <button onclick='findID()'>찾기</button>`;
+    contentDiv.style.width = "500px";
 }
 
 function renderFindPW() {
@@ -91,7 +94,10 @@ function renderFindPW() {
     contentDiv.innerHTML =
         `<span id="btn_close" onclick="closeModal()">&times;</span>
         <h2>비밀번호 재설정</h2>
-        <span>회원가입시 등록했던 핸드폰 번호로 인증코드가 발송됩니다. (-)하이폰 없이 입력해주세요.</span><br><br>
+        <span>회원가입시 등록했던 핸드폰 번호로 인증코드가 발송됩니다.</span><br>
+        <span> 핸드폰 번호를 (-)하이폰 없이 입력해주세요.</span>
+        <br><br>
+        <input type='text' id='user_id' placeholder="ID를 입력해주세요." style="border: 1px solid gray; width: 50%;">
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
             <input type='text' id='phone_number' placeholder="핸드폰번호를 입력해주세요." style="border: 1px solid gray; width: 50%;">
             <button id="btn_requestCode" onclick='requestVerificationCodeForPW()' style="margin-left: 5px; margin-bottom: 14px; width: 39%">인증번호 요청</button><br/>
@@ -102,11 +108,12 @@ function renderFindPW() {
        </div>
        <!-- Password input fields -->
        <div id='password-fields' style='display:none'>
-           <input type='password' id ='new_password' placeholder= '새로운 비밀번호'><br/>
-           <input type='password' id ='confirm_new_password' placeholder= '비밀번호 재입력'><br/>
+           <input style="border: 1px solid gray; width: 50%;" type='password' id ='new_password' placeholder= '새로운 비밀번호'><br/>
+           <input style="border: 1px solid gray; width: 50%;" type='password' id ='confirm_new_password' placeholder= '비밀번호 재입력'><br/>
        </div>
        <!-- Reset password button -->
        <button onclick='resetPW()' >재설정</button>`;
+    contentDiv.style.width = "500px";
 }
 
 function requestVerificationCodeForPW() {
@@ -262,10 +269,15 @@ function resetPW(){
         return;
     }
 
-
+    const user_id = document.getElementById("user_id").value;
     const phone_number = document.getElementById("phone_number").value;
     const new_password = document.getElementById("new_password").value;
     const confirm_new_password = document.getElementById("confirm_new_password").value
+
+    if(!userIdRegex.test(user_id)){
+        alert("6~25자의 영문 대소문자와 숫자로 이루어져야 합니다.")
+    }
+
     if(!password_regex.test(new_password)){
         alert("비밀번호는 최소 하나의 대문자, 소문자, 숫자와 특수 문자(@$!%*?&)을 포함한 10글자 이상이어야 합니다.");
         return;
@@ -286,6 +298,7 @@ function resetPW(){
         },
         body: JSON.stringify(
             {
+                "user_id" : user_id,
                 "password" : new_password,
                 "phone_number": phone_number,
             }),
@@ -323,6 +336,7 @@ function resetModalContent() {
       <p>로그인하는데 문제가 있으신가요?</p>
       <button onclick="renderFindID()">아이디 찾기</button><br/>
       <button onclick="renderFindPW()">비밀번호 재설정</button><br/>`;
+    contentDiv.style.width = "300px";
 }
 
 document.getElementById("btn_close").addEventListener("click", resetModalContent);

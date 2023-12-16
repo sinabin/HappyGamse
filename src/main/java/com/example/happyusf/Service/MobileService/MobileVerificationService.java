@@ -1,4 +1,4 @@
-package com.example.happyusf.Service.Utils;
+package com.example.happyusf.Service.MobileService;
 
 
 import com.example.happyusf.Domain.MessageDTO;
@@ -7,18 +7,13 @@ import com.example.happyusf.Domain.SmsResponseDTO;
 import com.example.happyusf.Exception.PhoneNumberAlreadyExistsException;
 import com.example.happyusf.Mappers.VerificationRepository;
 import com.example.happyusf.Service.NaverCloudService.SmsService;
-import com.example.happyusf.Utils.Const;
-import com.example.happyusf.Utils.Validator;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.client.RestClientException;
 
-import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;

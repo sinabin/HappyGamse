@@ -8,6 +8,7 @@ import NewsListPage from "./Pages/NewsPage/NewsListPage";
 import NewsDetailPage from "./Pages/NewsPage/NewsDetailPage";
 import ChannelListPage from "./Pages/ChannelPage/ChannelListPage";
 import ChannelDetailPage from "./Pages/ChannelPage/ChannelDetailPage";
+import MyPage from "./Pages/MyPage/MyPage"
 library.add(fas, faTwitter, faFontAwesome)
 
 function App(){
@@ -21,6 +22,7 @@ function App(){
                 <Route path="/friend/channel/:channel_id" element={<ChannelDetailPage />} />
                 <Route path ="/news" exact={true} element={<NewsListPage />} />
                 <Route path="/news/detail/:news_id" element={<NewsDetailPage />} />
+                <Route path="/myPage" element={<MyPage />} />
             </Routes>
         </BrowserRouter>
 

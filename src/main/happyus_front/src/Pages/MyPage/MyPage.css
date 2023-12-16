@@ -1,0 +1,64 @@
+.App {
+    font-family: 'Arial', sans-serif;
+    color: white;
+    background-color: #1a1a2e;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-container {
+    width: 80%;
+    max-width: 600px;
+    background-color: #16213e;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.section {
+    margin-bottom: 20px;
+}
+
+.section-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.section-content {
+    background-color: #0f3460;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.content-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.content-label {
+    font-weight: bold;
+}
+
+.content-value {
+    font-weight: lighter;
+}
+
+.mypage-button{
+    margin-top: 15px;
+    width :100%;
+    padding :10px ;
+    background-color:#FF5733 ;
+    color:white ;
+    border:none ;
+    border-radius :5px ;
+    cursor:pointer
+}
+
+.mypage-input{
+    width :65%;
+    padding :10px ;
+    border-radius :5px ;
+    border:none
+}

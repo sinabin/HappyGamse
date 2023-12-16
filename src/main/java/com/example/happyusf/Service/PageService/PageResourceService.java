@@ -1,4 +1,4 @@
-package com.example.happyusf.Service.Utils;
+package com.example.happyusf.Service.PageService;
 
 import com.example.happyusf.Mappers.ResourceRepository;
 import org.springframework.beans.factory.annotation.Autowired;

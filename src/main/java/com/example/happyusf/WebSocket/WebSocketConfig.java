@@ -1,6 +1,6 @@
 package com.example.happyusf.WebSocket;
 
-import com.example.happyusf.Service.ChannelService;
+import com.example.happyusf.Service.ChannelService.ChannelService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

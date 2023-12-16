@@ -1,4 +1,4 @@
-package com.example.happyusf.Service;
+package com.example.happyusf.Service.ChannelService;
 
 import com.example.happyusf.Domain.ChannelInfoDTO;
 import com.example.happyusf.Domain.CodeInfoDTO;

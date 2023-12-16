@@ -1,6 +1,6 @@
 package com.example.happyusf.Controller.View.Thymeleaf;
 
-import com.example.happyusf.Service.Utils.PageResourceService;
+import com.example.happyusf.Service.PageService.PageResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
