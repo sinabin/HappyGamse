@@ -19,10 +19,10 @@ function App(){
             <Routes>
                 <Route path="/" element={<ChannelListPage />} />
                 <Route path="/friend" element={<ChannelListPage />} />
-                <Route path="/friend/channel/:channel_id" element={<ChannelDetailPage />} />
+                <Route path="/user/friend/channel/:channel_id" element={<ChannelDetailPage />} />
                 <Route path ="/news" exact={true} element={<NewsListPage />} />
                 <Route path="/news/detail/:news_id" element={<NewsDetailPage />} />
-                <Route path="/myPage" element={<MyPage />} />
+                <Route path="/user/myPage" element={<MyPage />} />
             </Routes>
         </BrowserRouter>
 
