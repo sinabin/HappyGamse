@@ -12,7 +12,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.Collections;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
@@ -103,11 +111,12 @@ class PageDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username="user1", authorities={"ROLE_USER"})
     @DisplayName("test_name : 비밀번호 재설정 - case 1 : 정상처리")
     void resetPasswordByMobile() throws Exception {
         UserDTO userDto = new UserDTO();
-        userDto.setUser_id("testUser");
         userDto.setPassword("NewPassword@1234");
+        userDto.setPhone_number("01012345678"); // phone_number 필드 설정
 
         mockMvc.perform(post("/request/resetPasswordByMobile")
                         .contentType(MediaType.APPLICATION_JSON)
