@@ -92,7 +92,7 @@ function ChannelListPage() {
 
     const handlePasswordSubmit = async (password) => {
         if (await checkPassword(selectedChannel, password)) {
-            navigate(`/friend/channel/${selectedChannel.c_id}`);
+            navigate(`/user/friend/channel/${selectedChannel.c_id}`);
             setShowPasswordModal(false);
         } else {
             alert('비밀번호가 틀렸습니다.');
@@ -140,7 +140,7 @@ function ChannelListPage() {
                             <td className="table-channel-type">{channel.c_type}</td>
                             <td>
                                 <div className="channel-container">
-                                    <Link style={{textDecoration:"none"}} to={`/friend/channel/${channel.c_id}`} onClick={(event) => handleLinkClick(channel, event)}>
+                                    <Link style={{textDecoration:"none"}} to={`/user/friend/channel/${channel.c_id}`} onClick={(event) => handleLinkClick(channel, event)}>
                                         <span className="channel-title">
                                             {channel.c_title}
                                         </span>
@@ -167,7 +167,7 @@ function ChannelListPage() {
             </table>
 
             <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} pageSize={PAGE_SIZE} />
-            <PasswordModal show={showPasswordModal} onSubmit={handlePasswordSubmit} onClose={() => setShowPasswordModal(false)} /> {/* 비밀번호 입력 모달을 추가합니다. */}
+            <PasswordModal show={showPasswordModal} onSubmit={handlePasswordSubmit} onClose={() => setShowPasswordModal(false)} />
         </div>
 
 );

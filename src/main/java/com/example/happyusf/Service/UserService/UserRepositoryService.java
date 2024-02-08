@@ -52,4 +52,8 @@ public class UserRepositoryService {
         return userRepository.findUserByEmail(email);
     }
 
+    public UserDTO myPageUserinfo(String userId){
+        return userRepository.findByUserID(userId);
+    }
+
 }

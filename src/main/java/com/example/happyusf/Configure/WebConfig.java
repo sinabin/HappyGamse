@@ -2,9 +2,12 @@ package com.example.happyusf.Configure;
 
 import com.example.happyusf.Interceptor.ChannelAccessInterceptor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
@@ -72,4 +75,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/503").setViewName("error_page/503");
     }
 
+    @Bean
+    public SpringValidatorAdapter localValidatorFactoryBean() {
+        return new LocalValidatorFactoryBean();
+    }
 }

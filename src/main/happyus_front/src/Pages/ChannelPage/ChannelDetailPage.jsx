@@ -19,18 +19,6 @@ function ChannelDetailPage() {
         }
     }, [chat]); // 채팅이 일어날 때마다 변경
 
-    // 음성통화 관련
-    const [localStream, setLocalStream] = useState(null);
-    const [remoteStream, setRemoteStream] = useState(null);
-    const remoteAudioRef = useRef(null);
-
-    useEffect(() => {
-        if (remoteAudioRef.current && remoteStream) {
-            remoteAudioRef.current.srcObject = remoteStream;
-        }
-    }, remoteStream);
-
-
     // 채널에서 퇴장하는 함수
     const leaveChannel = (channelId) => {
         if (socket && socket.readyState === WebSocket.OPEN) {
@@ -39,11 +27,6 @@ function ChannelDetailPage() {
                 channelId: channelId,
             };
             socket.send(JSON.stringify(message));
-
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-                setLocalStream(null);
-            }
 
         } else {
             console.error('WebSocket connection is not open.');
@@ -54,36 +37,9 @@ function ChannelDetailPage() {
         connectWebSocket();
     }, []);
 
-    const startCall = (pc) => {
-        navigator.mediaDevices.getUserMedia({audio: true})
-            .then(stream => {
-                setLocalStream(stream);
-                stream.getTracks().forEach(track => pc.addTrack(track, stream));
-            });
-    };
-
-    const handleAnswer = (answer, pc) => {
-        pc.setRemoteDescription(new RTCSessionDescription(answer));
-    };
-
 
     const connectWebSocket = () => {
         const newSocket = new WebSocket(process.env.REACT_APP_WEBSOCKET_URL);
-        const pc = new RTCPeerConnection(); // webRTC Connection 생성
-
-        pc.onicecandidate = e => {
-            if (e.candidate) {
-                newSocket.send(JSON.stringify({
-                    action: 'candidate',
-                    candidate: e.candidate,
-                    channelId: channel_id
-                }));
-            }
-        };
-
-        pc.ontrack = e => {
-            setRemoteStream(e.streams[0]);
-        };
 
         // 채널 입장
         const joinChannel = (channel_id) => {
@@ -93,7 +49,6 @@ function ChannelDetailPage() {
                     channelId: channel_id,
                 };
                 newSocket.send(JSON.stringify(message)); // socket
-                startCall(pc); // WebRTC
             } else {
                 console.error('WebSocket connection is not open.');
             }
@@ -121,10 +76,6 @@ function ChannelDetailPage() {
             } else if (response.action === 'message') {
                 const newMessage = {sender: response.sender, message: response.message};
                 setChat((prevChat) => [...prevChat, newMessage]);
-            } else if (response.action === 'answer') {
-                handleAnswer(response.answer, pc);
-            } else if (response.action === 'candidate') {
-                pc.addIceCandidate(new RTCIceCandidate(response.candidate));
             }
         });
 
@@ -156,7 +107,6 @@ function ChannelDetailPage() {
                     </div>
                 ))}
             </div>
-            <audio ref={remoteAudioRef} controls autoPlay></audio>
             <div className="chat-input-container">
                 <input
                     type="text"

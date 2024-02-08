@@ -38,6 +38,7 @@
 }
 
 .content-label {
+    padding-top: 10px;
     font-weight: bold;
 }
 
@@ -54,6 +55,12 @@
     border:none ;
     border-radius :5px ;
     cursor:pointer
+}
+.mypage-button.green {
+    background-color: #4CAF50;
+}
+.mypage-button.blue {
+    background-color: #2196F3;
 }
 
 .mypage-input{

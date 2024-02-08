@@ -9,7 +9,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,10 +31,13 @@ public class UserController {
 
     private final SmsService smsService;
 
+    private final SpringValidatorAdapter validator;
+
     @Autowired
-    public UserController(UserRepositoryService userRepositoryService, SmsService smsService) {
+    public UserController(UserRepositoryService userRepositoryService, SmsService smsService, SpringValidatorAdapter validator) {
         this.userRepositoryService = userRepositoryService;
         this.smsService = smsService;
+        this.validator = validator;
     }
 
     /**
@@ -42,7 +47,6 @@ public class UserController {
      */
     @PostMapping("/request/join")
     public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
-        Validator.validateRequest(bindingResult);
         userRepositoryService.joinNewUser(userDTO);
         return new ResponseEntity<>("회원 가입이 완료되었습니다.", HttpStatus.OK);
     }
@@ -52,9 +56,7 @@ public class UserController {
      * @Explain 회원 ID 찾기 요청 처리 API
      */
     @PostMapping("/request/findIdByMobile")
-    public ResponseEntity<String> findIdByMobile(@Valid @RequestBody MessageDTO messageDTO, BindingResult bindingResult) {
-        Validator.validateRequest(bindingResult);
-
+    public ResponseEntity<String> findIdByMobile(@RequestBody MessageDTO messageDTO, BindingResult bindingResult) {
         // 1. DB 조회
         UserDTO userDTO = userRepositoryService.findIdByMobile(messageDTO);
         if (userDTO == null) {
@@ -78,26 +80,38 @@ public class UserController {
      * @Explain 비밀번호 재설정 요청처리 API
      */
     @PostMapping("/request/resetPasswordByMobile")
-    public ResponseEntity<String> resetPasswordByMobile(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<String> resetPasswordByMobile(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult, Authentication authentication) {
+        // 1. password에 대해서만 Validation 수행하도록 설정
+        validator.validateProperty(userDTO, "password");
 
-        // 1. 데이터 정규성 검사
-        Pattern password_pattern = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&#()\\-=+])[A-Za-z\\d@$!%*?&#()\\-=+]{10,}$");
-        Matcher matcher = password_pattern.matcher(userDTO.getPassword());
-        if (!matcher.matches()) {
-            return new ResponseEntity<>("비밀번호는 최소 하나의 소문자, 대문자, 숫자 및 특수 문자를 포함해야하며 길이가 10 이상이어야 합니다.", HttpStatus.BAD_REQUEST);
+        // 2. password 필드에 대한 유효성 검사 결과 확인
+        if (bindingResult.hasFieldErrors("password")) {
+            return new ResponseEntity<>(bindingResult.getFieldError("password").getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
 
-        // 2. 요청된 비밀번호 재설정 처리
+        // 3. 요청된 비밀번호 재설정 처리
+        userDTO.setUser_id(authentication.getName());
         int result = userRepositoryService.resetPassword(userDTO);
         String response = "";
 
-        if(result >0){
+        if (result > 0) {
             response = "해당 핸드폰번호로 가입된 회원 ID의 비밀번호가 성공적으로 재설정되었습니다.";
-        }else{
+        } else {
             response = "인증받은 핸드폰번호에 등록된 ID와 입력한 ID가 일치하지 않습니다.";
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+
+    /**
+     * @param Authentication(user_id)
+     * @Explain MyPage 요청처리
+     */
+    @PostMapping("/user/myPage")
+    public ResponseEntity<UserDTO> myPageUserInfo(Authentication authentication) {
+        UserDTO response = userRepositoryService.myPageUserinfo(authentication.getName());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

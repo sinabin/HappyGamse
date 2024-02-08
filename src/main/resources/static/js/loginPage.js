@@ -1,17 +1,11 @@
-let isPhoneNumberVerified = false;
-const password_regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#()\-=+])[A-Za-z\d@$!%*?&#()\-=+]{10,}$/;
-const phone_number_regex = /^[0-9]{10,11}$/;
-
 function handleLogin() {
     let user_id = document.getElementById('user_id').value;
     let password = document.getElementById('password').value;
 
-    let id_regex = /^[A-Za-z0-9]{6,25}$/;
-
-    if (!id_regex.test(user_id)) {
+    if (!userIdRegex.test(user_id)) {
         alert("사용자 ID는 최소 6자리 이상, 최대 25자리 이하이며 소문자와 대문자 그리고 숫자들로만 구성될 수 있습니다.");
         return;
-    }else if(!password_regex.test(password)){
+    }else if(!passwordRegex.test(password)){
         alert("패스워드는 10자리 이상이며 대문자와 소문자 그리고 특수문자를 포함해야만합니다.")
         return;
     }
@@ -97,7 +91,7 @@ function renderFindPW() {
         <span>회원가입시 등록했던 핸드폰 번호로 인증코드가 발송됩니다.</span><br>
         <span> 핸드폰 번호를 (-)하이폰 없이 입력해주세요.</span>
         <br><br>
-        <input type='text' id='user_id' placeholder="ID를 입력해주세요." style="border: 1px solid gray; width: 50%;">
+        <input type='text' id='user_id_inReset' placeholder="ID를 입력해주세요." style="border: 1px solid gray; width: 50%;">
         <div style="display: flex; align-items: center; margin-bottom: 10px;">
             <input type='text' id='phone_number' placeholder="핸드폰번호를 입력해주세요." style="border: 1px solid gray; width: 50%;">
             <button id="btn_requestCode" onclick='requestVerificationCodeForPW()' style="margin-left: 5px; margin-bottom: 14px; width: 39%">인증번호 요청</button><br/>
@@ -222,7 +216,7 @@ function findID(){
 
     const phoneNumber = document.getElementById("phone_number").value;
 
-    if(!phone_number_regex.test(phoneNumber)){
+    if(!phoneNumberRegex.test(phoneNumber)){
         alert("유효한 핸드폰 번호를 입력해주세요.");
         return;
     }
@@ -269,16 +263,16 @@ function resetPW(){
         return;
     }
 
-    const user_id = document.getElementById("user_id").value;
-    const phone_number = document.getElementById("phone_number").value;
-    const new_password = document.getElementById("new_password").value;
-    const confirm_new_password = document.getElementById("confirm_new_password").value
+    let user_id = document.getElementById("user_id_inReset").value;
+    let phone_number = document.getElementById("phone_number").value;
+    let new_password = document.getElementById("new_password").value;
+    let confirm_new_password = document.getElementById("confirm_new_password").value
 
     if(!userIdRegex.test(user_id)){
         alert("6~25자의 영문 대소문자와 숫자로 이루어져야 합니다.")
     }
 
-    if(!password_regex.test(new_password)){
+    if(!passwordRegex.test(new_password)){
         alert("비밀번호는 최소 하나의 대문자, 소문자, 숫자와 특수 문자(@$!%*?&)을 포함한 10글자 이상이어야 합니다.");
         return;
     }else if(new_password !== confirm_new_password){
@@ -286,7 +280,7 @@ function resetPW(){
         return;
     }
 
-    if(!phone_number_regex.test(phone_number)){
+    if(!phoneNumberRegex.test(phone_number)){
         alert("유효한 핸드폰 번호를 입력해주세요.");
         return;
     }

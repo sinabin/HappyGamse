@@ -14,7 +14,6 @@ import java.sql.Timestamp;
 @Builder
 public class MobileVerificationCodeDTO {
 
-    @Pattern(regexp = "^\\d{3}-\\d{3,4}-\\d{4}$", message = "전화번호는 XXX-XXXX-XXXX 형식으로 입력해주세요.")
     private String phone_number;
 
     @Pattern(regexp = "\\d{6}", message = "인증코드는 6자리입니다.")
