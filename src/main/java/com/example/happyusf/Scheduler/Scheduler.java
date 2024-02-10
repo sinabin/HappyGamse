@@ -1,6 +1,6 @@
 package com.example.happyusf.Scheduler;
 
-import com.example.happyusf.Service.Etc.CrawlingService;
+import com.example.happyusf.Utils.CrawlingService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

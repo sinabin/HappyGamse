@@ -1,7 +1,7 @@
 package com.example.happyusf.Mappers;
 
 
-import com.example.happyusf.Domain.UserDTO;
+import com.example.happyusf.Biz.User.Domain.UserDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;

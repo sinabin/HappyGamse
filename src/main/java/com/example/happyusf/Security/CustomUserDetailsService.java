@@ -1,6 +1,6 @@
 package com.example.happyusf.Security;
 
-import com.example.happyusf.Domain.UserDTO;
+import com.example.happyusf.Biz.User.Domain.UserDTO;
 import com.example.happyusf.Mappers.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.DisabledException;

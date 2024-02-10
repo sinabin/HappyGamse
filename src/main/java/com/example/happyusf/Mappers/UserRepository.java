@@ -1,7 +1,7 @@
 package com.example.happyusf.Mappers;
 
-import com.example.happyusf.Domain.MessageDTO;
-import com.example.happyusf.Domain.UserDTO;
+import com.example.happyusf.Biz.SMS.Domain.MessageDTO;
+import com.example.happyusf.Biz.User.Domain.UserDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;

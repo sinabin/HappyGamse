@@ -1,7 +1,7 @@
 package com.example.happyusf.Mappers;
 
 
-import com.example.happyusf.Domain.MobileVerificationCodeDTO;
+import com.example.happyusf.Biz.User.Domain.MobileVerificationCodeDTO;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;

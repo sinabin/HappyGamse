@@ -1,6 +1,6 @@
 package com.example.happyusf.AOP;
 
-import com.example.happyusf.Domain.MessageDTO;
+import com.example.happyusf.Biz.SMS.Domain.MessageDTO;
 import com.google.common.util.concurrent.RateLimiter;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -23,7 +23,7 @@ public class RateLimitingAspect {
     private final ConcurrentHashMap<String, RateLimiter> limiters = new ConcurrentHashMap<>();
     private final ConcurrentHashMap<String, Integer> requestCounts = new ConcurrentHashMap<>();
 
-    @Around("execution(* com.example.happyusf.Service.MobileService.MobileVerificationService.processMobileVerification(..)) && args(messageDTO, bindingResult)")
+    @Around("execution(* com.example.happyusf.Biz.User.Service.MobileVerificationService.processMobileVerification(..)) && args(messageDTO, bindingResult)")
     // execition : point cut  표현식으로써 가장 정교한 포인터컷을 만들 수 있다.
     public Object rateLimit(ProceedingJoinPoint joinPoint, MessageDTO messageDTO, BindingResult bindingResult) throws Throwable {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();

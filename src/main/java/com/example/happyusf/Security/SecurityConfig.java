@@ -1,6 +1,6 @@
 package com.example.happyusf.Security;
 
-import com.example.happyusf.Service.UserService.LoginFailureService;
+import com.example.happyusf.Biz.User.Service.LoginFailureService;
 import com.example.happyusf.WebSocket.CustomWebSocketHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

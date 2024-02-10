@@ -1,7 +1,7 @@
 package com.example.happyusf.WebSocket;
 
-import com.example.happyusf.Domain.ChannelInfoDTO;
-import com.example.happyusf.Service.ChannelService.ChannelService;
+import com.example.happyusf.Biz.Channel.Domain.ChannelInfoDTO;
+import com.example.happyusf.Biz.Channel.Service.ChannelService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;

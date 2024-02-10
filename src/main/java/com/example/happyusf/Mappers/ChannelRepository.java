@@ -1,8 +1,8 @@
 package com.example.happyusf.Mappers;
 
-import com.example.happyusf.Domain.ChannelInfoDTO;
-import com.example.happyusf.Domain.CodeInfoDTO;
-import com.example.happyusf.Domain.PagingDTO;
+import com.example.happyusf.Biz.Channel.Domain.ChannelInfoDTO;
+import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
+import com.example.happyusf.Biz.Common.Domain.PagingDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -28,7 +28,7 @@ public interface ChannelRepository {
     @Update("UPDATE voice_channel SET c_isAlive=#{c_isAlive} WHERE c_id=#{c_id}")
     int updateChannelStatus(ChannelInfoDTO channelInfoDTO);
 
-    @Select("SELECT code, code_name_kor FROM common_code_info WHERE major_code ='GCroot'")
+    @Select("SELECT code, code_name_kor, code_desc FROM common_code_info WHERE major_code ='GCroot'")
     ArrayList<CodeInfoDTO> getGameList();
 
     @Select("SELECT * FROM voice_channel WHERE c_id = #{channel_id}")

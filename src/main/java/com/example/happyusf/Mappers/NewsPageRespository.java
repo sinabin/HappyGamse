@@ -1,8 +1,8 @@
 package com.example.happyusf.Mappers;
 
 
-import com.example.happyusf.Domain.NewsPagesDTO;
-import com.example.happyusf.Domain.PagingDTO;
+import com.example.happyusf.Biz.News.Domain.NewsPagesDTO;
+import com.example.happyusf.Biz.Common.Domain.PagingDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
