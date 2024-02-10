@@ -1,8 +1,25 @@
+/* index.css */
+@font-face {
+  font-family: 'NanumGothic';
+  src: url('../public/fonts/NanumGothic-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NanumGothic';
+  src: url('../public/fonts/NanumGothic-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+@font-face {
+  font-family: 'NanumGothic';
+  src: url('../public/fonts/NanumGothic-ExtraBold.ttf') format('truetype');
+  font-weight: 800; /* ExtraBold */
+  font-style: normal;
+}
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'NanumGothic', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
