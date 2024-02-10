@@ -5,6 +5,7 @@ import com.example.happyusf.Biz.Channel.Service.ChannelService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,10 @@ import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+@Slf4j //Logger 인스턴스 자동 생성
 @Component
 public class CustomWebSocketHandler extends TextWebSocketHandler {
-
-    private static final Logger logger = LoggerFactory.getLogger(CustomWebSocketHandler.class);
     private final ChannelService channelService;
-
     static final Map<String, Set<WebSocketSession>> channelSessions = new ConcurrentHashMap<>();
     static private Map<String, WebSocketSession> userSessionMap = new HashMap<>();
     static private Map<String, String> userChannelMap = new HashMap<>();
@@ -180,7 +179,7 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
                 }
             }
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 
@@ -194,4 +193,3 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
     }
 
 }
-

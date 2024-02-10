@@ -52,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**") // 모든 URL 패턴에 대한 CORS 설정
-                .allowedOrigins(allowedOrigin) // 127.0.0.1:8081 의 출처에서의 요청만 허용하도록 처리
+                .allowedOrigins(allowedOrigin) // 도메인 요청만 허용하도록 처리
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");// 허용 메소드
     }
 

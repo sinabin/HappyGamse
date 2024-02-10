@@ -38,7 +38,7 @@ public class SecurityConfig {
                         .usernameParameter("user_id")
                         .passwordParameter("password")
                         .loginProcessingUrl("/loginAction")
-                        .failureHandler(new CustomAuthenticationFailureHandler(loginFailureService)) //
+                        .failureHandler(new CustomAuthenticationFailureHandler(loginFailureService))
                         .successHandler((request, response, authentication) -> {
                             request.getSession().setAttribute("user_id", authentication.getName());
                         })
@@ -55,7 +55,7 @@ public class SecurityConfig {
                         sessionManagement
                                 .maximumSessions(1) // 동시 세션 허용 최대 개수
                                 .expiredUrl("/") // 세션 만료 시 리다이렉션 URL
-                                .maxSessionsPreventsLogin(false) // 최대 세션 동시 접속 시 로그인 차단 여부
+                                .maxSessionsPreventsLogin(true) // 최대 세션 동시 접속 시 로그인 차단 여부
                                 .and()
                                 .sessionFixation().changeSessionId() // 세션 고정공격 보호기능 활성화
                                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // 세션 생성 정책 설정

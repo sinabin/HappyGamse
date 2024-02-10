@@ -1,7 +1,6 @@
 package com.example.happyusf.Utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +9,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+@Slf4j  //Logger 인스턴스 자동 생성
 @Service
 public class CrawlingService {
 
-    private static final Logger logger = LoggerFactory.getLogger(CrawlingService.class);
     @Value("${crawler.location}")
     private String CrawlerPath;
 
@@ -32,10 +31,10 @@ public class CrawlingService {
                     String line;
                     try {
                         while ((line = outputReader.readLine()) != null) {
-                            logger.info(line);
+                            log.info(line);
                         }
                     } catch (IOException e) {
-                        logger.error("Error reading process output", e);
+                        log.error("Error reading process output", e);
                     }
                 });
 
@@ -43,10 +42,10 @@ public class CrawlingService {
                     String line;
                     try {
                         while ((line = errorReader.readLine()) != null) {
-                            logger.error(line);
+                            log.error(line);
                         }
                     } catch (IOException e) {
-                        logger.error("Error reading process error", e);
+                        log.error("Error reading process error", e);
                     }
                 });
 
@@ -64,7 +63,7 @@ public class CrawlingService {
             }
 
         } catch (IOException | InterruptedException e) {
-            logger.error("Error during process execution", e);
+            log.error("Error during process execution", e);
         }
     }
 

@@ -1,12 +1,11 @@
 package com.example.happyusf.Biz.Channel.Controller;
 
-import com.example.happyusf.Biz.Channel.Service.ChannelService;
 import com.example.happyusf.Biz.Channel.Domain.ChannelInfoDTO;
+import com.example.happyusf.Biz.Channel.Service.ChannelService;
 import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
 import com.example.happyusf.Biz.Common.Domain.PagingDTO;
 import com.example.happyusf.WebSocket.CustomWebSocketHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
+
+@Slf4j //Logger 인스턴스 자동 생성
 @RestController
 @RequestMapping("/api/channel")
 public class ChannelController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ChannelController.class);
     private final ChannelService channelService;
     private final CustomWebSocketHandler webSocketHandler;
 
@@ -31,8 +30,8 @@ public class ChannelController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Map<String, Object>> getNewsList
-            (@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) throws Exception{
+    public ResponseEntity<Map<String, Object>> getNewsList(
+            @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) throws Exception{
 
         PagingDTO pagingDTO = new PagingDTO();
         pagingDTO.setPage( (page-1)*10 );
@@ -43,7 +42,6 @@ public class ChannelController {
         pagingDTO.setTotal_count(totalCount);
 
         Map<String, Object> response = new HashMap<>();
-
         response.put("paging", pagingDTO);
         response.put("channelList", channelList);
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -113,10 +111,9 @@ public class ChannelController {
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new AccessDeniedException("권한이 없습니다.");
         }
+
         result = channelService.checkingChannelAccess(channelInfoDTO);
-
         session.setAttribute(channelInfoDTO.getC_id(), result);
-
         return result;
     }
 
