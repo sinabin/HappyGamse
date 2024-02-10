@@ -79,6 +79,11 @@ public class CustomWebSocketHandler extends TextWebSocketHandler {
      * @throws Exception
      */
     public void leaveChannel(JsonObject jsonMessage, WebSocketSession session) throws Exception {
+        // 세션이 이미 닫혀있는 경우, 추가 작업 없이 메서드를 종료
+        if (!session.isOpen()) {
+            return;
+        }
+
         String channelId = jsonMessage.get("channelId").getAsString();
         Set<WebSocketSession> sessions = channelSessions.getOrDefault(channelId, Collections.synchronizedSet(new HashSet<>()));
         sessions.remove(session);
