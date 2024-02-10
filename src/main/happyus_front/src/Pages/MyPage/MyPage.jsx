@@ -11,7 +11,6 @@ function MyPage(){
     const [userInfo, setUnserInfo] = useState("")
 
     useEffect( () => {
-        // API 요청
         axios.post('/user/myPage', {})
             .then((response) => {
                 setUnserInfo(response.data)

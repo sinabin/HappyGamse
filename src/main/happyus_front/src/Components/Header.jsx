@@ -30,7 +30,7 @@ function Header() {
                     <Nav className="me-auto">
                         <Nav.Link>
                             <Link to="/news" className="link-style">
-                                <FontAwesomeIcon icon="fa-solid fa-window-maximize" beat /> 요약 뉴스
+                                <FontAwesomeIcon icon="fa-solid fa-window-maximize" beat /> 게임 뉴스
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
@@ -39,13 +39,8 @@ function Header() {
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
-                            <Link to="/" className="link-style">
+                            <Link to="/community" className="link-style">
                                 <FontAwesomeIcon icon="fa-solid fa-user-group" beat /> 커뮤니티
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link>
-                            <Link to="/" className="link-style">
-                                <FontAwesomeIcon icon="fa-solid fa-sack-dollar" beat /> 이벤트 및 할인 정보
                             </Link>
                         </Nav.Link>
                     </Nav>
