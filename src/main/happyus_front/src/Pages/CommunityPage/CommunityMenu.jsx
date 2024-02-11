@@ -36,7 +36,9 @@ function CommunityMenu() {
                 <h3 className="genre-title">{genre}</h3>
                 {games.map((game) => (
                     <div key={game.code} className="center-menu-item">
-                        <Link style={{textDecoration:"none"}} to={`/community/${game.code}`}>
+                        <Link style={{textDecoration:"none"}} to={`/community/${game.code}`}
+                              onClick={ () => {localStorage.setItem("gameName", game.code_name_kor);
+                        } }>
                             <span className="center-menu-eachTitle">{game.code_name_kor}</span>
                         </Link>
                     </div>

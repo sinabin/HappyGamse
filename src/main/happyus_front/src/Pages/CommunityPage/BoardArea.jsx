@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import moment from 'moment';
 import 'moment/locale/ko';
-import { DataGrid } from '@mui/x-data-grid';
+import {DataGrid} from '@mui/x-data-grid';
 import './BoardArea.css';
 import Box from '@mui/material/Box';
 import {useNavigate} from "react-router-dom"; //  //Material UI의 sx prop은 스타일링을 위해 import
-function BoardArea({ gameCode, boardCategory, categoryName }) {
+function BoardArea({ gameCode, gameName, boardCategory, categoryName }) {
     const [posts, setPosts] = useState([]);
     const [pageSize, setPageSize] = useState(25);
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 생성
@@ -48,7 +48,7 @@ function BoardArea({ gameCode, boardCategory, categoryName }) {
     return (
         <div>
             <div id="board-title">
-                {categoryName} 게시판
+                {gameName +"　　📝"+ categoryName} 게시판📝
             </div>
             <Box sx={{
                 overflowY: 'auto', // 스크롤바 추가

@@ -6,6 +6,8 @@ import './CommunityMain.css';
 
 function CommunityMain() {
     const {gameCode } = useParams();
+    let gameName = localStorage.getItem("gameName");
+
     const [leftMenu, setLeftMenu] = useState([]);
     const [boardCategory, setBoardCategory] = useState("");
     const [categoryName, setCategoryName] = useState("");
@@ -49,7 +51,7 @@ function CommunityMain() {
                 </div>
                 {/* Board Area - BoardArea 컴포넌트를 사용하여 게시판 영역 렌더링 */}
                 <div className="board-area-container">
-                    <BoardArea gameCode={gameCode} boardCategory={boardCategory} categoryName={categoryName}/>
+                    <BoardArea gameCode={gameCode} gameName={gameName} boardCategory={boardCategory} categoryName={categoryName}/>
                 </div>
             </div>
         </div>
