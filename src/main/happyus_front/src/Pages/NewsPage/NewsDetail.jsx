@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
-import './NewsDetailPage.css';
+import './NewsDetail.css';
 
-function NewsDetailPage() {
+function NewsDetail() {
     const [newsData, setNewsData] = useState(null);
     const { news_id } = useParams();
 
@@ -34,4 +34,4 @@ function NewsDetailPage() {
     );
 }
 
-export default NewsDetailPage;
+export default NewsDetail;

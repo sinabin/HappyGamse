@@ -1,0 +1,84 @@
+* {
+    box-sizing: border-box;
+}
+
+.board-area {
+    background-color: #f4f4f4;
+    padding: 20px;
+    border-radius: 5px;
+    width: 37vw;
+}
+
+.board-area > div {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 3px;
+    transition: transform 0.2s;
+}
+
+.board-area > div > div {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.board-area > div:last-child {
+    margin-bottom: 0;
+}
+
+#board-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #2C3E50;
+    padding: 10px 20px;
+    border: solid 1px #FFFFFF;
+    margin-bottom: 10px;
+    width: 40vw;
+}
+.new-post-button {
+    background-color: #4A90E2;
+    border: none;
+    color: #FFFFFF;
+    padding: 5px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.board-area .post {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px; /* 게시물의 모서리 둥글기 */
+}
+
+.board-area .post:last-child {
+    margin-bottom: 0;
+}
+
+.post-info {
+    display: flex;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.post-info > span {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.user-id {
+    margin-left: auto;
+}
+
+.hide-header .MuiDataGrid-columnHeaders {
+    display: none;
+}

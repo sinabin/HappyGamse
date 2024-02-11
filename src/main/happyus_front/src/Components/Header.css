@@ -20,20 +20,28 @@
 }
 
 #dropDown {
-    background-color: #3F0071;
-    border-color : #3F0071;
+    background-color: #46cfa7;
     color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
 }
 #dropDown:hover,
 #dropDown:active
 {
-    background-color:#7D3FD9;
-    border-color : #7D3FD9;
+    background-color:#379237;
+    border-color : #379237;
     color: white;
 }
 
 #HeaderBar {
-    background-color: #000000;
+    background-color: #040404;
 }
 
 

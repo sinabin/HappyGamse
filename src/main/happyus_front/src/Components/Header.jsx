@@ -20,12 +20,12 @@ function Header() {
                 <Link to="/" style={{marginRight: '1%'}}>
                     <img alt="header_logo" style={{display: "inline"}} src="/imgs/header_logo.png"/>
                 </Link>
-                <Link to="/" style={{textDecoration: 'none'}}>
+                <Link to="/" style={{textDecoration: 'none', fontWeight:"bold"}}>
                     <Navbar.Brand>HappyGames</Navbar.Brand>
                 </Link>
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-
+                {/* NavBar Area*/ }
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link>
@@ -35,7 +35,7 @@ function Header() {
                         </Nav.Link>
                         <Nav.Link>
                             <Link to="/friend" className="link-style">
-                                <FontAwesomeIcon icon="fa-solid fa-headset" beat /> 게임 친구찾기
+                                <FontAwesomeIcon icon="fa-solid fa-headset" beat /> Chat & Voice
                             </Link>
                         </Nav.Link>
                         <Nav.Link>
@@ -45,14 +45,15 @@ function Header() {
                         </Nav.Link>
                     </Nav>
 
+                    {/* DropDownBtn Area*/ }
                     {isLogined ? (
-                        <DropdownButton variant="light" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
+                        <DropdownButton variant="success" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
                             <Dropdown.Item> <Link to="user/myPage" className="dropdown-link-style">내정보</Link></Dropdown.Item>
                             <Dropdown.Item> <Link to="user/myPost" className="dropdown-link-style">내 게시물 관리</Link></Dropdown.Item>
                             <Dropdown.Item href={"/logout"}>로그아웃 </Dropdown.Item>
                         </DropdownButton>
                     ) : (
-                        <DropdownButton variant="light" title="로그인" id="dropDown" style={{marginRight: '2%'}}>
+                        <DropdownButton variant="success" title="로그인" id="dropDown" style={{marginRight: '2%'}}>
                             <Dropdown.Item href={"/loginPage"}>로그인 </Dropdown.Item>
                             <Dropdown.Item href={"/register/agreement"}>회원가입 </Dropdown.Item>
                         </DropdownButton>

@@ -40,7 +40,7 @@ function ChannelModal({ showModal, toggleModal }) {
             .then(response => {
                 alert(response.data.message);
                 setSelectedChannel(channelData.c_title);
-                navigate(`/friend/channel/${response.data.c_id}`);
+                navigate(`/user/friend/channel/${response.data.c_id}`);
             })
             .catch(error => {
                 alert(error.response.data.message);

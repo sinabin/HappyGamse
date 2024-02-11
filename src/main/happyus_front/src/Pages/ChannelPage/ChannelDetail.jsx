@@ -1,9 +1,9 @@
 import React, {useContext, useEffect, useRef, useState} from 'react';
 import {useParams} from 'react-router-dom';
 import {ChannelContext} from "../../contexts/ChannelContext"; // useParams를 불러옵니다.
-import "./ChannelDetailPage.css"
+import "./ChannelDetail.css"
 
-function ChannelDetailPage() {
+function ChannelDetail() {
 
     const [socket, setSocket] = useState(null);
     const [message, setMessage] = useState('');
@@ -128,4 +128,4 @@ function ChannelDetailPage() {
     );
 }
 
-export default ChannelDetailPage;
+export default ChannelDetail;

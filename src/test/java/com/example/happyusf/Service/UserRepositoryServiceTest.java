@@ -1,9 +1,9 @@
 package com.example.happyusf.Service;
 
 
-import com.example.happyusf.Domain.UserDTO;
+import com.example.happyusf.Biz.User.Domain.UserDTO;
 import com.example.happyusf.Mappers.UserRepository;
-import com.example.happyusf.Service.UserService.UserRepositoryService;
+import com.example.happyusf.Biz.User.Service.UserRepositoryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

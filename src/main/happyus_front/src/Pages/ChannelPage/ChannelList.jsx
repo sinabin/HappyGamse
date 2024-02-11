@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import "./ChannelListPage.css"
+import "./ChannelList.css"
 import axios from "axios";
 import Pagination from "../../Components/Pagination";
 import { Link } from 'react-router-dom';
@@ -10,7 +10,7 @@ import ChannelModal from "./ChannelModal";
 import PasswordModal from "./PasswordModal";
 import { useNavigate, useLocation } from 'react-router-dom';
 
-function ChannelListPage() {
+function ChannelList() {
 
     const navigate = useNavigate();
 
@@ -39,7 +39,7 @@ function ChannelListPage() {
 
          axios.post('/api/channel/userCount', { "channelIds" : channelIds })
             .then(response => {
-                setUserCount(response.data);
+                setUserCount(response.data || {});
             })
             .catch(error => {
                 console.error('There was an error!', error);
@@ -52,9 +52,9 @@ function ChannelListPage() {
         axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE, list_type: "All" } })
             .then(response => {
                 if (response.status === 200) {
-                    setChannelList(response.data.channelList);
-                    setShowDesc(new Array(response.data.channelList.length).fill(false));
-                    setTotalCount(response.data.paging.total_count);
+                    setChannelList(response.data.channelList || []);
+                    setShowDesc(new Array(response.data.channelList.length || 0).fill(false));
+                    setTotalCount(response.data.paging.total_count || 0);
                 }
             })
             .catch(error => {
@@ -117,7 +117,7 @@ function ChannelListPage() {
     return (
         <div id={"friend-container"}>
             <h1 style={{textAlign:"center", paddingTop:"30px", color:"white"}}>
-                🎮 🎮 🎮 🎮 🎮
+                🎧 Chat & Voice 🎧
             </h1>
             <br />
             <button id="btn-create-ch" onClick={toggleModal}>채널 생성하기</button>
@@ -172,4 +172,4 @@ function ChannelListPage() {
 
 );
 }
-export default ChannelListPage;
+export default ChannelList;

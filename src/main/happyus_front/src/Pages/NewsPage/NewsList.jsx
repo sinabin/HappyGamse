@@ -2,11 +2,11 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import Pagination from "../../Components/Pagination";
-import './NewsListPage.css';
+import './NewsList.css';
 import {usePagination} from "../../hooks/usePagination";
 
 
-function NewsListPage() {
+function NewsList() {
     const [newsList, setNewsList] = useState([]); // 뉴스 Data
 
     // 페이징 관련
@@ -22,14 +22,13 @@ function NewsListPage() {
             const response = await axios.get('/api/news/list',
                 {
                     params: {
-                            page: page,
-                            size: PAGE_SIZE
+                        page: page,
+                        size: PAGE_SIZE
                     }
                 });
-            if (response.status === 200) {
-                setNewsList(response.data.newsList);
-                setTotalCount(response.data.paging.total_count);
-            }
+            // API response의 Data가 undefined일 경우를 고려하여 논리연산자 사용
+            setNewsList(response.data.newsList || []);
+            setTotalCount(response.data.paging.total_count || 0);
         } catch (error) {
             console.error('Failed to fetch news list:', error);
         }
@@ -38,7 +37,7 @@ function NewsListPage() {
 
     return (
         <div id="news_page_container">
-            <h1 id="news_page_header"> 게임 뉴스 요약</h1>
+            <h1 id="news_page_header"> 게임 뉴스</h1>
             { newsList.map((news) => (
                 <div key={news.news_id} className="news-card">
                     <Link to={`/news/detail/${news.news_id}`} className="news-link">
@@ -59,4 +58,4 @@ function NewsListPage() {
     );
 }
 
-export default NewsListPage;
+export default NewsList;

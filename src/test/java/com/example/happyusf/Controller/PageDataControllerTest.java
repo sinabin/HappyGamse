@@ -1,8 +1,8 @@
 package com.example.happyusf.Controller;
 
-import com.example.happyusf.Domain.MessageDTO;
-import com.example.happyusf.Domain.UserDTO;
-import com.example.happyusf.Service.UserService.UserRepositoryService;
+import com.example.happyusf.Biz.SMS.Domain.MessageDTO;
+import com.example.happyusf.Biz.User.Domain.UserDTO;
+import com.example.happyusf.Biz.User.Service.UserRepositoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -12,15 +12,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-
-import java.util.Collections;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.when;
