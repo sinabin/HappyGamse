@@ -15,10 +15,12 @@ public class CrawlingService {
 
     @Value("${crawler.location}")
     private String CrawlerPath;
+    @Value("${python.command}")
+    private String pythonCommand;
 
     public void GamemecaCrawling() {
         File file = new File(CrawlerPath);
-        ProcessBuilder pb = new ProcessBuilder("python3", file.getName());
+        ProcessBuilder pb = new ProcessBuilder(pythonCommand, file.getName());
         pb.directory(file.getParentFile());
 
         try {
