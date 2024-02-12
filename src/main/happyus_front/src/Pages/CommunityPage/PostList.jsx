@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import moment from 'moment';
 import 'moment/locale/ko';
 import {DataGrid} from '@mui/x-data-grid';
-import './BoardArea.css';
+import './PostList.css';
 import Box from '@mui/material/Box';
 import {useNavigate} from "react-router-dom"; //  //Material UI의 sx prop은 스타일링을 위해 import
-function BoardArea({ gameCode, gameName, boardCategory, categoryName }) {
+function PostList({ gameCode, gameName, boardCategory, categoryName }) {
     const [posts, setPosts] = useState([]);
-    const [pageSize, setPageSize] = useState(25);
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 생성
 
+    console.log("PostList 컴포넌트 - boardCategory :", boardCategory)
     useEffect(() => {
         fetchPosts();
     }, [gameCode, boardCategory, categoryName]);
@@ -88,11 +88,11 @@ function BoardArea({ gameCode, gameName, boardCategory, categoryName }) {
                           pageSizeOptions={[5, 10, 15, 20, 25, 50, 100]}
                           disableSelectionOnClick
                           autoHeight
-                          onRowClick={(params) => {navigate(`/community/posts/detail?post_id=${params.row.post_id}`);}}
+                          onRowClick={(params) => {navigate(`/community/${gameCode}/posts/detail/${params.row.post_id}`);}}
                 />
             </Box>
         </div>
     );
 }
 
-export default BoardArea;
+export default PostList;

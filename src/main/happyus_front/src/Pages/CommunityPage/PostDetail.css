@@ -1,0 +1,24 @@
+.post-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #FFFFFF;
+    background-color: #2C3E50;
+    padding: 10px 20px;
+    border: solid 1px #FFFFFF;
+    margin-bottom: 10px;
+    width: 40vw;
+}
+
+.post-body{
+    display: flex;
+    justify-content: space-between;
+    color: #FFFFFF;
+    background-color: #2C3E50;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    width: 40vw;
+}

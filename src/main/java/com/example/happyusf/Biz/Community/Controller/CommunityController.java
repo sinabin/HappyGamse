@@ -40,7 +40,7 @@ public class CommunityController {
     public ResponseEntity<Map<String, Object>> getPostsList(@RequestParam String post_id){
         Map<String, Object> response = new HashMap<>();
         PostDTO postDetail = communityService.getPostDetail(post_id);
-        response.put("posts", postDetail);
+        response.put("postDetail", postDetail);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

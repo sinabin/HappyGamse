@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './CommunityMenu.css';
+import './CommunityList.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
 
-function CommunityMenu() {
+function CommunityList() {
 
     const [menuItems, setMenuItems] = useState({}); // 장르별로 게임을 분류하기 위한 객체
 
@@ -54,4 +54,4 @@ function CommunityMenu() {
     );
 }
 
-export default CommunityMenu;
+export default CommunityList;
