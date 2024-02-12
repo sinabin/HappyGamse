@@ -1,6 +1,6 @@
 import {Link, useParams} from "react-router-dom";
-import axios from "axios";
 import {useEffect, useState} from "react";
+import axiosInstance from "../../contexts/axiosInstance";
 
 function LeftMenu({ handleMenuClick}) {
     const { gameCode } = useParams(); // URL에서 gameCode 추출
@@ -8,16 +8,11 @@ function LeftMenu({ handleMenuClick}) {
 
     useEffect(() => {
         const fetchLeftMenu = async () => {
-            try {
-                const response = await axios.get("/api/community/leftMenu");
-                setLeftMenu(response.data.leftMenu); // 메뉴 데이터로 상태를 업데이트
-            } catch (error) {
-                console.log("Left menu loading error: ", error);
-            }
+            const response = await axiosInstance.get("/api/community/leftMenu");
+            setLeftMenu(response.data.leftMenu); // 메뉴 데이터로 상태를 업데이트
         };
         fetchLeftMenu();
     }, []);
-
 
     return (
         <div className="left-side-menu">

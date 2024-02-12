@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from "react";
-import axios from "axios";
-import { useNavigate, useLocation } from 'react-router-dom';
+import axiosInstance from "../../contexts/axiosInstance";
+import {useNavigate} from 'react-router-dom';
 import {ChannelContext} from "../../contexts/ChannelContext";
 import Modal from "../../Components/Modal";
+
 function ChannelModal({ showModal, toggleModal }) {
 
     const navigate = useNavigate();
@@ -19,14 +20,9 @@ function ChannelModal({ showModal, toggleModal }) {
     const { setSelectedChannel } = useContext(ChannelContext); // 선택한 채널명 상태값을 전역으로 관리
     const [gameList, setGameList] = useState([]);
 
-    useEffect( ()=> {
-        axios.get("/api/channel/GameList")
-            .then(response =>{
-                setGameList(response.data.gameList);
-            })
-            .catch(error =>{
-                console.log("error : ", error);
-            })
+    useEffect(async  () => {
+        const response = await axiosInstance.get("/api/channel/GameList");
+        setGameList(response.data.gameList);
     }, [])
 
     const handleChange = (e) => {
@@ -36,16 +32,10 @@ function ChannelModal({ showModal, toggleModal }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('/api/channel/create', channelData)
-            .then(response => {
-                alert(response.data.message);
-                setSelectedChannel(channelData.c_title);
-                navigate(`/user/friend/channel/${response.data.c_id}`);
-            })
-            .catch(error => {
-                alert(error.response.data.message);
-                console.error('There was an error!', error);
-            });
+        const response = await axiosInstance.post('/api/channel/create', channelData);
+        alert(response.data.message);
+        setSelectedChannel(channelData.c_title);
+        navigate(`/user/friend/channel/${response.data.c_id}`);
     }
 
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
+import axiosInstance from "../../contexts/axiosInstance";
 import { Link } from 'react-router-dom';
 import Pagination from "../../Components/Pagination";
 import './NewsList.css';
@@ -18,22 +18,17 @@ function NewsList() {
     }, [page]);
 
     async function getNewsList() {
-        try {
-            const response = await axios.get('/api/news/list',
-                {
-                    params: {
-                        page: page,
-                        size: PAGE_SIZE
-                    }
-                });
-            // API response의 Data가 undefined일 경우를 고려하여 논리연산자 사용
-            setNewsList(response.data.newsList || []);
-            setTotalCount(response.data.paging.total_count || 0);
-        } catch (error) {
-            console.error('Failed to fetch news list:', error);
-        }
+        const response = await axiosInstance.get('/api/news/list',
+            {
+                params: {
+                    page: page,
+                    size: PAGE_SIZE
+                }
+            });
+        // API response의 Data가 undefined일 경우를 고려하여 논리연산자 사용
+        setNewsList(response.data.newsList || []);
+        setTotalCount(response.data.paging.total_count || 0);
     }
-
 
     return (
         <div id="news_page_container">

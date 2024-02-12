@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import './MyPage.css';
+import axiosInstance from "../../contexts/axiosInstance";
 
 function MyPage(){
 
@@ -10,37 +11,23 @@ function MyPage(){
     const [isVerificated, setIsVerificated] = useState(false);
     const [userInfo, setUnserInfo] = useState("")
 
-    useEffect( () => {
-        axios.post('/user/myPage', {})
-            .then((response) => {
-                setUnserInfo(response.data)
-            })
-            .catch((error) => {
-                console.error('API 요청 에러:', error);
-            });
+    useEffect(() => {
+        const fetchMypage = async () => {
+            const response = await axiosInstance.post('/user/myPage', {});
+            setUnserInfo(response.data);
+        }
+        fetchMypage();
     }, []);
 
-    const requestResetPassword = () => {
+    const requestResetPassword = async () => {
         if (isVerificated) {
-            if(newPassword === newPassword2){
-                axios.post('/request/resetPasswordByMobile', {
+            if (newPassword === newPassword2) {
+                const response = await axiosInstance.post('/request/resetPasswordByMobile', {
                     password: newPassword,
                     phone_number: userInfo.phone_number,
-                })
-                    .then(response => {
-                        if (!response.status === 200) {
-                            throw new Error(response.data);
-                        }
-                        return response.data;
-                    })
-                    .then(data => {
-                        alert(data);
-                    })
-                    .catch(error => {
-                        console.error('An error occurred:', error);
-                        alert(error.message);
-                    });
-            }else{
+                });
+                alert(response.data);
+            } else {
                 alert("비밀번호가 일치하지않습니다.");
                 return;
             }
@@ -50,65 +37,47 @@ function MyPage(){
         }
     }
 
-    const requestVerificationCodeForPW = () => {
+    const requestVerificationCodeForPW = async () => {
         let phoneNumber = userInfo.phone_number;
         let btnRequestCode = document.getElementById("btn_requestCode");
 
-        axios.post('/request/account/verificationCode', {"to": phoneNumber})
-            .then(response => {
-                if (!response.status === 200) {
-                    throw new Error(response.data);
-                }
+        const response
+            = await axiosInstance.post('/request/account/verificationCode', {"to": phoneNumber})
+        // 성공적으로 요청이 처리된 경우, 타이머 시작
+        btnRequestCode.disabled = true; // 버튼 비활성화
+        btnRequestCode.style.color = "#FFA500";
+        let countdown = 180; // 3분 = 180초
 
-                // 성공적으로 요청이 처리된 경우, 타이머 시작
-                btnRequestCode.disabled = true; // 버튼 비활성화
-                btnRequestCode.style.color = "#FFA500";
-                let countdown = 180; // 3분 = 180초
+        const timerId = setInterval(() => {
+            countdown--;
+            if (countdown <= 0) { // 카운트다운 종료
+                clearInterval(timerId); // 타이머 중지
+                btnRequestCode.innerText = "인증번호 재요청";
+                btnRequestCode.disabled = false; // 버튼 활성화
+            } else {
+                const minutes = Math.floor(countdown / 60);
+                const seconds = countdown % 60;
+                btnRequestCode.innerText =
+                    `인증번호 재요청 (${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
+            }
 
-                const timerId = setInterval(() => {
-                    countdown--;
-
-                    if (countdown <= 0) { // 카운트다운 종료
-                        clearInterval(timerId); // 타이머 중지
-                        btnRequestCode.innerText = "인증번호 재요청";
-                        btnRequestCode.disabled = false; // 버튼 활성화
-                    } else {
-                        const minutes = Math.floor(countdown / 60);
-                        const seconds = countdown % 60;
-                        btnRequestCode.innerText =
-                            `인증번호 재요청 (${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
-                    }
-
-                }, 1000); // 초당 업데이트
-
-                return response.data;
-            })
-            .then(data => alert(data))
-            .catch(error => {
-                console.error('An error occurred:', error);
-                alert(error.message);
-            });
+        }, 1000); // 초당 업데이트
+        alert(response.data)
     }
 
-    const verifyCode = () => {
+    const verifyCode = async () => {
         if (verificationCode.length === 6) {
-            axios.post('/request/verification', {
+            const response = await axiosInstance.post('/request/verification', {
                 phone_number: userInfo.phone_number,
                 sent_code: verificationCode,
-            })
-                .then(response => {
-                    const data = response.data;
-                    if (data.verification_result === true) {
-                        alert("인증이 완료되었습니다.");
-                        setIsVerificated(true);
-                    } else {
-                        alert("인증에 실패하였습니다. 다시 시도해주세요.");
-                        setIsVerificated(false);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+            });
+            if (response.data.verification_result) {
+                alert("인증이 완료되었습니다.");
+                setIsVerificated(true);
+            } else {
+                alert("인증에 실패하였습니다. 다시 시도해주세요.");
+                setIsVerificated(false);
+            }
         } else {
             alert("올바른 인증번호를 입력해주세요.");
         }

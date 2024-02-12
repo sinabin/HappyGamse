@@ -1,14 +1,13 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "./ChannelList.css"
-import axios from "axios";
 import Pagination from "../../Components/Pagination";
-import { Link } from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {ChannelContext} from "../../contexts/ChannelContext";
 import {usePagination} from "../../hooks/usePagination";
 import {useAuthentication} from "../../contexts/AuthenticationContext";
 import ChannelModal from "./ChannelModal";
 import PasswordModal from "./PasswordModal";
-import { useNavigate, useLocation } from 'react-router-dom';
+import axiosInstance from "../../contexts/axiosInstance";
 
 function ChannelList() {
 
@@ -34,35 +33,32 @@ function ChannelList() {
     }
 
     // 채널 인원수 data 요청
-    useEffect( () => {
-        const channelIds = channelList.map(channel => channel.c_id);
-
-         axios.post('/api/channel/userCount', { "channelIds" : channelIds })
-            .then(response => {
-                setUserCount(response.data || {});
-            })
-            .catch(error => {
-                console.error('There was an error!', error);
-            });
-        }, [channelList])
-
+    useEffect(() => {
+        const fetchUserCount = async () => {
+            const channelIds = channelList.map(channel => channel.c_id);
+            const response = await axiosInstance.post('/api/channel/userCount', {"channelIds": channelIds});
+            setUserCount(response.data || {});
+        };
+        if (channelList.length > 0) {
+            fetchUserCount();
+        }
+    }, [channelList]);
 
     // 채널 list Data 요청
     useEffect(() => {
-        axios.get('/api/channel/list', { params: { page: page, size: PAGE_SIZE, list_type: "All" } })
-            .then(response => {
-                if (response.status === 200) {
-                    setChannelList(response.data.channelList || []);
-                    setShowDesc(new Array(response.data.channelList.length || 0).fill(false));
-                    setTotalCount(response.data.paging.total_count || 0);
+        const fetchChannelList = async () => {
+            const response = await axiosInstance.get('/api/channel/list', {
+                params: {
+                    page: page, size: PAGE_SIZE, list_type: "All"
                 }
-            })
-            .catch(error => {
-                alert("채널 정보를 받아오는 도중 에러가 발생하였습니다. 다시 시도해주세요.")
-                console.error('Error : ', error);
             });
-    }, [page]);
+            setChannelList(response.data.channelList || []);
+            setShowDesc(new Array(response.data.channelList.length || 0).fill(false));
+            setTotalCount(response.data.paging.total_count || 0);
 
+        };
+        fetchChannelList();
+    }, [page, PAGE_SIZE]);
 
     // 클릭한 채널명 상태값 갱신
     function clickSpan(index, event) {
@@ -71,7 +67,6 @@ function ChannelList() {
         newShowDesc[index]=!newShowDesc[index];
         setShowDesc(newShowDesc);
     }
-
 
     function handleLinkClick(channel, event) {
         if (!isLogined) {
@@ -100,19 +95,13 @@ function ChannelList() {
     };
 
     const checkPassword = async (selectedChannel, password) => {
-        try {
-            const req_body =  {
-                c_id :selectedChannel.c_id,
-                c_password: password,
-            }
-            const response = await axios.post('/api/channel/CheckingChannelPW', req_body);
-            return response.data;
-        } catch (error) {
-            console.error('There was an error!', error);
+        const req_body = {
+            c_id: selectedChannel.c_id,
+            c_password: password,
         }
-        return false;
+        const response = await axiosInstance.post('/api/channel/CheckingChannelPW', req_body);
+        return response.data;
     };
-
 
     return (
         <div id={"friend-container"}>
@@ -169,7 +158,6 @@ function ChannelList() {
             <Pagination buttonRange={buttonRange} totalCount={totalCount} setPage={setPage} pageSize={PAGE_SIZE} />
             <PasswordModal show={showPasswordModal} onSubmit={handlePasswordSubmit} onClose={() => setShowPasswordModal(false)} />
         </div>
-
-);
+    );
 }
 export default ChannelList;

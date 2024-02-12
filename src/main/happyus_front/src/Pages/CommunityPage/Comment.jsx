@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, {useEffect, useState} from 'react';
 import './Comment.css'
+import axiosInstance from "../../contexts/axiosInstance";
+
 const Comment = ({ postId }) => {
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
@@ -10,44 +11,26 @@ const Comment = ({ postId }) => {
     }, [postId]);
 
     const fetchComments = async () => {
-        try {
-            const response = await axios.get(`/api/community/posts/detail/comments?post_id=${postId}`);
-            // 서버로부터 받은 데이터를 배열로 변환
-            const commentsArray = Array.isArray(response.data.comments)
-                ? response.data.comments
-                : [response.data.comments];
-            setComments(commentsArray);
-        } catch (error) {
-            console.error('댓글을 불러오는 데 실패했습니다.', error);
-        }
+        // 전체 URL을 명시적으로 지정합니다.
+        const response = await axiosInstance.get(`/api/community/posts/detail/comments?post_id=${postId}`);
+        setComments(response.data.comments);
     };
 
     const handleVote = async (commentId, type) => {
-        try {
-            await axios.post(`/api/comments/vote`, { commentId, type });
-            fetchComments();
-        } catch (error) {
-            console.error('투표에 실패했습니다.', error);
-        }
+        await axiosInstance.post(`/api/comments/vote`, {commentId, type});
+        fetchComments();
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         let reqBody = {
-            post_id : postId, // 주의: 서버측에서 요구하는 필드명과 일치해야 합니다. CommentDTO 구조를 확인하세요.
-            content : content,
+            post_id: postId,
+            content: content,
         };
-        try {
-            // 경로 수정: 댓글 생성 API 경로에 맞게 변경
-            await axios.post(`/user/api/community/posts/detail/comments`, reqBody);
-            setContent('');
-            fetchComments();
-        } catch (error) {
-            console.error('댓글 작성에 실패했습니다.', error);
-        }
+        await axiosInstance.post(`/user/api/community/posts/detail/comments`, reqBody);
+        setContent('');
+        fetchComments();
     };
-
-
 
     return (
         <div className="comment-section">

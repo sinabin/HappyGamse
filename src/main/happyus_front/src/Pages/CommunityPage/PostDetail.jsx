@@ -19,17 +19,14 @@ function PostDetail() {
     }, [post_id]);
 
     async function fetchPostDetail(post_id) {
-        try {
-            const response = await axios.get("/api/community/posts/detail", {
+        const response = await axios.get("/api/community/posts/detail",
+            {
                 params: {
                     post_id: post_id,
                 }
             });
-            const cleanContent = DOMPurify.sanitize(response.data.postDetail.post_content);
-            setPostDetail({...response.data.postDetail, post_content: cleanContent});
-        } catch (error) {
-            console.log("error : ", error);
-        }
+        const cleanContent = DOMPurify.sanitize(response.data.postDetail.post_content);
+        setPostDetail({...response.data.postDetail, post_content: cleanContent});
     }
 
     const [boardCategory, setBoardCategory] = useState( "");

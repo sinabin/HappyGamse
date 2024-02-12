@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -59,7 +61,9 @@ public class SecurityConfig {
                                 .and()
                                 .sessionFixation().changeSessionId() // 세션 고정공격 보호기능 활성화
                                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // 세션 생성 정책 설정
-                );
+                ).exceptionHandling(exceptionHandling -> exceptionHandling
+                        .authenticationEntryPoint((request, response, authException) ->
+                                response.sendError(HttpServletResponse.SC_FORBIDDEN, "접근권한이 없습니다. (로그인 또는 계정 상태를 확인해주세요.)")));
 
         return http.build();
     }

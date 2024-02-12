@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from "axios";
+import axiosInstance from "../../contexts/axiosInstance";
 import { useParams } from 'react-router-dom';
 import './NewsDetail.css';
 
@@ -9,16 +9,11 @@ function NewsDetail() {
 
     useEffect(() => {
         const fetchNewsDetail = async () => {
-            try {
-                const response = await axios.get(`/api/news/detail?news_id=${news_id}`);
-                if (response.status === 200) {
-                    setNewsData(response.data);
-                }
-            } catch (error) {
-                console.error('Failed to fetch news detail:', error);
+            const response = await axiosInstance.get(`/api/news/detail?news_id=${news_id}`);
+            if (response.status === 200) {
+                setNewsData(response.data);
             }
         };
-
         fetchNewsDetail();
     }, [news_id]); // 의존성 배열에 news_id 추가
 
