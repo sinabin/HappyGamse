@@ -10,7 +10,6 @@ function PostList({ gameCode, gameName, boardCategory, categoryName }) {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 생성
 
-    console.log("PostList 컴포넌트 - boardCategory :", boardCategory)
     useEffect(() => {
         fetchPosts();
     }, [gameCode, boardCategory, categoryName]);

@@ -5,6 +5,7 @@ import 'moment/locale/ko';
 import './PostDetail.css';
 import {useNavigate, useParams} from "react-router-dom";
 import LeftMenu from './LeftMenu';
+import Comment from "./Comment";
 
 function PostDetail() {
     const { post_id, gameCode } = useParams();
@@ -13,6 +14,7 @@ function PostDetail() {
     const [postDetail, setPostDetail] = useState({});
 
     useEffect(() => {
+        console.log("post_id : ", post_id);
         fetchPostDetail(post_id);
     }, [post_id]);
 
@@ -47,6 +49,7 @@ function PostDetail() {
             <div className="board-area-container">
                 <div className="post-body">
                     <article id="post-context" dangerouslySetInnerHTML={{ __html: postDetail.post_content || '' }}></article>
+                    <Comment postId={post_id}></Comment>
                 </div>
             </div>
         </div>

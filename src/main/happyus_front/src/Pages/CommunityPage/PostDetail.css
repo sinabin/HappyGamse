@@ -13,10 +13,11 @@
 
 .post-body{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column; /* 이 부분을 추가합니다. */
+    justify-content: flex-start; /* 기본값으로 변경하여 요소들이 위에서 아래로 쌓이도록 합니다. */
     color: #FFFFFF;
     background-color: #2C3E50;
-    align-items: center;
+    align-items: flex-start; /* 양쪽 끝이 아니라 시작점에서 정렬하도록 합니다. */
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;

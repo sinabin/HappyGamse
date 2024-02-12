@@ -87,7 +87,6 @@ document.getElementById("email").addEventListener("keyup", function () {
 
 const verified_code = document.getElementById("verified_code");
 document.getElementById("verified_code").addEventListener("keyup", function () {
-    console.log("check : ",verified_code.value)
     if (verified_code.value.length === 6) {
         document.getElementById("btn_verify").style.backgroundColor = "#6d5dfc";
         document.getElementById("btn_verify").style.cursor = "pointer";

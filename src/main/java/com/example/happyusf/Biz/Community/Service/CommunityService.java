@@ -1,6 +1,7 @@
 package com.example.happyusf.Biz.Community.Service;
 
 import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
+import com.example.happyusf.Biz.Community.Domain.CommentDTO;
 import com.example.happyusf.Biz.Community.Domain.PostDTO;
 import com.example.happyusf.Mappers.CommunityRepository;
 import org.springframework.stereotype.Service;
@@ -25,5 +26,12 @@ public class CommunityService {
 
     public PostDTO getPostDetail(String post_id){
         return communityRepository.getPostDetail(Integer.parseInt(post_id));
+    }
+
+    public ArrayList<CommentDTO> getComments(String post_id){
+        return communityRepository.getComments(Integer.parseInt(post_id));
+    }
+    public boolean createComment(CommentDTO commentDTO){
+        return communityRepository.createComment(commentDTO) > 0;
     }
 }

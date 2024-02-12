@@ -1,0 +1,90 @@
+.comment-section {
+    background-color: #1F2544;
+    border-radius: 5px;
+    padding: 20px;
+    margin-top: 20px;
+    width: 39.6vw;
+}
+
+.comment-form {
+    margin-bottom: 20px;
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    resize: vertical; /* 사용자가 댓글 입력 영역의 크기를 조절할 수 있도록 합니다. */
+}
+
+.comment-write-button {
+    padding: 8px 16px;
+    background-color: #5cb85c;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer; /* 버튼 위에 마우스를 올렸을 때 커서를 포인터로 변경합니다. */
+    transition: background-color 0.2s; /* 마우스 오버 시 배경색 변경 애니메이션을 부드럽게 합니다. */
+}
+
+.comment-write-button:hover {
+    background-color: #4cae4c; /* 버튼을 호버할 때 색상이 변경되도록 합니다. */
+}
+
+.comment-item {
+    display: flex;
+    align-items: center; /* 세로 중앙 정렬 */
+}
+
+.comment-content {
+    font-size: 20px;
+    color: #FFFFFF;
+    margin-bottom: 5px;
+}
+
+.comment-vote-button {
+    padding: 4px 8px;
+    background-color: #337ab7;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.comment-vote-button:hover {
+    background-color: #286090;
+}
+
+/* 대댓글 스타일 */
+.reply-item {
+    border-left: 4px solid #d9534f;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+.comment-vote-area {
+    display: flex;
+    flex-direction: column; /* 버튼을 수직으로 정렬 */
+    align-items: center;
+    margin-right: 10px; /* 댓글 텍스트와의 간격 */
+}
+
+.vote-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+.vote-button:last-child {
+    margin-right: 0;
+}
+
+.vote-icon {
+    font-size: 1.2rem; /* 아이콘 크기 */
+}
+
+.vote-count {
+}

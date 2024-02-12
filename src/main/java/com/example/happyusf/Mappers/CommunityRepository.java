@@ -1,7 +1,9 @@
 package com.example.happyusf.Mappers;
 
 import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
+import com.example.happyusf.Biz.Community.Domain.CommentDTO;
 import com.example.happyusf.Biz.Community.Domain.PostDTO;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -21,4 +23,12 @@ public interface CommunityRepository {
     @Select("SELECT post_id, user_id, post_title, post_content, view_count, like_count, reg_date, is_admin_post" +
             " FROM post WHERE post_id = #{post_id}")
     PostDTO getPostDetail(int post_id);
+
+    @Select("SELECT comment_id, user_id, parent_comment_id, content, like_count, reg_date" +
+            " FROM comments WHERE post_id = #{post_id}")
+    ArrayList<CommentDTO> getComments(int post_id);
+
+    @Insert("INSERT INTO comments(post_id, user_id, parent_comment_id, content, reg_date) " +
+            "VALUE (#{post_id}, #{user_id}, #{parent_comment_id} , #{content}, #{reg_date})")
+    int createComment(CommentDTO commentDTO);
 }
