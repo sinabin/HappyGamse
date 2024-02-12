@@ -20,10 +20,17 @@ function ChannelModal({ showModal, toggleModal }) {
     const { setSelectedChannel } = useContext(ChannelContext); // 선택한 채널명 상태값을 전역으로 관리
     const [gameList, setGameList] = useState([]);
 
-    useEffect(async  () => {
-        const response = await axiosInstance.get("/api/channel/GameList");
-        setGameList(response.data.gameList);
-    }, [])
+    useEffect(() => {
+        const fetchGameList = async () => {
+            try {
+                const response = await axiosInstance.get("/api/channel/GameList");
+                setGameList(response.data.gameList);
+            } catch (error) {
+                console.error("게임 리스트를 불러오는 중 오류가 발생했습니다.", error);
+            }
+        };
+        fetchGameList();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -32,11 +39,20 @@ function ChannelModal({ showModal, toggleModal }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await axiosInstance.post('/api/channel/create', channelData);
-        alert(response.data.message);
-        setSelectedChannel(channelData.c_title);
-        navigate(`/user/friend/channel/${response.data.c_id}`);
-    }
+        try {
+            const response = await axiosInstance.post('/api/channel/create', channelData);
+            alert(response.data.message);
+            setSelectedChannel(channelData.c_title);
+            navigate(`/user/friend/channel/${response.data.c_id}`);
+        } catch (error) {
+            if (error.response && error.response.data.message) {
+                alert(error.response.data.message);
+            } else {
+                alert("채널 생성 중 오류가 발생했습니다.");
+            }
+            console.error('채널 생성 중 오류가 발생했습니다.', error);
+        }
+    };
 
 
     return (
