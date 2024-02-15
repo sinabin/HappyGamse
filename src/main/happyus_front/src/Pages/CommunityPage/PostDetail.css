@@ -1,23 +1,19 @@
 .post-header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 16px;
     color: #FFFFFF;
-    background-color: #2C3E50;
+    background-color: #181818;
     padding: 10px 20px;
-    border: solid 1px #FFFFFF;
-    margin-bottom: 10px;
+    border: solid 1px #181818;
     width: 40vw;
+    border-bottom: 1px solid #FFFFFF;
 }
 
 .post-body{
     display: flex;
-    flex-direction: column; /* 이 부분을 추가합니다. */
-    justify-content: flex-start; /* 기본값으로 변경하여 요소들이 위에서 아래로 쌓이도록 합니다. */
+    flex-direction: column;
+    justify-content: flex-start;
     color: #FFFFFF;
-    background-color: #2C3E50;
-    align-items: flex-start; /* 양쪽 끝이 아니라 시작점에서 정렬하도록 합니다. */
+    background-color: #181818;
+    align-items: flex-start; /* 양쪽 끝이 아니라 시작점에서 정렬 */
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;

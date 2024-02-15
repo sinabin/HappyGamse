@@ -6,6 +6,7 @@ import com.example.happyusf.Biz.Community.Domain.PostDTO;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -29,6 +30,26 @@ public interface CommunityRepository {
     ArrayList<CommentDTO> getComments(int post_id);
 
     @Insert("INSERT INTO comments(post_id, user_id, parent_comment_id, content, reg_date) " +
-            "VALUE (#{post_id}, #{user_id}, #{parent_comment_id} , #{content}, #{reg_date})")
+            "VALUE (#{post_id}, #{user_id}, #{parent_comment_id} , #{content}, sysdate())")
     int createComment(CommentDTO commentDTO);
+
+    @Update("UPDATE comments set like_count =  comments.like_count + #{like_count} WHERE comment_id = #{comment_id}")
+    int updateLikeCount(CommentDTO commentDTO);
+
+    @Select("SELECT comment_id, vote_type FROM comment_votes WHERE comment_id =#{comment_id} AND user_id = #{user_id}")
+    CommentDTO getHasVoted(CommentDTO commentDTO);
+
+    @Insert("INSERT INTO comment_votes(user_id, comment_id, vote_type) VALUE (#{user_id}, #{comment_id}, #{like_count})")
+    int insertVoted(CommentDTO commentDTO);
+
+    @Update("UPDATE comment_votes SET vote_type = #{like_count} WHERE user_id = #{user_id} AND comment_id = #{comment_id}")
+    int updateVote(CommentDTO commentDTO);
+
+    @Update("UPDATE comments SET like_count = like_count + #{like_count_adjustment} WHERE comment_id = #{comment_id}")
+    int adjustLikeCount(CommentDTO commentDTO);
+
+    @Select("SELECT comments.like_count FROM comments WHERE comment_id = #{comment_id}")
+    CommentDTO getCurrentLikeCount(CommentDTO commentDTO);
+
+
 }

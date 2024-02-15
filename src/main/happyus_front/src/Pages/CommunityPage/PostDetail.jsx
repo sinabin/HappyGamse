@@ -44,6 +44,9 @@ function PostDetail() {
         <div className="community-container">
             <LeftMenu handleMenuClick={handleMenuClick} />
             <div className="board-area-container">
+                <div className="post-header">
+                    <h1>{postDetail.post_title}</h1>
+                </div>
                 <div className="post-body">
                     <article id="post-context" dangerouslySetInnerHTML={{ __html: postDetail.post_content || '' }}></article>
                     <Comment postId={post_id}></Comment>

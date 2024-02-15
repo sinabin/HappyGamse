@@ -17,4 +17,6 @@ public class CommentDTO {
     private String content;
     private String reg_date;
     private int like_count;
+    private int vote_type;
+    private int  like_count_adjustment;
 }
