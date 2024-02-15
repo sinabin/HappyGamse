@@ -1,6 +1,7 @@
 package com.example.happyusf.Biz.User.Controller;
 
 import com.example.happyusf.Biz.Common.Service.PageResourceService;
+import com.example.happyusf.Biz.Common.Service.PageResourceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
