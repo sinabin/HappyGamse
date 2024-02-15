@@ -2,7 +2,8 @@ package com.example.happyusf.Biz.Community.Controller;
 
 import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
 import com.example.happyusf.Biz.Community.Domain.PostDTO;
-import com.example.happyusf.Biz.Community.Service.CommunityService;
+import com.example.happyusf.Biz.Community.Service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +14,19 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/community")
-public class CommunityController {
+public class PostController {
 
-    private final CommunityService communityService;
+    private final PostService postService;
 
-    public CommunityController(CommunityService communityService) {
-        this.communityService = communityService;
+    @Autowired
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     @GetMapping("/leftMenu")
     public ResponseEntity<Map<String, Object>> getLeftMenuList(){
         Map<String, Object> response = new HashMap<>();
-        ArrayList<CodeInfoDTO> leftMenu = communityService.getCommunityLeftMenu();
+        ArrayList<CodeInfoDTO> leftMenu = postService.getCommunityLeftMenu();
         response.put("leftMenu", leftMenu);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -32,14 +34,14 @@ public class CommunityController {
     @PostMapping("/posts")
     public ResponseEntity<Map<String, Object>> getPostsList(@RequestBody PostDTO postDTO){
         Map<String, Object> response = new HashMap<>();
-        ArrayList<PostDTO> posts = communityService.getPosts(postDTO);
+        ArrayList<PostDTO> posts = postService.getPosts(postDTO);
         response.put("posts", posts);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/posts/detail")
     public ResponseEntity<Map<String, Object>> getPostsList(@RequestParam String post_id){
         Map<String, Object> response = new HashMap<>();
-        PostDTO postDetail = communityService.getPostDetail(post_id);
+        PostDTO postDetail = postService.getPostDetail(post_id);
         response.put("postDetail", postDetail);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

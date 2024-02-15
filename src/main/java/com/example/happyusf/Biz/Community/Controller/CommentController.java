@@ -1,7 +1,8 @@
 package com.example.happyusf.Biz.Community.Controller;
 
 import com.example.happyusf.Biz.Community.Domain.CommentDTO;
-import com.example.happyusf.Biz.Community.Service.CommunityService;
+import com.example.happyusf.Biz.Community.Service.CommentService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,11 +16,13 @@ import java.util.Map;
 @RestController
 public class CommentController {
 
-    private final CommunityService communityService;
+    private final CommentService commentService;
 
-    public CommentController(CommunityService communityService) {
-        this.communityService = communityService;
+    @Autowired
+    public CommentController(CommentService commentService) {
+        this.commentService = commentService;
     }
+
 
     /**
      * @param post_id
@@ -28,7 +31,7 @@ public class CommentController {
     @GetMapping("/api/community/posts/detail/comments")
     public ResponseEntity<Map<String, Object>> getComments(@RequestParam String post_id){
         Map<String, Object> response = new HashMap<>();
-        ArrayList<CommentDTO> comments = communityService.getComments(post_id);
+        ArrayList<CommentDTO> comments = commentService.getComments(post_id);
         response.put("comments", comments);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -43,7 +46,7 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> createComment(@RequestBody CommentDTO commentDTO, Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         commentDTO.setUser_id(authentication.getName());
-        boolean isCreated = communityService.createComment(commentDTO);
+        boolean isCreated = commentService.createComment(commentDTO);
         response.put("isCreated", isCreated);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -58,7 +61,7 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> getHasVoted(@ModelAttribute CommentDTO commentDTO, Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         commentDTO.setUser_id(authentication.getName());
-        CommentDTO hasVoted = communityService.getHasVoted(commentDTO);
+        CommentDTO hasVoted = commentService.getHasVoted(commentDTO);
         response.put("hasVoted", hasVoted);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -74,7 +77,7 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> updateLikeCount(@RequestBody CommentDTO commentDTO, Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         commentDTO.setUser_id(authentication.getName());
-        boolean isCreated = communityService.updateLikeCountAndInsertVoted(commentDTO);
+        boolean isCreated = commentService.updateLikeCountAndInsertVoted(commentDTO);
         response.put("isUpdated", isCreated);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -90,7 +93,7 @@ public class CommentController {
     public ResponseEntity<Map<String, Object>> updateVote(@RequestBody CommentDTO commentDTO, Authentication authentication) {
         Map<String, Object> response = new HashMap<>();
         commentDTO.setUser_id(authentication.getName()); // 현재 인증된 사용자 ID 설정
-        boolean isUpdated = communityService.updateVote(commentDTO); // 투표 업데이트 처리
+        boolean isUpdated = commentService.updateVote(commentDTO); // 투표 업데이트 처리
         response.put("isUpdated", isUpdated);
         return new ResponseEntity<>(response, HttpStatus.OK); // 상태 코드를 CREATED에서 OK로 변경할 수 있음
     }

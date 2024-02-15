@@ -52,12 +52,7 @@ function PostDetail() {
                     <Comment postId={post_id}></Comment>
                 </div>
                 <div>
-                    <PostList
-                        gameCode={gameCode}
-                        gameName={postDetail.gameName} // 예시로 추가한 부분, 실제 코드에서는 적절한 값을 사용하세요.
-                        boardCategory={boardCategory}
-                        categoryName={categoryName}
-                    />
+                    <PostList/>
                 </div>
             </div>
         </div>

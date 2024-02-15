@@ -24,7 +24,6 @@ public class SecurityConfig {
 
     @Autowired private CustomWebSocketHandler customWebSocketHandler;
 
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authenticationProvider(customAuthProvider)
