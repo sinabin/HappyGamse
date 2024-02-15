@@ -6,9 +6,11 @@ import {DataGrid} from '@mui/x-data-grid';
 import './PostList.css';
 import Box from '@mui/material/Box';
 import {useNavigate} from "react-router-dom"; //  //Material UI의 sx prop은 스타일링을 위해 import
-function PostList({ gameCode, gameName, boardCategory, categoryName }) {
+import useStore from '../../contexts/store';
+function PostList() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 생성
+    const { gameCode, gameName, boardCategory, categoryName } = useStore();
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -52,8 +54,7 @@ function PostList({ gameCode, gameName, boardCategory, categoryName }) {
     };
 
     return (
-        <div>
-            <div id="board-title">{`${gameName} 📝 ${categoryName} 게시판`}</div>
+        <div className="postListArea">
             <Box sx={dataGridSx}>
                 <DataGrid rows={posts} columns={columns} className="hide-header"
                           localeText={{noRowsLabel: '작성된 게시글이 없습니다.'}}

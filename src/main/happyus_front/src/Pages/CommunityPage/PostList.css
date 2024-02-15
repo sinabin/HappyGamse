@@ -40,6 +40,16 @@
     margin-bottom: 10px;
     width: 40vw;
 }
+.postListArea{
+    display: flex;
+    color: #FFFFFF;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    width: 40vw;
+}
 .new-post-button {
     background-color: #4A90E2;
     border: none;

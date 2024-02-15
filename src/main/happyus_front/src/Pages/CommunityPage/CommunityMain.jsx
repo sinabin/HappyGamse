@@ -4,17 +4,26 @@ import { useParams, useLocation, useNavigate } from "react-router-dom";
 import PostList from './PostList';
 import './CommunityMain.css';
 import LeftMenu from "./LeftMenu";
+import useStore from '../../contexts/store';
 
 function CommunityMain() {
     const { gameCode, categoryCode } = useParams();
     const location = useLocation();
     let { menuName: codeName } = location.state || {};
-    const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 초기화합니다.
+    const navigate = useNavigate();
 
-    let gameName = localStorage.getItem("gameName");
-    const [boardCategory, setBoardCategory] = useState(categoryCode || "LM1001");
-    const [categoryName, setCategoryName] = useState(codeName || "자유");
 
+    // localStorage에서 게임 이름 가져오기
+    const gameName = localStorage.getItem('gameName') || '';
+    // Zustand 스토어에서 상태와 업데이트 함수들을 가져옴
+    const { setGameCode, setGameName, setBoardCategory, setCategoryName, boardCategory, categoryName } = useStore();
+
+    useEffect(() => {
+        if (gameCode) setGameCode(gameCode);
+        if (categoryCode) setBoardCategory(categoryCode);
+        if (codeName) setCategoryName(codeName);
+        setGameName(gameName);
+    }, [gameCode, categoryCode, codeName, setGameCode, setGameName, setBoardCategory, setCategoryName]);
 
     // handleMenuClick 함수 내에서 navigate를 사용합니다.
     const handleMenuClick = (code, codeName) => {
@@ -31,13 +40,8 @@ function CommunityMain() {
                 <LeftMenu handleMenuClick={handleMenuClick}/>
                 {/* 게시판 영역 */}
                 <div className="board-area-container">
-                    {/* 조건부 로직을 적용하여 categoryCode 또는 boardCategory를 전달 */}
-                    <PostList
-                        gameCode={gameCode}
-                        gameName={gameName}
-                        boardCategory={boardCategory}
-                        categoryName={categoryName}
-                    />
+                    <div id="board-title">{`${gameName} 📝 ${categoryName} 게시판`}</div>
+                    <PostList/>
                 </div>
             </div>
         </div>

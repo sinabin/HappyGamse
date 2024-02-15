@@ -6,6 +6,7 @@ import './PostDetail.css';
 import {useNavigate, useParams} from "react-router-dom";
 import LeftMenu from './LeftMenu';
 import Comment from "./Comment";
+import PostList from "./PostList";
 
 function PostDetail() {
     const { post_id, gameCode } = useParams();
@@ -14,7 +15,6 @@ function PostDetail() {
     const [postDetail, setPostDetail] = useState({});
 
     useEffect(() => {
-        console.log("post_id : ", post_id);
         fetchPostDetail(post_id);
     }, [post_id]);
 
@@ -50,6 +50,14 @@ function PostDetail() {
                 <div className="post-body">
                     <article id="post-context" dangerouslySetInnerHTML={{ __html: postDetail.post_content || '' }}></article>
                     <Comment postId={post_id}></Comment>
+                </div>
+                <div>
+                    <PostList
+                        gameCode={gameCode}
+                        gameName={postDetail.gameName} // 예시로 추가한 부분, 실제 코드에서는 적절한 값을 사용하세요.
+                        boardCategory={boardCategory}
+                        categoryName={categoryName}
+                    />
                 </div>
             </div>
         </div>
