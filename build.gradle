@@ -56,17 +56,53 @@ sourceSets {
 
 processResources { dependsOn "copyReactBuildFiles" }
 
-task installReact(type: Exec) {
-    workingDir "$frontendDir"
-    inputs.dir "$frontendDir"
+import java.security.MessageDigest
+
+task calculatePackageJsonHash {
+    doLast {
+        def packageJsonFile = new File(frontendDir, 'package.json')
+        def packageJsonHashFile = new File(frontendDir, 'package-json-hash.txt')
+
+        if (packageJsonFile.exists()) {
+            // package.json 파일의 해시값을 계산
+            MessageDigest digest = MessageDigest.getInstance("SHA-256")
+            def packageJsonHash = digest.digest(packageJsonFile.bytes).encodeHex().toString()
+
+            // 이전 해시값을 읽기
+            def previousHash = packageJsonHashFile.exists() ? packageJsonHashFile.text : ''
+
+            if (!packageJsonHash.equals(previousHash)) {
+                // 해시값이 변경되었다면, 새 해시값을 파일에 저장
+                packageJsonHashFile.text = packageJsonHash
+
+                // installReact 태스크의 onlyIf 조건을 만족시키기 위한 플래그 설정
+                project.ext.shouldRunInstallReact = true
+            } else {
+                // 해시값이 변경되지 않았다면, 태스크 실행을 건너뛰기 위한 플래그 설정
+                project.ext.shouldRunInstallReact = false
+            }
+        }
+    }
+}
+
+task installReact(type: Exec, dependsOn: calculatePackageJsonHash) {
+    onlyIf { project.ext.shouldRunInstallReact }
+
+    doFirst {
+        logger.lifecycle("Running 'npm install' due to changes in package.json")
+    }
+
+    workingDir frontendDir
     group = BasePlugin.BUILD_GROUP
     if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows')) {
         commandLine "npm.cmd", "audit", "fix"
-        commandLine 'npm.cmd', 'install' }
-    else {
-        commandLine "npm", "audit", "fix" commandLine 'npm', 'install'
+        commandLine 'npm.cmd', 'install'
+    } else {
+        commandLine "npm", "audit", "fix"
+        commandLine 'npm', 'install'
     }
 }
+
 
 task buildReact(type: Exec) {
     dependsOn "installReact"
