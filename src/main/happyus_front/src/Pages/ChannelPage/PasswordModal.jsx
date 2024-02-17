@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Modal from "../../Components/Modal";
+import Modal from "../../Common/Modal";
 
 function PasswordModal({ show, onSubmit, onClose }) {
     const [password, setPassword] = useState('');

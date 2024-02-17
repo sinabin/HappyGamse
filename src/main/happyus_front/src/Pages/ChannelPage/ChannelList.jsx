@@ -1,6 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import "./ChannelList.css"
-import Pagination from "../../Components/Pagination";
+import Pagination from "../../Common/Pagination";
 import {Link, useNavigate} from 'react-router-dom';
 import {ChannelContext} from "../../contexts/ChannelContext";
 import {usePagination} from "../../hooks/usePagination";

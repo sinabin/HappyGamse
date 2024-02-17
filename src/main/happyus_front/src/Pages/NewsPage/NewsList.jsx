@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axiosInstance from "../../contexts/axiosInstance";
 import { Link } from 'react-router-dom';
-import Pagination from "../../Components/Pagination";
+import Pagination from "../../Common/Pagination";
 import './NewsList.css';
 import {usePagination} from "../../hooks/usePagination";
 

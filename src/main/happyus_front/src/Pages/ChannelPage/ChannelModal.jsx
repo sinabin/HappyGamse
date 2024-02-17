@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import axiosInstance from "../../contexts/axiosInstance";
 import {useNavigate} from 'react-router-dom';
 import {ChannelContext} from "../../contexts/ChannelContext";
-import Modal from "../../Components/Modal";
+import Modal from "../../Common/Modal";
 
 function ChannelModal({ showModal, toggleModal }) {
 

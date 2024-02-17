@@ -1,7 +1,6 @@
 /**
- * @Explain : 페이징은 컴포넌트 사용시 필요한 공통로직을 custom hook으로 작성
+ * @Explain : 페이징 컴포넌트 사용시 필요한 공통로직을 custom hook으로 작성
  *            페이징 처리시 해당 hook을 사용
- *
  */
 import {useEffect, useState} from "react";
 
