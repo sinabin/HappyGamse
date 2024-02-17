@@ -10,7 +10,7 @@ import useStore from '../../contexts/store';
 function PostList() {
     const [posts, setPosts] = useState([]);
     const navigate = useNavigate(); // useNavigate 훅을 사용하여 navigate 함수를 생성
-    const { gameCode, gameName, boardCategory, categoryName } = useStore();
+    const { gameCode, boardCategory, categoryName } = useStore();
 
     useEffect(() => {
         const fetchPosts = async () => {

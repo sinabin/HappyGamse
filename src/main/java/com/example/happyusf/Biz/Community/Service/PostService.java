@@ -9,4 +9,6 @@ public interface PostService {
     public ArrayList<CodeInfoDTO> getCommunityLeftMenu();
     ArrayList<PostDTO> getPosts(PostDTO postDTO);
     PostDTO getPostDetail(String post_id);
+    boolean updatePost(PostDTO postDTO);
+    boolean deletePost(PostDTO postDTO);
 }

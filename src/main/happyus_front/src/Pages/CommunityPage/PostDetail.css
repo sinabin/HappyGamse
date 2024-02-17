@@ -19,3 +19,48 @@
     border-radius: 4px;
     width: 40vw;
 }
+
+.post-button-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.edit-button, .delete-button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 16px;
+    margin: 0 5px;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button {
+    background-color: #4CAF50; /* 녹색 */
+    color: white;
+}
+
+.delete-button {
+    background-color: #f44336; /* 빨간색 */
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.post-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 높이에 대한 정렬을 중앙으로 설정합니다. */
+}
+
+.title-info-item, .title-info-item2 {
+    display: flex;
+    align-items: center; /* 내부 요소들이 중앙으로 정렬되도록 합니다. */
+}

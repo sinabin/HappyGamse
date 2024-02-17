@@ -12,6 +12,7 @@ import MyPage from "./Pages/MyPage/MyPage"
 import CommunityMain from "./Pages/CommunityPage/CommunityMain";
 import CommunityList from "./Pages/CommunityPage/CommunityList";
 import PostDetail from "./Pages/CommunityPage/PostDetail";
+import EditPost from "./Pages/CommunityPage/EditPost";
 library.add(fas, faTwitter, faFontAwesome)
 
 function App(){
@@ -30,6 +31,7 @@ function App(){
                 <Route path="/community/:gameCode" element={<CommunityMain />} />
                 <Route path="/community/:gameCode/:categoryCode" element={<CommunityMain />} />
                 <Route path="/community/:gameCode/posts/detail/:post_id" element={<PostDetail />} />
+                <Route path="/user/community/:gameCode/posts/edit-post/:post_id" element={<EditPost />} />
             </Routes>
         </BrowserRouter>
 

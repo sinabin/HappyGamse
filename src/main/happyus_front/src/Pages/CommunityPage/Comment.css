@@ -13,6 +13,7 @@
 
 .comment-textarea{
     flex: 1;
+    height: 65px;
     background-color: #121212;
     color: #fff;
     width: 85%;
@@ -40,6 +41,7 @@
 }
 
 .comment-write-button, .reply-submit-button, .reply-cancel-button{
+    height: 65px;
     padding: 8px 16px;
     background-color: #303030;
     border: none;

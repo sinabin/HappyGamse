@@ -1,7 +1,16 @@
 .community-container {
     display: flex;
     height: 100vh;
+    overflow: auto; /* 스크롤이 필요할 때만 스크롤바를 표시 */
+    max-height: 100vh; /* 또는 원하는 높이 값으로 설정 */
+    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바를 숨김 */
+    scrollbar-width: none; /* Firefox에서 스크롤바를 숨김. */
 }
+/* Webkit 브라우저에서 스크롤바 숨기기 */
+.community-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera에서 스크롤바를 숨김 */
+}
+
 
 .left-side-menu {
     background-color: #16213e;
@@ -41,10 +50,18 @@
     flex-grow: 1;
     flex-direction: column;
     padding: 20px;
-    overflow-y: auto;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
+    overflow: auto; /* 스크롤이 필요할 때만 스크롤바를 표시 */
+    max-height: 100vh; /* 또는 원하는 높이 값으로 설정 */
+    -ms-overflow-style: none; /* IE와 Edge에서 스크롤바를 숨김 */
+    scrollbar-width: none; /* Firefox에서 스크롤바를 숨김. */
+}
+
+/* Webkit 브라우저에서 스크롤바 숨기기 */
+.board-area-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera에서 스크롤바를 숨김 */
 }
 
 .board-area {

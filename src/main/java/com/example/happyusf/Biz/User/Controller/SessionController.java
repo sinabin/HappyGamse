@@ -1,6 +1,7 @@
 package com.example.happyusf.Biz.User.Controller;
 
 
+import com.example.happyusf.Biz.User.Domain.UserDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +22,9 @@ public class SessionController {
      * @return boolean
      */
     @GetMapping("/is-authenticated")
-    public boolean isAuthenticated(Authentication authentication) {
-        return authentication != null && authentication.isAuthenticated();
+    public UserDTO isAuthenticated(Authentication authentication) {
+        UserDTO userinfo = UserDTO.builder().user_id(authentication.getName()).build();
+        return userinfo;
     }
 
 

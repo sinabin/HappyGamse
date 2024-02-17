@@ -1,0 +1,59 @@
+.edit-post-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    background-color: #121212;
+    border-radius: 8px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+.editPostBtn .cancel:hover{
+
+}
+
+.react-quill-container {
+    height: 400px; /* ReactQuill의 높이 설정 */
+}
+
+/* ReactQuill 에디터 내 텍스트 색상 변경 */
+.ql-editor {
+    color: #FFFFFF; /* 텍스트 색상을 원하는 색상으로 변경하세요 */
+}
+
+/* ReactQuill 툴바 색상 변경 */
+.ql-toolbar {
+    background: #f0f0f0; /* 툴바 배경색 */
+    border-color: #ccc; /* 툴바 테두리 색상 */
+}
+.editPostBtn-container{
+    display: flex;
+    justify-content: flex-end;
+    gap: 5px;
+}
+#editPost-submitBtn{
+
+}

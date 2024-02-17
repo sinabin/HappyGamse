@@ -46,7 +46,7 @@ function Header() {
                     </Nav>
 
                     {/* DropDownBtn Area*/ }
-                    {isLogined ? (
+                    {isLogined.user_id ? (
                         <DropdownButton variant="success" title="My Page" id="dropDown" style={{marginRight: '2%'}}>
                             <Dropdown.Item> <Link to="user/myPage" className="dropdown-link-style">내정보</Link></Dropdown.Item>
                             <Dropdown.Item> <Link to="user/myPost" className="dropdown-link-style">내 게시물 관리</Link></Dropdown.Item>

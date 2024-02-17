@@ -3,10 +3,7 @@ package com.example.happyusf.Mappers;
 import com.example.happyusf.Biz.Common.Domain.CodeInfoDTO;
 import com.example.happyusf.Biz.Community.Domain.CommentDTO;
 import com.example.happyusf.Biz.Community.Domain.PostDTO;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -51,5 +48,10 @@ public interface CommunityRepository {
     @Select("SELECT comments.like_count FROM comments WHERE comment_id = #{comment_id}")
     CommentDTO getCurrentLikeCount(CommentDTO commentDTO);
 
+    @Update("UPDATE post SET post_title =#{post_title}, post_content =#{post_content} WHERE post_id = #{post_id} AND user_id = #{user_id}")
+    int updatePost(PostDTO postDTO);
+
+    @Delete("DELETE FROM post WHERE post_id = #{post_id} AND user_id = #{user_id}")
+    int deletePost(PostDTO postDTO);
 
 }

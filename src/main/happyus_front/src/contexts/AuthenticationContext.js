@@ -11,7 +11,7 @@ export const useAuthentication = () => {
 };
 
 export const AuthenticationProvider = ({ children }) => {
-    const [isLogined, setIsLogined] = useState(false);
+    const [isLogined, setIsLogined] = useState({});
 
     useEffect(() => {
         const fetchAuthentication = async () => {

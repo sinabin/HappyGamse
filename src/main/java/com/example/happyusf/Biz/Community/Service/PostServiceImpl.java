@@ -29,4 +29,14 @@ public class PostServiceImpl implements PostService{
     public PostDTO getPostDetail(String post_id) {
         return communityRepository.getPostDetail(Integer.parseInt(post_id));
     }
+
+    @Override
+    public boolean updatePost(PostDTO postDTO) {
+        return communityRepository.updatePost(postDTO) > 0;
+    }
+
+    @Override
+    public boolean deletePost(PostDTO postDTO) {
+        return communityRepository.deletePost(postDTO) > 0 ;
+    }
 }
