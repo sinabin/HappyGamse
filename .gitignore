@@ -40,3 +40,7 @@ out/
 /src/main/resources/static/static/
 /src/main/resources/static/asset-manifest.json
 /src/main/resources/static/index.html
+/src/main/happyus_front/package-json-hash.txt
+/src/main/resources/static/fonts/NanumGothic-Bold.ttf
+/src/main/resources/static/fonts/NanumGothic-ExtraBold.ttf
+/src/main/resources/static/fonts/NanumGothic-Regular.ttf
