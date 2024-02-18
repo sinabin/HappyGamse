@@ -1,9 +1,7 @@
-import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axiosInstance from "../../contexts/axiosInstance";
 
 function LeftMenu({ handleMenuClick}) {
-    const { gameCode } = useParams(); // URL에서 gameCode 추출
     const [leftMenu, setLeftMenu] = useState([]); // LeftMenu Data State 관리
 
     useEffect(() => {

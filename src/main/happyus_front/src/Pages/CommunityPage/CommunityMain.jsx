@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axios from "axios";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import React, {useEffect} from 'react';
+import {useLocation, useNavigate} from "react-router-dom";
 import PostList from './PostList';
 import './CommunityMain.css';
 import LeftMenu from "./LeftMenu";
