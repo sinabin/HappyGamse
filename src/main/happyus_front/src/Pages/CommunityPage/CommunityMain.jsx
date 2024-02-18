@@ -7,23 +7,20 @@ import LeftMenu from "./LeftMenu";
 import useStore from '../../contexts/store';
 
 function CommunityMain() {
-    const { gameCode, categoryCode } = useParams();
     const location = useLocation();
     let { menuName: codeName } = location.state || {};
     const navigate = useNavigate();
 
 
-    // localStorage에서 게임 이름 가져오기
-    const gameName = localStorage.getItem('gameName') || '';
     // Zustand 스토어에서 상태와 업데이트 함수들을 가져옴
-    const { setGameCode, setGameName, setBoardCategory, setCategoryName, boardCategory, categoryName } = useStore();
+    const {gameCode, gameName, boardCategory, categoryName , setGameCode, setGameName, setBoardCategory, setCategoryName, } = useStore();
 
     useEffect(() => {
         if (gameCode) setGameCode(gameCode);
-        if (categoryCode) setBoardCategory(categoryCode);
+        if (boardCategory) setBoardCategory(boardCategory);
         if (codeName) setCategoryName(codeName);
         setGameName(gameName);
-    }, [gameCode, categoryCode, codeName, setGameCode, setGameName, setBoardCategory, setCategoryName]);
+    }, [gameCode, boardCategory, codeName, setGameCode, setGameName, setBoardCategory, setCategoryName]);
 
     // handleMenuClick 함수 내에서 navigate를 사용합니다.
     const handleMenuClick = (code, codeName) => {

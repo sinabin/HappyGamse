@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './CommunityList.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
+import useStore from '../../contexts/store';
 
 function CommunityList() {
 
     const [menuItems, setMenuItems] = useState({}); // 장르별로 게임을 분류하기 위한 객체
+    const { setGameCode, setGameName} = useStore();
 
     useEffect(() => {
         fetchGameList();
@@ -37,7 +39,9 @@ function CommunityList() {
                 {games.map((game) => (
                     <div key={game.code} className="center-menu-item">
                         <Link style={{textDecoration:"none"}} to={`/community/${game.code}`}
-                              onClick={ () => {localStorage.setItem("gameName", game.code_name_kor);
+                              onClick={ () => {
+                                  setGameCode(game.code);
+                                  setGameName(game.code_name_kor)
                         } }>
                             <span className="center-menu-eachTitle">{game.code_name_kor}</span>
                         </Link>
