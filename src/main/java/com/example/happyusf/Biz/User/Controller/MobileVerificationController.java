@@ -1,6 +1,8 @@
 package com.example.happyusf.Biz.User.Controller;
 
 
+import com.example.happyusf.Biz.Mail.DTO.EmailVerificationCodeDTO;
+import com.example.happyusf.Biz.Mail.DTO.Service.EmailService;
 import com.example.happyusf.Biz.SMS.Domain.MessageDTO;
 import com.example.happyusf.Biz.User.Domain.MobileVerificationCodeDTO;
 import com.example.happyusf.Biz.User.Service.MobileVerificationService;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -22,10 +25,12 @@ import java.security.NoSuchAlgorithmException;
 public class MobileVerificationController {
 
     private final MobileVerificationService mobileVerificationService;
+    private final EmailService emailService;
 
     @Autowired
-    public MobileVerificationController(MobileVerificationService mobileVerificationService) {
+    public MobileVerificationController(MobileVerificationService mobileVerificationService, EmailService emailService) {
         this.mobileVerificationService = mobileVerificationService;
+        this.emailService = emailService;
     }
 
     /**
@@ -37,6 +42,15 @@ public class MobileVerificationController {
         // 기등록 회원과 중복된 휴대폰 번호 검사
         mobileVerificationService.findDuplicatePhoneNumber(messageDTO.getTo());
         return mobileVerificationService.processMobileVerification(messageDTO, bindingResult);
+    }
+
+    /**
+     * @param EmailVerificationCodeDTO  : 이메일 주소
+     * @Explain : 회원가입시 이메일 인증코드 발송
+     */
+    @PostMapping("/request/verificationCodeByEmail")
+    public ResponseEntity<?> sendVerificationCodeByEmail(@Valid @RequestBody EmailVerificationCodeDTO emailVerificationCodeDTO, BindingResult bindingResult) throws MessagingException {
+        return emailService.sendVerificationCode(emailVerificationCodeDTO, bindingResult);
     }
 
     /**
