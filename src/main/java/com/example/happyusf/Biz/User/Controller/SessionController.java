@@ -23,6 +23,9 @@ public class SessionController {
      */
     @GetMapping("/is-authenticated")
     public UserDTO isAuthenticated(Authentication authentication) {
+        if (authentication == null || "anonymousUser".equals(authentication.getName())) {
+            return null;
+        }
         UserDTO userinfo = UserDTO.builder().user_id(authentication.getName()).build();
         return userinfo;
     }

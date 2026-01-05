@@ -1,87 +1,55 @@
 package com.example.happyusf.Biz.User.Controller;
 
-import com.example.happyusf.Biz.Common.Service.PageResourceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-
 /**
- * @Explain Thymeleaf로 작성된 로그인, 회원가입, 계정정보찾기 관련 페이지의 요청을 처리한다.
+ * AccountViewController - Legacy URL redirects to React SPA routes
+ *
+ * This controller maintains backwards compatibility by redirecting old Thymeleaf URLs
+ * to new React SPA routes. All authentication page rendering is now handled by React.
+ *
+ * Migration Note:
+ * - Old Thymeleaf view rendering methods have been removed
+ * - React now handles all authentication UI (LoginPage, SignUpPage, etc.)
+ * - API endpoints remain unchanged in respective REST controllers
  */
 @Controller
 public class AccountViewController {
 
-    private final PageResourceService pageResourceService;
-
-    @Autowired
-    public AccountViewController(PageResourceService pageResourceService){
-        this.pageResourceService = pageResourceService;
-    }
-
     /**
-     * @Explain 로그인 페이지
+     * Redirect legacy login page URL to React route
+     * Old: /loginPage → New: /login
      */
     @GetMapping("/loginPage")
-    public String showLoginPage(Authentication authentication, HttpServletResponse response) throws IOException {
-        if (LoginChekcer(authentication,response )){
-            return null;
-        }
-        return "loginPage";
+    public String redirectToLogin() {
+        return "redirect:/login";
     }
 
     /**
-     * @Explain 이용약관 페이지
+     * Redirect legacy agreement page URL to React route
+     * Old: /register/agreement → New: /agreement
      */
     @GetMapping("/register/agreement")
-    public String showAgreementPage(Authentication authentication, HttpServletResponse response, Model model) throws IOException {
-        if (LoginChekcer(authentication,response )){
-            return null;
-        }
-        String terms = pageResourceService.findPageResource("terms_of_service");
-        String privacy_policy = pageResourceService.findPageResource("privacy_policy");
-        model.addAttribute("terms", terms);
-        model.addAttribute("privacy_policy", privacy_policy);
-        return "agreementPage";
+    public String redirectToAgreement() {
+        return "redirect:/agreement";
     }
 
     /**
-     * @Explain 회원가입 페이지
+     * Redirect legacy signup page URL to React route
+     * Old: /register/agreement/signup → New: /signup
      */
     @GetMapping("/register/agreement/signup")
-    public String showSignUpPage(Authentication authentication, HttpServletResponse response) throws IOException {
-        if (LoginChekcer(authentication,response )){
-            return null;
-        }
-        return "signUpPage";
+    public String redirectToSignUp() {
+        return "redirect:/signup";
     }
 
     /**
-     * @Explain 계정정보 찾기 페이지
+     * Redirect legacy find account page URL to React route
+     * Old: /findAccountInfo → New: /find-account
      */
     @GetMapping("/findAccountInfo")
-    public String findAccountInfo(Authentication authentication, HttpServletResponse response) throws IOException {
-        if (LoginChekcer(authentication,response )){
-           return null;
-        }
-        return "findAccountInfoPage";
+    public String redirectToFindAccount() {
+        return "redirect:/find-account";
     }
-
-    public boolean LoginChekcer(Authentication authentication,  HttpServletResponse response) throws IOException {
-        if (authentication != null && authentication.isAuthenticated()) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('이미 로그인되어있습니다..'); location.href='/';</script>");
-            out.flush();
-            return true;
-        }
-        return false;
-    }
-
-
 }

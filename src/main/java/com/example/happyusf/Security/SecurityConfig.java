@@ -29,13 +29,22 @@ public class SecurityConfig {
         http.authenticationProvider(customAuthProvider)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
+                                // React SPA Routes (Public)
+                                .antMatchers("/", "/login", "/signup", "/agreement", "/find-account", "/error/**").permitAll()
+                                // Static Resources
+                                .antMatchers("/static/**", "/manifest.json", "/favicon.ico", "/asset-manifest.json", "/logo*.png").permitAll()
+                                // Public API Endpoints
+                                .antMatchers("/api/terms/**", "/api/is-authenticated").permitAll()
+                                .antMatchers("/request/**").permitAll() // signup, verification, etc.
                                 .antMatchers("/public/**").permitAll()
+                                // Protected Routes
                                 .antMatchers("/user/**").hasRole("USER")
                                 .antMatchers("/admin/**").hasRole("ADMIN")
                                 .antMatchers("/friend/channel/**").hasRole("USER")
+                                .antMatchers("/api/**").hasRole("USER") // Protect other API endpoints
                                 .anyRequest().permitAll()
                 )
-                .formLogin(formLogin -> formLogin.loginPage("/loginPage")
+                .formLogin(formLogin -> formLogin.loginPage("/login")
                         .usernameParameter("user_id")
                         .passwordParameter("password")
                         .loginProcessingUrl("/loginAction")
