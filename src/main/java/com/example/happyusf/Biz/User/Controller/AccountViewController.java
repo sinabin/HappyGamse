@@ -4,26 +4,25 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * AccountViewController - Legacy URL redirects to React SPA routes
- *
- * This controller maintains backwards compatibility by redirecting old Thymeleaf URLs
- * to new React SPA routes. All authentication page rendering is now handled by React.
- *
- * Migration Note:
- * - Old Thymeleaf view rendering methods have been removed
- * - React now handles all authentication UI (LoginPage, SignUpPage, etc.)
- * - API endpoints remain unchanged in respective REST controllers
+ * AccountViewController - Handles authentication page rendering
  */
 @Controller
 public class AccountViewController {
 
     /**
-     * Redirect legacy login page URL to React route
-     * Old: /loginPage → New: /login
+     * Render login page using Thymeleaf template
      */
     @GetMapping("/loginPage")
-    public String redirectToLogin() {
-        return "redirect:/login";
+    public String loginPage() {
+        return "loginPage";
+    }
+
+    /**
+     * Redirect /login to /loginPage
+     */
+    @GetMapping("/login")
+    public String redirectLoginPage() {
+        return "redirect:/loginPage";
     }
 
     /**
