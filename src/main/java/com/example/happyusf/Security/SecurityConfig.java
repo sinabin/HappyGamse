@@ -29,8 +29,8 @@ public class SecurityConfig {
         http.authenticationProvider(customAuthProvider)
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
-                                // React SPA Routes (Public)
-                                .antMatchers("/", "/login", "/signup", "/agreement", "/find-account", "/error/**").permitAll()
+                                // Public Routes
+                                .antMatchers("/", "/loginPage", "/signup", "/agreement", "/find-account", "/error/**").permitAll()
                                 // Static Resources
                                 .antMatchers("/static/**", "/manifest.json", "/favicon.ico", "/asset-manifest.json", "/logo*.png").permitAll()
                                 // Public API Endpoints
@@ -44,15 +44,12 @@ public class SecurityConfig {
                                 .antMatchers("/api/**").hasRole("USER") // Protect other API endpoints
                                 .anyRequest().permitAll()
                 )
-                .formLogin(formLogin -> formLogin.loginPage("/login")
+                .formLogin(formLogin -> formLogin.loginPage("/loginPage")
                         .usernameParameter("user_id")
                         .passwordParameter("password")
                         .loginProcessingUrl("/loginAction")
                         .failureHandler(new CustomAuthenticationFailureHandler(loginFailureService))
-                        .successHandler((request, response, authentication) -> {
-                            request.getSession().setAttribute("user_id", authentication.getName());
-                        })
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(new CustomAuthenticationSuccessHandler())
                 )
                 .logout(logout -> {
                     logout
