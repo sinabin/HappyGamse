@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cat:*)",
+      "WebSearch",
+      "WebFetch(domain:github.com)",
+      "Bash(npm test:*)",
+      "Bash(npm run build:*)",
+      "Bash(gradlew test:*)",
+      "Bash(./gradlew.bat test:*)",
+      "Bash(ls:*)",
+      "Bash(./gradlew.bat build:*)",
+      "Bash(find:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)"
+    ]
+  }
+}
